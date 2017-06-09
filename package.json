@@ -5,7 +5,7 @@
   "main": "dist/engine.js",
   "scripts": {
     "build:dev": "rollup -c ./script/rollup.config.js",
-    "build:min": "uglifyjs ./dist/engine.dev.js --mangle --source-map ./dist/engine.min.js.map -o ./dist/engine.min.js",
+    "build:min": "uglifyjs ./dist/engine.dev.js --mangle --source-map url=engine.min.js.map -o ./dist/engine.min.js",
     "release": "npm run build:dev && npm run build:min",
     "start": "electron",
     "server": "preview -p 8002 -e examples",
@@ -30,11 +30,11 @@
   "dependencies": {
   },
   "devDependencies": {
-    "electron": "^1.6.3",
+    "electron": "^1.7.3",
     "fs-jetpack": "^0.13.0",
     "lstats.js": "^1.2.0",
     "preview-server": "^1.0.7",
     "rollup": "^0.41.4",
-    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony"
+    "uglify-es": "^3.0.15"
   }
 }
