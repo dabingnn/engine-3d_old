@@ -2,6 +2,7 @@
 
 const fsJetpack = require('fs-jetpack');
 const pjson = require('../package.json');
+const resolve = require('rollup-plugin-node-resolve');
 
 let banner = `
 /*
@@ -29,4 +30,10 @@ module.exports = {
   external: [],
   globals: {},
   sourceMap: true,
+  plugins: [
+    resolve({
+      jsnext: true,
+      main: true,
+    })
+  ],
 };
