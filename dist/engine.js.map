@@ -1,1 +1,0 @@
-{"version":3,"file":"engine.js","sources":["../index.js"],"sourcesContent":["export default {\n  name: 'engine-3d'\n};"],"names":[],"mappings":";;;;;;;;;AAAA,YAAe;EACb,IAAI,EAAE,WAAW;CAClB,;;"}
