@@ -36,10 +36,10 @@
     "gfx.js": "^1.2.3",
     "input.js": "^1.1.6",
     "memop": "^1.4.5",
-    "primitives.js": "^1.0.2",
-    "renderer.js": "^1.2.4",
+    "primitives.js": "^1.1.0",
+    "renderer.js": "^1.2.5",
     "scene-graph": "^1.1.2",
-    "vmath": "^1.4.2"
+    "vmath": "^1.4.4"
   },
   "devDependencies": {
     "electron": "^1.7.4",
