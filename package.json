@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/cocos-creator/engine-3d/issues",
   "dependencies": {
-    "gfx.js": "^1.2.3",
+    "gfx.js": "^1.2.4",
     "input.js": "^1.1.6",
     "memop": "^1.4.5",
     "primitives.js": "^1.1.0",
