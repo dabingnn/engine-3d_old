@@ -4,7 +4,12 @@ import Orbit from './lib/orbit';
 import resl from './lib/resl';
 import utils from './lib/utils';
 import enums from './lib/enums';
+
+import ShaderMaterial from './lib/materials/shader-material';
 import StandardMaterial from './lib/materials/standard-material';
+
+import Asset from './lib/assets/asset';
+import MeshAsset from './lib/assets/mesh-asset';
 
 // deps
 import { Node } from 'scene-graph';
@@ -18,7 +23,14 @@ let engine = {
   App,
   Orbit,
   Node,
+
+  // materials
+  ShaderMaterial,
   StandardMaterial,
+
+  // assets
+  Asset,
+  MeshAsset,
 
   // modules
   utils,
