@@ -9,7 +9,8 @@ import ShaderMaterial from './lib/materials/shader-material';
 import StandardMaterial from './lib/materials/standard-material';
 
 import Asset from './lib/assets/asset';
-import MeshAsset from './lib/assets/mesh-asset';
+import Mesh from './lib/assets/mesh';
+import Material from './lib/assets/material';
 
 // deps
 import { Node } from 'scene-graph';
@@ -30,7 +31,8 @@ let engine = {
 
   // assets
   Asset,
-  MeshAsset,
+  Mesh,
+  Material,
 
   // modules
   utils,

@@ -21,16 +21,16 @@
     // mainTexture: ???,
     color: color4.new(1.0, 1.0, 1.0, 0.6),
   });
-  material.setOption('useColor', true);
-  material.setOption('useTexture', true);
-  material.setOption('useSkinning', false);
   material.blendType = engine.BLEND_NORMAL;
+  material.useColor = true;
+  material.useTexture = true;
+  material.useSkinning = false;
 
   resl({
     manifest: {
       image: {
         type: 'image',
-        src: './assets/uv_checker_02.jpg'
+        src: './assets/textures/uv_checker_02.jpg'
       },
     },
     onDone (assets) {
@@ -43,7 +43,7 @@
         mipmap: true,
         images : [image]
       });
-      material.setValue('mainTexture', texture);
+      material.mainTexture = texture;
     }
   });
 
@@ -72,7 +72,7 @@
     let model = new Model();
     model.addMesh(meshBox);
 
-    model.addMaterial(material);
+    model.addEffect(material._effect);
     model.setNode(node);
 
     scene.addModel(model);
