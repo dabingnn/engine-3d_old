@@ -13,9 +13,9 @@
     // mainTexture: ???,
     color: color4.new(1.0, 1.0, 1.0, 0.6),
   });
-  material.setOption('useColor', true);
-  material.setOption('useTexture', true);
-  material.setOption('useSkinning', false);
+  material.useColor = true;
+  material.useTexture = true;
+  material.useSkinning = false;
   material.blendType = engine.BLEND_NONE;
 
   // scene
@@ -39,7 +39,7 @@
       }
     },
     onDone (assets) {
-      engine.utils.loadMeshAsset(app, assets.gltf, assets.bin, (err, asset) => {
+      engine.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
         for (let i = 0; i < asset.meshCount; ++i) {
           model.addMesh(asset.getMesh(i));
         }
@@ -53,8 +53,8 @@
           mipmap: true,
           images: [image]
         });
-        material.setValue('mainTexture', texture);
-        model.addMaterial(material);
+        material.mainTexture = texture;
+        model.addEffect(material._effect);
 
         let node = new Node('Zed');
         model.setNode(node);
