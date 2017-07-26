@@ -7,6 +7,7 @@ import enums from './lib/enums';
 
 import ShaderMaterial from './lib/materials/shader-material';
 import StandardMaterial from './lib/materials/standard-material';
+import PhongMaterial from './lib/materials/phong-material';
 
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
@@ -28,6 +29,7 @@ let engine = {
   // materials
   ShaderMaterial,
   StandardMaterial,
+  PhongMaterial,
 
   // assets
   Asset,
