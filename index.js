@@ -10,7 +10,10 @@ import StandardMaterial from './lib/materials/standard-material';
 
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
+import Skin from './lib/assets/skin';
 import Material from './lib/assets/material';
+
+import SkinningModel from './lib/renderer/skinning-model';
 
 // deps
 import { Node } from 'scene-graph';
@@ -32,7 +35,11 @@ let engine = {
   // assets
   Asset,
   Mesh,
+  Skin,
   Material,
+
+  // renderer
+  SkinningModel,
 
   // modules
   utils,

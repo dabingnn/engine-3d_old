@@ -9,7 +9,7 @@ uniform mat4 viewProj;
 {{/useTexture}}
 
 {{#useSkinning}}
-  {{> chunks.skinning}}
+  {{> skinning.vert}}
 {{/useSkinning}}
 
 void main () {
