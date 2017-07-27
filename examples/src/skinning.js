@@ -17,19 +17,32 @@
       gltf: {
         type: 'text',
         parser: JSON.parse,
-        src: './assets/tests/skins/Zed_cc6b438d631553f468aac60d3bd4d450.gltf'
+        // src: './assets/tests/skins/Zed_cc6b438d631553f468aac60d3bd4d450.gltf'
+        src: './assets/tests/skins/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.gltf'
       },
       bin: {
         type: 'binary',
-        src: './assets/tests/skins/Zed_cc6b438d631553f468aac60d3bd4d450.bin'
+        // src: './assets/tests/skins/Zed_cc6b438d631553f468aac60d3bd4d450.bin'
+        src: './assets/tests/skins/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.bin'
       },
       image: {
         type: 'image',
-        src: './assets/tests/textures/Zed_base_TX_CM.png'
+        // src: './assets/tests/textures/Zed_base_TX_CM.png'
+        src: './assets/tests/textures/Paladin_diffuse.png'
       }
     },
     onDone (assets) {
       engine.utils.loadSkin(app, assets.gltf, assets.bin, (err, info) => {
+        let skeleton = info.skeleton.clone();
+        let mainTexture = new gfx.Texture2D(app.device, {
+          width: assets.image.width,
+          height: assets.image.height,
+          wrapS: gfx.WRAP_CLAMP,
+          wrapT: gfx.WRAP_CLAMP,
+          mipmap: true,
+          images: [assets.image]
+        });
+
         for (let i = 0; i < info.nodes.length; ++i) {
           let node = info.nodes[i];
           if (node.mesh && node.skin) {
@@ -45,25 +58,17 @@
             // set skin
             let skin = node.skin;
             skinningModel.setSkin(skin);
-            skinningModel._jointsTexture = engine.utils.createJointsTexture(app._device, skin);
-            skinningModel._updateCaches();
+            skinningModel.setSkeleton(skeleton);
+            skinningModel.setJointsTexture(engine.utils.createJointsTexture(app._device, skin));
 
             // set material
             let material = new StandardMaterial({
-              // mainTexture: ???,
+              mainTexture,
               color: color4.new(1.0, 1.0, 1.0, 0.6),
             });
             material.useColor = true;
             material.useTexture = true;
             material.blendType = engine.BLEND_NONE;
-            material.mainTexture = new gfx.Texture2D(app.device, {
-              width: assets.image.width,
-              height: assets.image.height,
-              wrapS: gfx.WRAP_CLAMP,
-              wrapT: gfx.WRAP_CLAMP,
-              mipmap: true,
-              images: [assets.image]
-            });
             skinningModel.addEffect(material._effect);
 
             skinningModels.push(skinningModel);
