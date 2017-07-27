@@ -91,8 +91,8 @@
       return;
     }
 
-    // let spector = new window.SPECTOR.Spector();
-    // spector.displayUI();
+    let spector = new window.SPECTOR.Spector();
+    spector.displayUI();
 
     let view = document.getElementById('view');
     let showFPS = document.getElementById('showFPS');
