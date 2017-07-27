@@ -3,8 +3,13 @@
     {
       "stages": "transparent",
       "parameters": {
-        "texture": {"type": "tex2d"},
-        "color": {"type": "color4", "value": "0x00ff00ff"}
+        "texture": {
+          "type": "tex2d"
+        },
+        "color": {
+          "type": "color4",
+          "value": "0x00ff00ff"
+        }
       },
       "passes": [
         {
