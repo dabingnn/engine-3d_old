@@ -38,70 +38,70 @@ uniform vec3 eyePosition;
   uniform vec2 spot_light{{.}}_spot;
 {{/spotLightSlots}}
 
-  LightInfo computeDirecionalLighting(vec3 lightDirection, vec3 lightColor, vec3 normal, vec3 viewDirection, float glossiness)
-  {
-    LightInfo lightingResult;
-    float ndl = 0.0;
-    float ndh = 0.0;
-    vec3 lightVec = -normalize(lightDirection);
-    ndl = max(0.0, dot(normal, lightVec));
-    vec3 dirH = normalize(viewDirection + lightVec);
-    ndh = max(0.0, dot(normal, dirH));
-    ndh = (ndl == 0.0) ? 0.0: ndh;
-    ndh = pow(ndh, max(1.0, glossiness));
-    lightingResult.diffuse = lightColor * ndl;
-    lightingResult.specular = lightColor * ndh;
+LightInfo computeDirecionalLighting(vec3 lightDirection, vec3 lightColor, vec3 normal, vec3 viewDirection, float glossiness)
+{
+  LightInfo lightingResult;
+  float ndl = 0.0;
+  float ndh = 0.0;
+  vec3 lightVec = -normalize(lightDirection);
+  ndl = max(0.0, dot(normal, lightVec));
+  vec3 dirH = normalize(viewDirection + lightVec);
+  ndh = max(0.0, dot(normal, dirH));
+  ndh = (ndl == 0.0) ? 0.0: ndh;
+  ndh = pow(ndh, max(1.0, glossiness));
+  lightingResult.diffuse = lightColor * ndl;
+  lightingResult.specular = lightColor * ndh;
 
-    return lightingResult;
-  }
+  return lightingResult;
+}
+  
+LightInfo computePointLighting(vec3 lightPosition, vec3 lightColor, float lightRange, vec3 normal, vec3 positionW, vec3 viewDirection, float glossiness)
+{
+  LightInfo lightingResult;
+  float ndl = 0.0;
+  float ndh = 0.0;
+  vec3 lightVec = vec3(0, 0, 0);
+  float attenuation = 1.0;
+  lightVec = lightPosition - positionW;
+  attenuation = max(0., 1.0 - length(lightVec) / lightRange);
+  lightVec = normalize(lightVec);
+  ndl = max(0.0, dot(normal, lightVec));
+  vec3 dirH = normalize(viewDirection + lightVec);
+  ndh = max(0.0, dot(normal, dirH));
+  ndh = (ndl == 0.0) ? 0.0: ndh;
+  ndh = pow(ndh, max(1.0, glossiness));
 
-  LightInfo computePointLighting(vec3 lightPosition, vec3 lightColor, float lightRange, vec3 normal, vec3 positionW, vec3 viewDirection, float glossiness)
-  {
-    LightInfo lightingResult;
-    float ndl = 0.0;
-    float ndh = 0.0;
-    vec3 lightVec = vec3(0, 0, 0);
-    float attenuation = 1.0;
-    lightVec = lightPosition - positionW;
-    attenuation = max(0., 1.0 - length(lightVec) / lightRange);
-    lightVec = normalize(lightVec);
-    ndl = max(0.0, dot(normal, lightVec));
-    vec3 dirH = normalize(viewDirection + lightVec);
-    ndh = max(0.0, dot(normal, dirH));
-    ndh = (ndl == 0.0) ? 0.0: ndh;
-    ndh = pow(ndh, max(1.0, glossiness));
+  lightingResult.diffuse = lightColor * ndl * attenuation;
+  lightingResult.specular = lightColor * ndh * attenuation;
 
-    lightingResult.diffuse = lightColor * ndl * attenuation;
-    lightingResult.specular = lightColor * ndh * attenuation;
+  return lightingResult;
+}
 
-    return lightingResult;
-  }
+LightInfo computeSpotLighting(vec3 lightPosition, vec3 lightDirection, vec3 lightColor, float lightRange, vec2 lightSpot,
+                              vec3 normal, vec3 positionW, vec3 viewDirection, float glossiness)
+{
+  LightInfo lightingResult;
+  float ndl = 0.0;
+  float ndh = 0.0;
+  vec3 lightVec = vec3(0, 0, 0);
+  float attenuation = 1.0;
+  float cosConeAngle = 1.0;
 
-  LightInfo computeSpotLighting(vec3 lightPosition, vec3 lightDirection, vec3 lightColor, float lightRange, vec2 lightSpot,
-                                vec3 normal, vec3 positionW, vec3 viewDirection, float glossiness)
-  {
-    LightInfo lightingResult;
-    float ndl = 0.0;
-    float ndh = 0.0;
-    vec3 lightVec = vec3(0, 0, 0);
-    float attenuation = 1.0;
-    float cosConeAngle = 1.0;
-
-    lightVec = lightPosition - positionW;
-    attenuation = max(0., 1.0 - length(lightVec) / lightRange);
-    lightVec = normalize(lightVec);
-    cosConeAngle = max(0., dot(lightDirection, -lightVec));
-    cosConeAngle = cosConeAngle < lightSpot.x ? 0.0 : cosConeAngle;
-    cosConeAngle = pow(cosConeAngle,lightSpot.y);
-    ndl = max(0.0, dot(normal, lightVec));
-    vec3 dirH = normalize(viewDirection + lightVec);
-    ndh = max(0.0, dot(normal, dirH));
-    ndh = (ndl == 0.0) ? 0.0: ndh;
-    ndh = pow(ndh, max(1.0, glossiness));
-    lightingResult.diffuse = lightColor * ndl * attenuation * cosConeAngle;
-    lightingResult.specular = lightColor * ndh * attenuation * cosConeAngle;
-    return lightingResult;
-  }
+  lightVec = lightPosition - positionW;
+  attenuation = max(0., 1.0 - length(lightVec) / lightRange);
+  lightVec = normalize(lightVec);
+  cosConeAngle = max(0., dot(lightDirection, -lightVec));
+  cosConeAngle = cosConeAngle < lightSpot.x ? 0.0 : cosConeAngle;
+  cosConeAngle = pow(cosConeAngle,lightSpot.y);
+  ndl = max(0.0, dot(normal, lightVec));
+  vec3 dirH = normalize(viewDirection + lightVec);
+  ndh = max(0.0, dot(normal, dirH));
+  ndh = (ndl == 0.0) ? 0.0: ndh;
+  ndh = pow(ndh, max(1.0, glossiness));
+  lightingResult.diffuse = lightColor * ndl * attenuation * cosConeAngle;
+  lightingResult.specular = lightColor * ndh * attenuation * cosConeAngle;
+  return lightingResult;
+}
 
 void main () {
   LightInfo phongLighting;
