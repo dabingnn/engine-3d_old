@@ -2,7 +2,7 @@ attribute vec3 a_position;
 
 uniform mat4 model;
 uniform mat4 viewProj;
-uniform mat4 normalMatrix;
+uniform mat3 normalMatrix;
 
 {{#useTexture}}
   attribute vec2 a_uv;
@@ -11,10 +11,10 @@ uniform mat4 normalMatrix;
 
 {{#useNormal}}
   attribute vec3 a_normal;
-  varying vec3 v_normal;
+  varying vec3 normal_w;
 {{/useNormal}}
 
-varying vec3 v_posWorld;
+varying vec3 pos_w;
 
 {{#useSkinning}}
   {{> chunks.skinning}}
@@ -27,7 +27,7 @@ void main () {
     pos = skinMatrix() * pos;
   {{/useSkinning}}
 
-  v_posWorld = (model * pos).xyz;
+  pos_w = (model * pos).xyz;
   pos = viewProj * model * pos;
   
   {{#useTexture}}
@@ -35,8 +35,8 @@ void main () {
   {{/useTexture}}
 
   {{#useNormal}}
-    v_normal = (model * vec4(a_normal,0.0)).xyz;
-    v_normal = normalize(v_normal);
+    normal_w = normalMatrix * a_normal;
+    normal_w = normalize(normal_w);
   {{/useNormal}}
 
   gl_Position = pos;
