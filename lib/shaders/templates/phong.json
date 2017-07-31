@@ -1,7 +1,9 @@
 {
   "useTexture": {},
-  "useColor": {},
   "useSkinning": {},
   "useNormal": {},
-  "useLight": {}
+  "useLight": {},
+  "directionalLightSlots": {},
+  "pointLightSlots": {},
+  "spotLightSlots": {}
 }
