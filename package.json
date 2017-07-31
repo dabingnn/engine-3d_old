@@ -42,6 +42,7 @@
     "vmath": "^1.4.4"
   },
   "devDependencies": {
+    "assets-3d": "git+ssh://git@github.com:cocos-creator/assets-3d.git",
     "electron": "^1.7.5",
     "fs-jetpack": "^1.1.0",
     "lstats.js": "^1.2.7",

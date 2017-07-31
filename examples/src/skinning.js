@@ -12,32 +12,36 @@
   let scene = new Scene();
   let skinningModels = [];
 
+  let src = '../node_modules/assets-3d';
+
   resl({
     manifest: {
       gltf: {
         type: 'text',
         parser: JSON.parse,
-        src: './assets/tests/skins/Zed_cc6b438d631553f468aac60d3bd4d450.gltf'
-        // src: './assets/tests/skins/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.gltf'
+        // src: `${src}/models/Zed/Zed_cc6b438d631553f468aac60d3bd4d450.gltf`
+        src: `${src}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.gltf`
       },
       bin: {
         type: 'binary',
-        src: './assets/tests/skins/Zed_cc6b438d631553f468aac60d3bd4d450.bin'
-        // src: './assets/tests/skins/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.bin'
+        // src: `${src}/models/Zed/Zed_cc6b438d631553f468aac60d3bd4d450.bin`
+        src: `${src}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.bin`
       },
       image: {
         type: 'image',
-        src: './assets/tests/textures/Zed_base_TX_CM.png'
-        // src: './assets/tests/textures/Paladin_diffuse.png'
+        // src: `${src}/models/Zed/Zed_base_TX_CM.png`
+        src: `${src}/models/Paladin/Paladin_diffuse.png`
       },
       animGltf: {
         type: 'text',
         parser: JSON.parse,
-        src: './assets/tests/anims/Zed_cc6b438d631553f468aac60d3bd4d450.gltf'
+        // src: `${src}/anims/Zed_cc6b438d631553f468aac60d3bd4d450.gltf`
+        src: `${src}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.gltf`
       },
       animBin: {
         type: 'binary',
-        src: './assets/tests/anims/Zed_cc6b438d631553f468aac60d3bd4d450.bin'
+        // src: `${src}/anims/Zed_cc6b438d631553f468aac60d3bd4d450.bin`
+        src: `${src}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.bin`
       },
     },
     onDone (assets) {
@@ -87,7 +91,8 @@
 
         // load animations
         engine.utils.loadAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
-          let clip = animClips[15];
+          // let clip = animClips[15];
+          let clip = animClips[0];
           let t = 0;
 
           setInterval(() => {

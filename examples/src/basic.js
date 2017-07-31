@@ -30,7 +30,7 @@
     manifest: {
       image: {
         type: 'image',
-        src: './assets/textures/uv_checker_02.jpg'
+        src: '../node_modules/assets-3d/textures/uv_checker_02.jpg'
       },
     },
     onDone (assets) {
