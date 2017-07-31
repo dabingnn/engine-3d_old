@@ -3,10 +3,6 @@
   varying vec2 uv;
 {{/useTexture}}
 
-{{#useColor}}
-  uniform vec4 color;
-{{/useColor}}
-
 {{#useNormal}}
   varying vec3 normal_w;
 {{/useNormal}}
@@ -137,10 +133,6 @@ void main () {
   {{#useTexture}}
     o *= texture2D(mainTexture, uv);
   {{/useTexture}}
-
-  {{#useColor}}
-    o *= color;
-  {{/useColor}}
 
   gl_FragColor = o;
 }
