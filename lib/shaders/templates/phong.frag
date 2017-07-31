@@ -8,9 +8,9 @@
 {{/useColor}}
 
 {{#useNormal}}
-  varying vec3 v_normal;
+  varying vec3 normal_w;
 {{/useNormal}}
-varying vec3 v_posWorld;
+varying vec3 pos_w;
 
 struct LightInfo {
   vec3 diffuse;
@@ -107,12 +107,12 @@ void main () {
   LightInfo phongLighting;
   phongLighting.diffuse = vec3(0, 0, 0);
   phongLighting.specular = vec3(0, 0, 0);
-  vec3 viewDirection = normalize(eye - v_posWorld);
+  vec3 viewDirection = normalize(eye - pos_w);
 
   float materialGlossiness = 10.0;
   LightInfo dirLighting;
   {{#directionalLightSlots}}
-    dirLighting = computeDirecionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,v_normal, viewDirection, materialGlossiness);
+    dirLighting = computeDirecionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,normal_w, viewDirection, materialGlossiness);
     phongLighting.diffuse += dirLighting.diffuse;
     phongLighting.specular += dirLighting.specular;
   {{/directionalLightSlots}}
@@ -120,7 +120,7 @@ void main () {
   LightInfo pointLighting;
   {{#pointLightSlots}}
     pointLighting = computePointLighting(point_light{{id}}_position, point_light{{id}}_color, point_light{{id}}_range, 
-                                         v_normal, v_posWorld, viewDirection, materialGlossiness);
+                                         normal_w, pos_w, viewDirection, materialGlossiness);
     phongLighting.diffuse += pointLighting.diffuse;
     phongLighting.specular += pointLighting.specular;
   {{/pointLightSlots}}
@@ -128,7 +128,7 @@ void main () {
   LightInfo spotLighting;
   {{#spotLightSlots}}
     spotLighting = computeSpotLighting(spot_light{{id}}_position, spot_light{{id}}_direction, spot_light{{id}}_color, 
-                    spot_light{{id}}_range, spot_light{{id}}_spot,v_normal, v_posWorld, viewDirection, materialGlossiness);
+                    spot_light{{id}}_range, spot_light{{id}}_spot,normal_w, pos_w, viewDirection, materialGlossiness);
     phongLighting.diffuse += spotLighting.diffuse;
     phongLighting.specular += spotLighting.specular;
   {{/spotLightSlots}}
