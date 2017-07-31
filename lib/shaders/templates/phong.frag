@@ -1,6 +1,6 @@
 {{#useTexture}}
   uniform sampler2D mainTexture;
-  varying vec2 uv;
+  varying vec2 uv0;
 {{/useTexture}}
 
 {{#useNormal}}
@@ -22,7 +22,7 @@ void main () {
   phongLighting = getPhongLighting(normal_w, pos_w, viewDirection, materialGlossiness);
   vec4 o = vec4( phongLighting.diffuse, 1);
   {{#useTexture}}
-    o *= texture2D(mainTexture, uv);
+    o *= texture2D(mainTexture, uv0);
   {{/useTexture}}
 
   gl_FragColor = o;

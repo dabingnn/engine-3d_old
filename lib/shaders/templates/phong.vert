@@ -5,8 +5,8 @@ uniform mat4 viewProj;
 uniform mat3 normalMatrix;
 
 {{#useTexture}}
-  attribute vec2 a_uv;
-  varying vec2 uv;
+  attribute vec2 a_uv0;
+  varying vec2 uv0;
 {{/useTexture}}
 
 {{#useNormal}}
@@ -31,7 +31,7 @@ void main () {
   pos = viewProj * model * pos;
   
   {{#useTexture}}
-    uv = a_uv;
+    uv0 = a_uv0;
   {{/useTexture}}
 
   {{#useNormal}}
