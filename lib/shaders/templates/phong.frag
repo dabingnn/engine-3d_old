@@ -1,7 +1,6 @@
-{{#useTexture}}
-  uniform sampler2D mainTexture;
+{{#useUV0}}
   varying vec2 uv0;
-{{/useTexture}}
+{{/useUV0}}
 
 {{#useNormal}}
   varying vec3 normal_w;
@@ -11,19 +10,135 @@ varying vec3 pos_w;
 
 uniform vec3 eye;
 
+struct phongMaterial
+{
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 emissive;
+  vec3 specular;
+  float glossiness;
+  float opacity;
+};
+
+{{#useDiffuse}}
+uniform vec3 diffuseValue;
+{{#useDiffuseTexture}}
+uniform sampler2D diffuseTexture;
+{{/useDiffuseTexture}}
+{{/useDiffuse}}
+
+{{#useAmbient}}
+uniform vec3 sceneAmbient;
+uniform vec3 ambientValue;
+{{#useAmbientTexture}}
+uniform sampler2D ambientTexture;
+{{/useAmbientTexture}}
+{{/useAmbient}}
+
+{{#useEmissive}}
+uniform vec3 emissiveValue;
+uniform sampler2D emissiveTexture;
+{{/useEmissive}}
+
+{{#useSpecular}}
+uniform vec3 specularValue;
+uniform sampler2D specularTexture;
+uniform float glossinessValue;
+uniform sampler2D glossinessTexture;
+{{/useSpecular}}
+
+{{#useOpacity}}
+uniform float opacityValue;
+{{#useOpacityTexture}}
+uniform sampler2D opacityTexture;
+{{/useOpacityTexture}}
+{{/useOpacity}}
+
+{{#useAlphaTest}}
+uniform float alphaTestRef;
+{{/useAlphaTest}}
+
+phongMaterial getPhongMaterial() {
+  phongMaterial result;
+  result.ambient = vec3(0.0, 0.0, 0.0);
+  result.diffuse = vec3(0.8, 0.8, 0.8);
+  result.emissive = vec3(0.0, 0.0, 0.0);
+  result.specular = vec3(0.0, 0.0, 0.0);
+  result.glossiness = 10.0;
+  result.opacity = 1.0;
+  
+  {{#useAmbient}}
+  result.ambient = ambientValue;
+    {{#useAmbientTexture}}
+      result.ambient = result.ambient * texture2D(ambientTexture, uv0).rgb;
+    {{/useAmbientTexture}}
+  {{/useAmbient}}
+  
+  {{#useDiffuse}}
+  result.diffuse = diffuseValue;
+    {{#useDiffuseTexture}}
+      result.diffuse = result.diffuse * texture2D(diffuseTexture, uv0).rgb;
+    {{/useDiffuseTexture}}
+  {{/useDiffuse}}
+  
+  {{#useEmissive}}
+  result.emissive = emissiveValue * texture2D(emissiveTexture, uv0).rgb;
+  {{/useEmissive}}
+
+  {{#useSpecular}}
+  result.specular = specularValue * texture2D(specularTexture, uv0).rgb;
+  {{/useSpecular}}
+
+  {{#useGlossiness}}
+  result.glossiness = glossinessValue * texture2D(glossinessTexture, uv0).a;
+  {{/useGlossiness}}
+
+  {{#useOpacity}}
+  result.opacity = opacityValue;
+    {{#useOpacityTexture}}
+      result.opacity = result.opacity * texture2D(opacityTexture, uv0).a;
+    {{/useOpacityTexture}}
+  {{/useOpacity}}
+
+  return result;
+}
+
 {{> phong_lighting.frag}}
+
+vec4 composePhongShading(LightInfo lighting, phongMaterial mtl)
+{
+  vec4 o = vec4(0.0, 0.0, 0.0, 1.0);
+  
+  //diffuse is always calculated
+  o.xyz = lighting.diffuse * mtl.diffuse;
+
+  {{#useAmbient}}
+  o.xyz += sceneAmbient * mtl.ambient;
+  {{/useAmbient}}
+
+  {{#useEmissive}}
+  o.xyz += mtl.emissive;
+  {{/useEmissive}}
+
+  {{#useSpecular}}
+  o.xyz += lighting.specular * mtl.specular;
+  {{/useSpecular}}
+
+  {{#useOpacity}}
+  o.a = mtl.opacity;
+  {{/useOpacity}}
+  return o;
+}
 
 void main () {
   LightInfo phongLighting;
   vec3 viewDirection = normalize(eye - pos_w);
-  // this is a hack
-  float materialGlossiness = 10.0;
+  
+  phongMaterial mtl = getPhongMaterial();
+  {{#useAlphaTest}}
+  if(mtl.opacity < alphaTestRef) discard;
+  {{/useAlphaTest}}
+  phongLighting = getPhongLighting(normal_w, pos_w, viewDirection, mtl.glossiness);
 
-  phongLighting = getPhongLighting(normal_w, pos_w, viewDirection, materialGlossiness);
-  vec4 o = vec4( phongLighting.diffuse, 1);
-  {{#useTexture}}
-    o *= texture2D(mainTexture, uv0);
-  {{/useTexture}}
-
-  gl_FragColor = o;
+  gl_FragColor = composePhongShading(phongLighting, mtl);
 }
