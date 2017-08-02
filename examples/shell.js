@@ -1,10 +1,10 @@
 'use strict';
 
 (() => {
-  const { App, Orbit, Node } = window.engine;
-  const { vec3 } = window.engine.math;
-  const { Camera } = window.engine.renderer;
-  const { createGrid } = window.engine.utils;
+  const { App, Orbit, Node } = window.cc;
+  const { vec3 } = window.cc.math;
+  const { Camera } = window.cc.renderer;
+  const { createGrid } = window.cc.utils;
 
   // create global camera
   let nodeCam = new Node('nodeCam');

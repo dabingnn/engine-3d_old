@@ -1,12 +1,12 @@
 (() => {
   const app = window.app;
-  const engine = window.engine;
+  const cc = window.cc;
 
-  const resl = engine.resl;
-  const gfx = engine.gfx;
-  const { StandardMaterial, SkinningModel } = engine;
-  const { Scene } = engine.renderer;
-  const { color4 } = engine.math;
+  const resl = cc.resl;
+  const gfx = cc.gfx;
+  const { StandardMaterial, SkinningModel } = cc;
+  const { Scene } = cc.renderer;
+  const { color4 } = cc.math;
 
   // scene
   let scene = new Scene();
@@ -45,7 +45,7 @@
       },
     },
     onDone (assets) {
-      engine.utils.loadSkin(app, assets.gltf, assets.bin, (err, info) => {
+      cc.utils.loadSkin(app, assets.gltf, assets.bin, (err, info) => {
         let skeleton = info.skeleton.clone();
         let mainTexture = new gfx.Texture2D(app.device, {
           width: assets.image.width,
@@ -72,7 +72,7 @@
             let skin = node.skin;
             skinningModel.setSkin(skin);
             skinningModel.setSkeleton(skeleton);
-            skinningModel.setJointsTexture(engine.utils.createJointsTexture(app._device, skin));
+            skinningModel.setJointsTexture(cc.utils.createJointsTexture(app._device, skin));
 
             // set material
             let material = new StandardMaterial({
@@ -81,7 +81,7 @@
             });
             material.useColor = true;
             material.useTexture = true;
-            material.blendType = engine.BLEND_NONE;
+            material.blendType = cc.BLEND_NONE;
             skinningModel.addEffect(material._effect);
 
             skinningModels.push(skinningModel);
@@ -90,7 +90,7 @@
         }
 
         // load animations
-        engine.utils.loadAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
+        cc.utils.loadAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
           // let clip = animClips[15];
           let clip = animClips[0];
           let t = 0;
