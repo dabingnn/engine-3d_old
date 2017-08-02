@@ -1,12 +1,12 @@
 (() => {
   const app = window.app;
-  const engine = window.engine;
+  const cc = window.cc;
 
-  const resl = engine.resl;
-  const gfx = engine.gfx;
-  const { Node, StandardMaterial } = engine;
-  const { Scene, Model } = engine.renderer;
-  const { vec3, quat, color4 } = engine.math;
+  const resl = cc.resl;
+  const gfx = cc.gfx;
+  const { Node, StandardMaterial } = cc;
+  const { Scene, Model } = cc.renderer;
+  const { vec3, quat, color4 } = cc.math;
 
   // create material
   let material = new StandardMaterial({
@@ -15,7 +15,7 @@
   material.useColor = true;
   material.useTexture = true;
   material.useSkinning = false;
-  material.blendType = engine.BLEND_NONE;
+  material.blendType = cc.BLEND_NONE;
 
   // scene
   let model = new Model();
@@ -75,7 +75,7 @@
     // manifest: vikingroom,
 
     onDone (assets) {
-      engine.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
+      cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
         for (let i = 0; i < asset.meshCount; ++i) {
           model.addMesh(asset.getMesh(i));
         }

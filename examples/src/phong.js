@@ -1,21 +1,21 @@
 (() => {
-  var SPECTOR = require("spectorjs");
+  // var SPECTOR = require("spectorjs");
 
-  var spector = new SPECTOR.Spector();
-  spector.displayUI();
+  // var spector = new SPECTOR.Spector();
+  // spector.displayUI();
 
   const app = window.app;
-  const engine = window.engine;
+  const cc = window.cc;
 
-  const resl = engine.resl;
-  const gfx = engine.gfx;
-  const { Node, PhongMaterial } = engine;
-  const { vec3, color3, color4, quat, randomRange } = engine.math;
-  const { Scene, Model, Light } = engine.renderer;
-  const { box } = engine.primitives;
+  const resl = cc.resl;
+  const gfx = cc.gfx;
+  const { Node, PhongMaterial } = cc;
+  const { vec3, color3, color4, quat, randomRange } = cc.math;
+  const { Scene, Model, Light } = cc.renderer;
+  const { box } = cc.primitives;
 
   // create mesh
-  let meshBox = engine.utils.createMesh(app.device, box(1, 1, 1, {
+  let meshBox = cc.utils.createMesh(app.device, box(1, 1, 1, {
     widthSegments: 1,
     heightSegments: 1,
     lengthSegments: 1,
@@ -26,7 +26,7 @@
     // mainTexture: ???,
     color: color4.new(1.0, 1.0, 1.0, 0.6),
   });
-  material.blendType = engine.BLEND_NORMAL;
+  material.blendType = cc.BLEND_NONE;
   material.useColor = true;
   material.useTexture = true;
   material.useSkinning = false;
@@ -35,7 +35,7 @@
     manifest: {
       image: {
         type: 'image',
-        src: './assets/textures/uv_checker_01.jpg'
+        src: '../node_modules/assets-3d/textures/uv_checker_02.jpg'
       },
     },
     onDone(assets) {
@@ -56,7 +56,7 @@
   let scene = new Scene();
 
   // light
-  for (let index = 0; index < 0; ++index) {
+  for (let index = 0; index < 1; ++index) {
     let light = new Light();
     light.color = color3.new(randomRange(0, 0.5), randomRange(0, 0.5), randomRange(0, 0.5));
     let node = new Node(`light0`);
@@ -71,7 +71,7 @@
 
   for (let index = 0; index < 0; ++index) {
     let light = new Light();
-    light.type = engine.renderer.LIGHT_POINT;
+    light.type = cc.renderer.LIGHT_POINT;
     light.color = color3.new(randomRange(0, 0.5), randomRange(0, 0.5), randomRange(0, 0.5));
     light.range = 50;
     let node = new Node(`ptlight0`);
@@ -84,9 +84,9 @@
     scene.addLight(light);
   }
 
-  for (let index = 0; index < 1; ++index) {
+  for (let index = 0; index < 0; ++index) {
     let light = new Light();
-    light.type = engine.renderer.LIGHT_SPOT;
+    light.type = cc.renderer.LIGHT_SPOT;
     light.color = color3.new(randomRange(1, 1), randomRange(1, 1), randomRange(1, 1));
     light.range = 40;
     light.spotExp = 10;
@@ -119,7 +119,7 @@
     scene.addModel(model);
   }
   // models
-  for (let i = 0; i < 0; ++i) {
+  for (let i = 0; i < 100; ++i) {
     let node = new Node(`node_${i}`);
     vec3.set(node.lpos,
       randomRange(-50, 50),

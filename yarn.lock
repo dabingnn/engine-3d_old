@@ -396,6 +396,10 @@ estree-walker@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.2.1.tgz#bdafe8095383d8414d5dc2ecf4c9173b6db9412e"
 
+event-sys@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/event-sys/-/event-sys-1.0.0.tgz#e98819837901c23825dbbb20f2fdc0a8e5c95b0e"
+
 eventemitter3@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
