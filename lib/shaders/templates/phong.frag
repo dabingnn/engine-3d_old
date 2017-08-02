@@ -37,14 +37,23 @@ uniform sampler2D ambientTexture;
 
 {{#useEmissive}}
 uniform vec3 emissiveValue;
+{{#useEmissiveTexture}}
 uniform sampler2D emissiveTexture;
+{{/useEmissiveTexture}}
 {{/useEmissive}}
 
 {{#useSpecular}}
 uniform vec3 specularValue;
-uniform sampler2D specularTexture;
 uniform float glossinessValue;
+
+{{#useSpecularTexture}}
+uniform sampler2D specularTexture;
+{{/useSpecularTexture}}
+
+{{#useGlossinessTexture}}
 uniform sampler2D glossinessTexture;
+{{/useGlossinessTexture}}
+
 {{/useSpecular}}
 
 {{#useOpacity}}
@@ -82,15 +91,24 @@ phongMaterial getPhongMaterial() {
   {{/useDiffuse}}
   
   {{#useEmissive}}
-  result.emissive = emissiveValue * texture2D(emissiveTexture, uv0).rgb;
+  result.emissive = emissiveValue; 
+    {{#useEmissiveTexture}}
+      result.emissive = result.emissive * texture2D(emissiveTexture, uv0).rgb;
+    {{/useEmissiveTexture}}
   {{/useEmissive}}
 
   {{#useSpecular}}
-  result.specular = specularValue * texture2D(specularTexture, uv0).rgb;
+  result.specular = specularValue;
+    {{#useSpecularTexture}}
+      result.specular = result.specular * texture2D(specularTexture, uv0).rgb;
+    {{/useSpecularTexture}}
   {{/useSpecular}}
 
   {{#useGlossiness}}
-  result.glossiness = glossinessValue * texture2D(glossinessTexture, uv0).a;
+  result.glossiness = glossinessValue;
+    {{#useGlossinessTexture}}
+      result.glossiness = result.glossiness * texture2D(glossinessTexture, uv0).a;
+    {{/useGlossinessTexture}}
   {{/useGlossiness}}
 
   {{#useOpacity}}
