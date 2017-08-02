@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/cocos-creator/engine-3d/issues",
   "dependencies": {
+    "event-sys": "^1.0.0",
     "gfx.js": "^1.2.5",
     "input.js": "^1.1.6",
     "memop": "^1.4.5",
@@ -42,6 +43,7 @@
     "vmath": "^1.4.4"
   },
   "devDependencies": {
+    "assets-3d": "git+ssh://git@github.com:cocos-creator/assets-3d.git",
     "electron": "^1.7.5",
     "fs-jetpack": "^1.1.0",
     "lstats.js": "^1.2.7",

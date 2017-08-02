@@ -1,16 +1,16 @@
 (() => {
   const app = window.app;
-  const engine = window.engine;
+  const cc = window.cc;
 
-  const resl = engine.resl;
-  const gfx = engine.gfx;
-  const { Node, StandardMaterial } = engine;
-  const { vec3, color4, quat, randomRange } = engine.math;
-  const { Scene, Model } = engine.renderer;
-  const { box } = engine.primitives;
+  const resl = cc.resl;
+  const gfx = cc.gfx;
+  const { Node, StandardMaterial } = cc;
+  const { vec3, color4, quat, randomRange } = cc.math;
+  const { Scene, Model } = cc.renderer;
+  const { box } = cc.primitives;
 
   // create mesh
-  let meshBox = engine.utils.createMesh(app.device, box(1, 1, 1, {
+  let meshBox = cc.utils.createMesh(app.device, box(1, 1, 1, {
     widthSegments: 1,
     heightSegments: 1,
     lengthSegments: 1,
@@ -21,7 +21,7 @@
     // mainTexture: ???,
     color: color4.new(1.0, 1.0, 1.0, 0.6),
   });
-  material.blendType = engine.BLEND_NORMAL;
+  material.blendType = cc.BLEND_NORMAL;
   material.useColor = true;
   material.useTexture = true;
   material.useSkinning = false;
@@ -30,7 +30,7 @@
     manifest: {
       image: {
         type: 'image',
-        src: './assets/textures/uv_checker_02.jpg'
+        src: '../node_modules/assets-3d/textures/uv_checker_02.jpg'
       },
     },
     onDone (assets) {
