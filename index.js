@@ -23,7 +23,7 @@ import * as primitives from 'primitives.js';
 import renderer from 'renderer.js';
 import gfx from 'gfx.js';
 
-let engine = {
+let cc = {
   // classes
   App,
   Orbit,
@@ -53,6 +53,6 @@ let engine = {
   // DELME: temporary
   resl,
 };
-Object.assign(engine, enums);
+Object.assign(cc, enums);
 
-export default engine;
+export default cc;

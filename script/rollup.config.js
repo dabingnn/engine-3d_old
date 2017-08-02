@@ -13,8 +13,8 @@ let banner = `
 `;
 
 let dest = './dist';
-let file = 'engine';
-let moduleName = 'engine';
+let file = 'engine-3d';
+let moduleName = 'cc';
 
 // clear directory
 fsJetpack.dir(dest, { empty: true });
