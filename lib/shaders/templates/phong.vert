@@ -4,10 +4,10 @@ uniform mat4 model;
 uniform mat4 viewProj;
 uniform mat3 normalMatrix;
 
-{{#useTexture}}
+{{#useUV0}}
   attribute vec2 a_uv0;
   varying vec2 uv0;
-{{/useTexture}}
+{{/useUV0}}
 
 {{#useNormal}}
   attribute vec3 a_normal;
@@ -30,9 +30,9 @@ void main () {
   pos_w = (model * pos).xyz;
   pos = viewProj * model * pos;
   
-  {{#useTexture}}
+  {{#useUV0}}
     uv0 = a_uv0;
-  {{/useTexture}}
+  {{/useUV0}}
 
   {{#useNormal}}
     normal_w = normalMatrix * a_normal;

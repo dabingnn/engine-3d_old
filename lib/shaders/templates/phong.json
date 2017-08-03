@@ -1,9 +1,18 @@
 {
-  "useTexture": {},
-  "useSkinning": {},
-  "useNormal": {},
-  "useLight": {},
-  "directionalLightSlots": {},
-  "pointLightSlots": {},
-  "spotLightSlots": {}
+  "useSkinning": false,
+  "useNormal": true,
+  "directionalLightSlots": [],
+  "pointLightSlots": [],
+  "spotLightSlots": [],
+  "useUV0": true,
+  "useDiffuse": true,
+  "useDiffuseTexture": false,
+  "useAmbient": false,
+  "useEmissive": false,
+  "useEmissiveTexture": false,
+  "useSpecular": false,
+  "useSpecularTexture": false,
+  "useOpacity": false,
+  "useOpacityTexture": false,
+  "useAlphaTest": false
 }
