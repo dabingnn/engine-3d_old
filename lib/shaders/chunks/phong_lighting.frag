@@ -1,7 +1,7 @@
 struct LightInfo {
   vec3 diffuse;
   {{#useSpecular}}
-  vec3 specular;
+    vec3 specular;
   {{/useSpecular}}
 };
 
@@ -15,11 +15,11 @@ LightInfo computeDirecionalLighting(vec3 lightDirection, vec3 lightColor, vec3 n
   lightingResult.diffuse = lightColor * ndl;
   
   {{#useSpecular}}
-  vec3 dirH = normalize(viewDirection + lightDir);
-  ndh = max(0.0, dot(normal, dirH));
-  ndh = (ndl == 0.0) ? 0.0: ndh;
-  ndh = pow(ndh, max(1.0, glossiness));
-  lightingResult.specular = lightColor * ndh;
+    vec3 dirH = normalize(viewDirection + lightDir);
+    ndh = max(0.0, dot(normal, dirH));
+    ndh = (ndl == 0.0) ? 0.0: ndh;
+    ndh = pow(ndh, max(1.0, glossiness));
+    lightingResult.specular = lightColor * ndh;
   {{/useSpecular}}
 
   return lightingResult;
@@ -39,11 +39,11 @@ LightInfo computePointLighting(vec3 lightPosition, vec3 lightColor, float lightR
   lightingResult.diffuse = lightColor * ndl * attenuation;
 
   {{#useSpecular}}
-  vec3 dirH = normalize(viewDirection + lightDir);
-  ndh = max(0.0, dot(normal, dirH));
-  ndh = (ndl == 0.0) ? 0.0: ndh;
-  ndh = pow(ndh, max(1.0, glossiness));
-  lightingResult.specular = lightColor * ndh * attenuation;
+    vec3 dirH = normalize(viewDirection + lightDir);
+    ndh = max(0.0, dot(normal, dirH));
+    ndh = (ndl == 0.0) ? 0.0: ndh;
+    ndh = pow(ndh, max(1.0, glossiness));
+    lightingResult.specular = lightColor * ndh * attenuation;
   {{/useSpecular}}
 
   return lightingResult;
@@ -69,11 +69,11 @@ LightInfo computeSpotLighting(vec3 lightPosition, vec3 lightDirection, vec3 ligh
   lightingResult.diffuse = lightColor * ndl * attenuation * cosConeAngle;
 
   {{#useSpecular}}
-  vec3 dirH = normalize(viewDirection + lightDir);
-  ndh = max(0.0, dot(normal, dirH));
-  ndh = (ndl == 0.0) ? 0.0: ndh;
-  ndh = pow(ndh, max(1.0, glossiness));
-  lightingResult.specular = lightColor * ndh * attenuation * cosConeAngle;
+    vec3 dirH = normalize(viewDirection + lightDir);
+    ndh = max(0.0, dot(normal, dirH));
+    ndh = (ndl == 0.0) ? 0.0: ndh;
+    ndh = pow(ndh, max(1.0, glossiness));
+    lightingResult.specular = lightColor * ndh * attenuation * cosConeAngle;
   {{/useSpecular}}
 
   return lightingResult;
@@ -102,14 +102,14 @@ LightInfo getPhongLighting(vec3 normal, vec3 positionW, vec3 viewDirection, floa
   LightInfo result;
   result.diffuse = vec3(0, 0, 0);
   {{#useSpecular}}
-  result.specular = vec3(0, 0, 0);
+    result.specular = vec3(0, 0, 0);
   {{/useSpecular}}
   LightInfo dirLighting;
   {{#directionalLightSlots}}
     dirLighting = computeDirecionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,normal, viewDirection, glossiness);
     result.diffuse += dirLighting.diffuse;
     {{#useSpecular}}
-    result.specular += dirLighting.specular;
+      result.specular += dirLighting.specular;
     {{/useSpecular}}
   {{/directionalLightSlots}}
 
@@ -119,7 +119,7 @@ LightInfo getPhongLighting(vec3 normal, vec3 positionW, vec3 viewDirection, floa
                                          normal, positionW, viewDirection, glossiness);
     result.diffuse += pointLighting.diffuse;
     {{#useSpecular}}
-    result.specular += pointLighting.specular;
+      result.specular += pointLighting.specular;
     {{/useSpecular}}
   {{/pointLightSlots}}
 
@@ -129,7 +129,7 @@ LightInfo getPhongLighting(vec3 normal, vec3 positionW, vec3 viewDirection, floa
                     spot_light{{id}}_range, spot_light{{id}}_spot,normal, positionW, viewDirection, glossiness);
     result.diffuse += spotLighting.diffuse;
     {{#useSpecular}}
-    result.specular += spotLighting.specular;
+      result.specular += spotLighting.specular;
     {{/useSpecular}}
   {{/spotLightSlots}}
   return result;
