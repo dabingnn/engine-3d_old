@@ -8,12 +8,10 @@
   "useDiffuse": true,
   "useDiffuseTexture": false,
   "useAmbient": false,
-  "useAmbientTexture": false,
   "useEmissive": false,
   "useEmissiveTexture": false,
   "useSpecular": false,
   "useSpecularTexture": false,
-  "useGlossinessTexture": false,
   "useOpacity": false,
   "useOpacityTexture": false,
   "useAlphaTest": false
