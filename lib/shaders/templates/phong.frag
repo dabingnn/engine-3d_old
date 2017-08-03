@@ -25,9 +25,7 @@ struct phongMaterial
   {{/useDiffuseTexture}}
 {{/useDiffuse}}
 
-{{#useAmbient}}
-  uniform vec3 sceneAmbient;
-{{/useAmbient}}
+uniform vec3 sceneAmbient;
 
 {{#useEmissive}}
   uniform vec3 emissiveColor;
@@ -127,10 +125,7 @@ void main () {
     if(mtl.opacity < alphaTestThreshold) discard;
   {{/useAlphaTest}}
   phongLighting = getPhongLighting(normal_w, pos_w, viewDirection, mtl.glossiness);
-  
-  {{#useAmbient}}
-    phongLighting.diffuse += sceneAmbient;
-  {{/useAmbient}}
+  phongLighting.diffuse += sceneAmbient;
 
   gl_FragColor = composePhongShading(phongLighting, mtl);
 }
