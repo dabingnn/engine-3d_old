@@ -21,6 +21,8 @@ struct phongMaterial
 {{#useDiffuse}}
   uniform vec3 diffuseColor;
   {{#useDiffuseTexture}}
+    uniform vec2 diffuseTiling;
+    uniform vec2 diffuseOffset;
     uniform sampler2D diffuseTexture;
   {{/useDiffuseTexture}}
 {{/useDiffuse}}
@@ -30,6 +32,8 @@ uniform vec3 sceneAmbient;
 {{#useEmissive}}
   uniform vec3 emissiveColor;
   {{#useEmissiveTexture}}
+    uniform vec2 emissiveTiling;
+    uniform vec2 emissiveOffset;
     uniform sampler2D emissiveTexture;
   {{/useEmissiveTexture}}
 {{/useEmissive}}
@@ -38,6 +42,8 @@ uniform vec3 sceneAmbient;
   uniform vec3 specularColor;
   uniform float glossiness;
   {{#useSpecularTexture}}
+    uniform vec2 specularTiling;
+    uniform vec2 specularOffset;
     uniform sampler2D specularTexture;
   {{/useSpecularTexture}}
 {{/useSpecular}}
@@ -45,6 +51,8 @@ uniform vec3 sceneAmbient;
 {{#useOpacity}}
   uniform float opacity;
   {{#useOpacityTexture}}
+    uniform vec2 opacityTiling;
+    uniform vec2 opacityOffset;
     uniform sampler2D opacityTexture;
   {{/useOpacityTexture}}
 {{/useOpacity}}
@@ -60,18 +68,20 @@ phongMaterial getPhongMaterial() {
   result.specular = vec3(0.0, 0.0, 0.0);
   result.glossiness = 10.0;
   result.opacity = 1.0;
-  
+  vec2 uv;
   {{#useDiffuse}}
     result.diffuse = diffuseColor;
     {{#useDiffuseTexture}}
-      result.diffuse = result.diffuse * texture2D(diffuseTexture, uv0).rgb;
+      uv = uv0 * diffuseTiling + diffuseOffset;
+      result.diffuse = result.diffuse * texture2D(diffuseTexture, uv).rgb;
     {{/useDiffuseTexture}}
   {{/useDiffuse}}
   
   {{#useEmissive}}
     result.emissive = emissiveColor; 
     {{#useEmissiveTexture}}
-      result.emissive = result.emissive * texture2D(emissiveTexture, uv0).rgb;
+      uv = uv0 * emissiveTiling + emissiveOffset;
+      result.emissive = result.emissive * texture2D(emissiveTexture, uv).rgb;
     {{/useEmissiveTexture}}
   {{/useEmissive}}
 
@@ -79,14 +89,16 @@ phongMaterial getPhongMaterial() {
     result.specular = specularColor;
     result.glossiness = glossiness;
     {{#useSpecularTexture}}
-      result.specular = result.specular * texture2D(specularTexture, uv0).rgb;
+      uv = uv0 * specularTiling + specularOffset;
+      result.specular = result.specular * texture2D(specularTexture, uv).rgb;
     {{/useSpecularTexture}}
   {{/useSpecular}}
 
   {{#useOpacity}}
     result.opacity = opacity;
     {{#useOpacityTexture}}
-      result.opacity = result.opacity * texture2D(opacityTexture, uv0).a;
+      uv = uv0 * opacityTiling + opacityOffset;
+      result.opacity = result.opacity * texture2D(opacityTexture, uv).a;
     {{/useOpacityTexture}}
   {{/useOpacity}}
 
