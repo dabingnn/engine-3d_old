@@ -5,10 +5,12 @@ import resl from './lib/resl';
 import utils from './lib/utils';
 import enums from './lib/enums';
 
+// materials
 import ShaderMaterial from './lib/materials/shader-material';
 import StandardMaterial from './lib/materials/standard-material';
 import PhongMaterial from './lib/materials/phong-material';
 
+// renderer
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
 import Skin from './lib/assets/skin';
@@ -16,8 +18,12 @@ import Material from './lib/assets/material';
 
 import SkinningModel from './lib/renderer/skinning-model';
 
+// components
+import ScriptComponent from './lib/framework/script-component';
+
 // deps
 import { Node } from 'scene-graph';
+import { Entity, Component, System } from 'ecs.js';
 import * as math from 'vmath';
 import * as primitives from 'primitives.js';
 import renderer from 'renderer.js';
@@ -28,6 +34,12 @@ let cc = {
   App,
   Orbit,
   Node,
+  Entity,
+  System,
+  Component,
+
+  // components
+  ScriptComponent,
 
   // materials
   ShaderMaterial,

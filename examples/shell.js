@@ -59,10 +59,10 @@
       // init app
       let app = new App(canvas);
       app.resize();
-      app.onTick = function () {
+      app.on('tick', () => {
         window.stats.tick();
         orbit.tick(app.deltaTime);
-      };
+      });
       window.app = app;
 
       // init example modules

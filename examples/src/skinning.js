@@ -14,6 +14,31 @@
 
   let src = '../node_modules/assets-3d';
 
+  class AnimTicker extends cc.ScriptComponent {
+    constructor() {
+      super();
+
+      this._clip = null;
+      this._time = 0.0;
+      this._skeleton = null;
+    }
+
+    update() {
+      let clip = this._clip;
+      if (clip) {
+        clip.sample(this._skeleton, this._time);
+        let dt = this._engine.deltaTime;
+
+        this._time += dt;
+        this._time %= clip._length;
+      }
+    }
+  }
+  app.registerClass('AnimTicker', AnimTicker);
+
+  let ent = app.createEntity();
+  let animTicker = ent.addComp('AnimTicker');
+
   resl({
     manifest: {
       gltf: {
@@ -91,16 +116,19 @@
 
         // load animations
         cc.utils.loadAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
-          // let clip = animClips[15];
-          let clip = animClips[0];
-          let t = 0;
+          animTicker._clip = animClips[0];
+          animTicker._skeleton = skeleton;
 
-          setInterval(() => {
-            t += 0.01;
-            t %= clip._length;
+          // // let clip = animClips[15];
+          // let clip = animClips[0];
+          // let t = 0;
 
-            clip.sample(skeleton, t);
-          }, 10);
+          // setInterval(() => {
+          //   t += 0.01;
+          //   t %= clip._length;
+
+          //   clip.sample(skeleton, t);
+          // }, 10);
         });
       });
     }
