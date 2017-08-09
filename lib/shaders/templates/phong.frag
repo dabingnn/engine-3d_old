@@ -57,6 +57,21 @@ uniform vec3 sceneAmbient;
   {{/useOpacityTexture}}
 {{/useOpacity}}
 
+{{#useNormalMap}}
+  varying vec3 tangent_w;
+  varying vec3 bitangent_w;
+  uniform vec2 normalMapTiling;
+  uniform vec2 normalMapOffset;
+  uniform sampler2D normalTexture;
+  uniform float normalScale;  //this is not used yet
+  vec3 getNormal() {
+    vec2 uv = uv0 * normalMapTiling + normalMapOffset;
+    vec3 normal = texture2D(normalTexture, uv).rgb;
+    mat3 TBN = mat3(normalize(tangent_w), normalize(bitangent_w), normalize(normal_w));
+    return TBN * normal;
+  }
+{{/useNormalMap}}
+
 {{#useAlphaTest}}
   uniform float alphaTestThreshold;
 {{/useAlphaTest}}
@@ -136,7 +151,11 @@ void main () {
   {{#useAlphaTest}}
     if(mtl.opacity < alphaTestThreshold) discard;
   {{/useAlphaTest}}
-  phongLighting = getPhongLighting(normal_w, pos_w, viewDirection, mtl.glossiness);
+  vec3 normal = normal_w;
+  {{#useNormalMap}}
+  normal = getNormal();
+  {{/useNormalMap}}
+  phongLighting = getPhongLighting(normal, pos_w, viewDirection, mtl.glossiness);
   phongLighting.diffuse += sceneAmbient;
 
   gl_FragColor = composePhongShading(phongLighting, mtl);

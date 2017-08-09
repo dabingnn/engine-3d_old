@@ -12,6 +12,7 @@
   "useEmissiveTexture": false,
   "useSpecular": false,
   "useSpecularTexture": false,
+  "useNormalMap": false,
   "useOpacity": false,
   "useOpacityTexture": false,
   "useAlphaTest": false
