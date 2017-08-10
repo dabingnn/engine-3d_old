@@ -39,36 +39,59 @@
   let ent = app.createEntity();
   let animTicker = ent.addComp('AnimTicker');
 
-  resl({
-    manifest: {
-      gltf: {
-        type: 'text',
-        parser: JSON.parse,
-        // src: `${src}/models/Zed/Zed_cc6b438d631553f468aac60d3bd4d450.gltf`
-        src: `${src}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.gltf`
-      },
-      bin: {
-        type: 'binary',
-        // src: `${src}/models/Zed/Zed_cc6b438d631553f468aac60d3bd4d450.bin`
-        src: `${src}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.bin`
-      },
-      image: {
-        type: 'image',
-        // src: `${src}/models/Zed/Zed_base_TX_CM.png`
-        src: `${src}/models/Paladin/Paladin_diffuse.png`
-      },
-      animGltf: {
-        type: 'text',
-        parser: JSON.parse,
-        // src: `${src}/anims/Zed_cc6b438d631553f468aac60d3bd4d450.gltf`
-        src: `${src}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.gltf`
-      },
-      animBin: {
-        type: 'binary',
-        // src: `${src}/anims/Zed_cc6b438d631553f468aac60d3bd4d450.bin`
-        src: `${src}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.bin`
-      },
+  let paladin = {
+    gltf: {
+      type: 'text',
+      parser: JSON.parse,
+      src: `${src}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.gltf`
     },
+    bin: {
+      type: 'binary',
+      src: `${src}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.bin`
+    },
+    image: {
+      type: 'image',
+      src: `${src}/models/Paladin/Paladin_diffuse.png`
+    },
+    animGltf: {
+      type: 'text',
+      parser: JSON.parse,
+      src: `${src}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.gltf`
+    },
+    animBin: {
+      type: 'binary',
+      src: `${src}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.bin`
+    },
+  };
+
+  let zed = {
+    gltf: {
+      type: 'text',
+      parser: JSON.parse,
+      src: `${src}/models/Zed/Zed_cc6b438d631553f468aac60d3bd4d450.gltf`
+    },
+    bin: {
+      type: 'binary',
+      src: `${src}/models/Zed/Zed_cc6b438d631553f468aac60d3bd4d450.bin`
+    },
+    image: {
+      type: 'image',
+      src: `${src}/models/Zed/Zed_base_TX_CM.png`
+    },
+    animGltf: {
+      type: 'text',
+      parser: JSON.parse,
+      src: `${src}/anims/Zed_cc6b438d631553f468aac60d3bd4d450.gltf`
+    },
+    animBin: {
+      type: 'binary',
+      src: `${src}/anims/Zed_cc6b438d631553f468aac60d3bd4d450.bin`
+    },
+  };
+
+  resl({
+    manifest: paladin,
+
     onDone (assets) {
       cc.utils.loadSkin(app, assets.gltf, assets.bin, (err, info) => {
         let skeleton = info.skeleton.clone();
@@ -89,8 +112,8 @@
 
             // set mesh
             let mesh = node.mesh;
-            for (let i = 0; i < mesh.meshCount; ++i) {
-              skinningModel.addMesh(mesh.getMesh(i));
+            for (let i = 0; i < mesh.subMeshCount; ++i) {
+              skinningModel.addMesh(mesh.getSubMesh(i));
             }
 
             // set skin
