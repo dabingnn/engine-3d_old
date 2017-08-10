@@ -4,34 +4,15 @@
 
   const resl = cc.resl;
   const gfx = cc.gfx;
-  const { Node, PhongMaterial } = cc;
-  const { Scene, Model, Light } = cc.renderer;
+  const { PhongMaterial } = cc;
   const { vec3, quat, color3, color4 } = cc.math;
 
-  // create material
-  let material = new PhongMaterial({
-    color: color4.new(1.0, 1.0, 1.0, 1.0),
-  });
-  material.blendType = cc.BLEND_NONE;
-  // material.diffuseColor = cc.BLEND_NONE;
-  material.useDiffuseTexture = true;
-  material.useEmissive = true;
-  material.useEmissiveTexture = true;
-  material.useSpecular = true;
-  material.useSpecularTexture = true;
-
-  // scene
-  let model = new Model();
-  let scene = new Scene();
-
   //
-  let light = new Light();
-  color3.set(light.color, 1, 1, 1);
-  let node = new Node(`light0`);
-  quat.fromEuler(node.lrot, 45, 135, 0);
-  light.setNode(node);
-  scene.addLight(light);
+  let light0 = app.createEntity('light0');
+  quat.fromEuler(light0.lrot, 45, 135, 0);
 
+  let lightComp0 = light0.addComp('Light');
+  lightComp0.setColor(1, 1, 1);
 
   let Cerberus = {
     gltf: {
@@ -79,9 +60,17 @@
 
     onDone (assets) {
       cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
-        for (let i = 0; i < asset.subMeshCount; ++i) {
-          model.addMesh(asset.getSubMesh(i));
-        }
+        // create material
+        let material = new PhongMaterial({
+          color: color4.new(1.0, 1.0, 1.0, 1.0),
+        });
+        material.blendType = cc.BLEND_NONE;
+        // material.diffuseColor = cc.BLEND_NONE;
+        material.useDiffuseTexture = true;
+        material.useEmissive = true;
+        material.useEmissiveTexture = true;
+        material.useSpecular = true;
+        material.useSpecularTexture = true;
 
         let image = assets.image_A;
         let diffuseTexture = new gfx.Texture2D(app.device, {
@@ -118,17 +107,16 @@
         material.specularTexture = specularTexture;
         material.specularColor = color3.new(1,1,1);
 
-        model.addEffect(material._effect);
+        // create entity
+        let ent = app.createEntity('model');
+        quat.fromEuler(ent.lrot, 0, 0, 0);
+        vec3.set(ent.lscale, 0.1, 0.1, 0.1);
 
-        let node = new Node('Model');
-        quat.fromEuler(node.lrot, 0, 0, 0);
-        vec3.set(node.lscale, 0.1, 0.1, 0.1);
-        model.setNode(node);
-
-        scene.addModel(model);
+        // create component
+        let modelComp = ent.addComp('Model');
+        modelComp.mesh = asset;
+        modelComp.material = material;
       });
     }
   });
-
-  return scene;
 })();

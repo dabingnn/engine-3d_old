@@ -4,40 +4,10 @@
 
   const resl = cc.resl;
   const gfx = cc.gfx;
-  const { StandardMaterial, SkinningModel } = cc;
-  const { Scene } = cc.renderer;
+  const { StandardMaterial } = cc;
   const { color4 } = cc.math;
 
-  // scene
-  let scene = new Scene();
-  let skinningModels = [];
-
   let src = '../node_modules/assets-3d';
-
-  class AnimTicker extends cc.ScriptComponent {
-    constructor() {
-      super();
-
-      this._clip = null;
-      this._time = 0.0;
-      this._skeleton = null;
-    }
-
-    update() {
-      let clip = this._clip;
-      if (clip) {
-        clip.sample(this._skeleton, this._time);
-        let dt = this._engine.deltaTime;
-
-        this._time += dt;
-        this._time %= clip._length;
-      }
-    }
-  }
-  app.registerClass('AnimTicker', AnimTicker);
-
-  let ent = app.createEntity();
-  let animTicker = ent.addComp('AnimTicker');
 
   let paladin = {
     gltf: {
@@ -93,8 +63,8 @@
     manifest: paladin,
 
     onDone (assets) {
-      cc.utils.loadSkin(app, assets.gltf, assets.bin, (err, info) => {
-        let skeleton = info.skeleton.clone();
+      cc.utils.loadSkin(app, assets.gltf, assets.bin, (err, root) => {
+        // create material
         let mainTexture = new gfx.Texture2D(app.device, {
           width: assets.image.width,
           height: assets.image.height,
@@ -103,59 +73,30 @@
           mipmap: true,
           images: [assets.image]
         });
+        let material = new StandardMaterial({
+          mainTexture,
+          color: color4.new(1.0, 1.0, 1.0, 0.6),
+        });
+        material.useColor = true;
+        material.useTexture = true;
+        material.blendType = cc.BLEND_NONE;
 
-        for (let i = 0; i < info.nodes.length; ++i) {
-          let node = info.nodes[i];
-          if (node.mesh && node.skin) {
-            let skinningModel = new SkinningModel();
-            skinningModel.setNode(node);
-
-            // set mesh
-            let mesh = node.mesh;
-            for (let i = 0; i < mesh.subMeshCount; ++i) {
-              skinningModel.addMesh(mesh.getSubMesh(i));
-            }
-
-            // set skin
-            let skin = node.skin;
-            skinningModel.setSkin(skin);
-            skinningModel.setSkeleton(skeleton);
-            skinningModel.setJointsTexture(cc.utils.createJointsTexture(app._device, skin));
-
-            // set material
-            let material = new StandardMaterial({
-              mainTexture,
-              color: color4.new(1.0, 1.0, 1.0, 0.6),
-            });
-            material.useColor = true;
-            material.useTexture = true;
-            material.blendType = cc.BLEND_NONE;
-            skinningModel.addEffect(material._effect);
-
-            skinningModels.push(skinningModel);
-            scene.addModel(skinningModel);
-          }
+        // assign material to skinning model
+        let comps = root.getCompsInChildren('SkinningModel');
+        for (let i = 0; i < comps.length; ++i) {
+          comps[i].material = material;
         }
 
         // load animations
         cc.utils.loadAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
-          animTicker._clip = animClips[0];
-          animTicker._skeleton = skeleton;
+          let animComp = root.getComp('Animation');
+          for (let i = 0; i < animClips.length; ++i) {
+            animComp.addClip(animClips[i]);
+          }
 
-          // // let clip = animClips[15];
-          // let clip = animClips[0];
-          // let t = 0;
-
-          // setInterval(() => {
-          //   t += 0.01;
-          //   t %= clip._length;
-
-          //   clip.sample(skeleton, t);
-          // }, 10);
+          animComp.play('85_03');
         });
       });
     }
   });
-
-  return scene;
 })();
