@@ -24,6 +24,8 @@ import SkinningModel from './lib/renderer/skinning-model';
 // components
 import ScriptComponent from './lib/framework/script-component';
 import ModelComponent from './lib/framework/model-component';
+import SkinningModelComponent from './lib/framework/skinning-model-component';
+import AnimationComponent from './lib/framework/animation-component';
 
 // deps
 import { Node } from 'scene-graph';
@@ -34,7 +36,7 @@ import renderer from 'renderer.js';
 import gfx from 'gfx.js';
 
 let cc = {
-  // classes
+  // engine
   App,
   Orbit,
   Level,
@@ -42,14 +44,8 @@ let cc = {
   System,
   Component,
 
-  // components
-  ScriptComponent,
-  ModelComponent,
-
-  // materials
-  ShaderMaterial,
-  StandardMaterial,
-  PhongMaterial,
+  // rendering
+  SkinningModel,
 
   // assets
   Asset,
@@ -58,17 +54,25 @@ let cc = {
   Material,
   LevelInfo,
 
-  // renderer
-  SkinningModel,
+  // materials
+  ShaderMaterial,
+  StandardMaterial,
+  PhongMaterial,
+
+  // components
+  ScriptComponent,
+  ModelComponent,
+  SkinningModelComponent,
+  AnimationComponent,
 
   // modules
-  utils,
   math,
   primitives,
   renderer,
   gfx,
 
   // DELME: temporary
+  utils,
   resl,
 };
 Object.assign(cc, enums);
