@@ -79,8 +79,8 @@
 
     onDone (assets) {
       cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
-        for (let i = 0; i < asset.meshCount; ++i) {
-          model.addMesh(asset.getMesh(i));
+        for (let i = 0; i < asset.subMeshCount; ++i) {
+          model.addMesh(asset.getSubMesh(i));
         }
 
         let image = assets.image_A;

@@ -17,10 +17,6 @@
   material.useSkinning = false;
   material.blendType = cc.BLEND_NONE;
 
-  // scene
-  let model = new Model();
-  let scene = new Scene();
-
   let Cerberus = {
     gltf: {
       type: 'text',
@@ -76,31 +72,30 @@
 
     onDone (assets) {
       cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
-        for (let i = 0; i < asset.meshCount; ++i) {
-          model.addMesh(asset.getMesh(i));
-        }
+        // TODO:
+        // for (let i = 0; i < asset.subMeshCount; ++i) {
+        //   model.addMesh(asset.getSubMesh(i));
+        // }
 
-        let image = assets.image_A;
-        let texture = new gfx.Texture2D(app.device, {
-          width: image.width,
-          height: image.height,
-          wrapS: gfx.WRAP_REPEAT,
-          wrapT: gfx.WRAP_REPEAT,
-          mipmap: true,
-          images: [image]
-        });
-        material.mainTexture = texture;
-        model.addEffect(material._effect);
+        // let image = assets.image_A;
+        // let texture = new gfx.Texture2D(app.device, {
+        //   width: image.width,
+        //   height: image.height,
+        //   wrapS: gfx.WRAP_REPEAT,
+        //   wrapT: gfx.WRAP_REPEAT,
+        //   mipmap: true,
+        //   images: [image]
+        // });
+        // material.mainTexture = texture;
+        // model.addEffect(material._effect);
 
-        let node = new Node('Cerberus');
-        quat.fromEuler(node.lrot, 0, 0, 0);
-        vec3.set(node.lscale, 10, 10, 10);
-        model.setNode(node);
+        // let node = new Node('Cerberus');
+        // quat.fromEuler(node.lrot, 0, 0, 0);
+        // vec3.set(node.lscale, 10, 10, 10);
+        // model.setNode(node);
 
-        scene.addModel(model);
+        // scene.addModel(model);
       });
     }
   });
-
-  return scene;
 })();

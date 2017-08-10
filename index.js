@@ -1,6 +1,7 @@
 // intenral
 import App from './lib/app';
 import Orbit from './lib/orbit';
+import Level from './lib/level';
 import resl from './lib/resl';
 import utils from './lib/utils';
 import enums from './lib/enums';
@@ -10,20 +11,23 @@ import ShaderMaterial from './lib/materials/shader-material';
 import StandardMaterial from './lib/materials/standard-material';
 import PhongMaterial from './lib/materials/phong-material';
 
-// renderer
+// assets
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
 import Skin from './lib/assets/skin';
 import Material from './lib/assets/material';
+import LevelInfo from './lib/assets/level-info';
 
+// renderer
 import SkinningModel from './lib/renderer/skinning-model';
 
 // components
 import ScriptComponent from './lib/framework/script-component';
+import ModelComponent from './lib/framework/model-component';
 
 // deps
 import { Node } from 'scene-graph';
-import { Entity, Component, System } from 'ecs.js';
+import { Component, System } from 'ecs.js';
 import * as math from 'vmath';
 import * as primitives from 'primitives.js';
 import renderer from 'renderer.js';
@@ -33,13 +37,14 @@ let cc = {
   // classes
   App,
   Orbit,
+  Level,
   Node,
-  Entity,
   System,
   Component,
 
   // components
   ScriptComponent,
+  ModelComponent,
 
   // materials
   ShaderMaterial,
@@ -51,6 +56,7 @@ let cc = {
   Mesh,
   Skin,
   Material,
+  LevelInfo,
 
   // renderer
   SkinningModel,
