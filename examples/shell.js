@@ -1,7 +1,7 @@
 'use strict';
 
 (() => {
-  const { App, Orbit, Node } = window.cc;
+  const { App, Orbit, Node, Level } = window.cc;
   const { vec3 } = window.cc.math;
   const { Camera } = window.cc.renderer;
   const { createGrid } = window.cc.utils;
@@ -59,14 +59,18 @@
       // init app
       let app = new App(canvas);
       app.resize();
-      app.onTick = function () {
+      app.on('tick', () => {
         window.stats.tick();
         orbit.tick(app.deltaTime);
-      };
+      });
       window.app = app;
 
       // init example modules
-      let scene = eval(`${result}\n//# sourceURL=${url}`);
+      let level = new Level();
+      app.setLevel(level);
+
+      eval(`${result}\n//# sourceURL=${url}`);
+
       orbit._input = app._input;
 
       // add camera
@@ -76,10 +80,10 @@
 
       // add grid
       let grid = createGrid(app.device, new Node('grid'), 100, 100, 100 );
-      scene.addModel(grid);
+      level._scene.addModel(grid);
 
       //
-      app.run(scene);
+      app.run();
 
     }).catch(err => {
       console.error(err);

@@ -347,6 +347,12 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
+ecs.js@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ecs.js/-/ecs.js-1.1.1.tgz#c42ff537e66dba926fd38d467bde57a5e840aca7"
+  dependencies:
+    memop "^1.4.5"
+
 ecstatic@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/ecstatic/-/ecstatic-1.4.1.tgz#32cb7b6fa2e290d58668674d115e8f0c3d567d6a"
@@ -396,9 +402,9 @@ estree-walker@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.2.1.tgz#bdafe8095383d8414d5dc2ecf4c9173b6db9412e"
 
-event-sys@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/event-sys/-/event-sys-1.0.0.tgz#e98819837901c23825dbbb20f2fdc0a8e5c95b0e"
+event-sys@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/event-sys/-/event-sys-1.0.3.tgz#be2e64916602878a706fbec6a8e7a2e8528b0dda"
 
 eventemitter3@1.x.x:
   version "1.2.0"
@@ -1567,9 +1573,9 @@ safe-buffer@^5.0.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-scene-graph@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/scene-graph/-/scene-graph-1.1.2.tgz#5e3c53736466ed4fdb23fbcff15baf2a25f47f13"
+scene-graph@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/scene-graph/-/scene-graph-1.3.2.tgz#700f410fca559fab71ed37fa0ad3a6d9cfa6185b"
   dependencies:
     vmath "^1.3.1"
 

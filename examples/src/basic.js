@@ -4,13 +4,12 @@
 
   const resl = cc.resl;
   const gfx = cc.gfx;
-  const { Node, StandardMaterial } = cc;
+  const { StandardMaterial } = cc;
   const { vec3, color4, quat, randomRange } = cc.math;
-  const { Scene, Model } = cc.renderer;
   const { box } = cc.primitives;
 
   // create mesh
-  let meshBox = cc.utils.createMesh(app.device, box(1, 1, 1, {
+  let meshBox = cc.utils.createMesh(app, box(1, 1, 1, {
     widthSegments: 1,
     heightSegments: 1,
     lengthSegments: 1,
@@ -47,36 +46,27 @@
     }
   });
 
-  // scene
-  let scene = new Scene();
-
   // models
   for (let i = 0; i < 100; ++i) {
-    let node = new Node(`node_${i}`);
-    vec3.set(node.lpos,
+    let ent = app.createEntity(`node_${i}`);
+    vec3.set(ent.lpos,
       randomRange(-50, 50),
       randomRange(-10, 10),
       randomRange(-50, 50)
     );
-    quat.fromEuler(node.lrot,
+    quat.fromEuler(ent.lrot,
       randomRange(0, 360),
       randomRange(0, 360),
       randomRange(0, 360)
     );
-    vec3.set(node.lscale,
+    vec3.set(ent.lscale,
       randomRange(1, 5),
       randomRange(1, 5),
       randomRange(1, 5)
     );
 
-    let model = new Model();
-    model.addMesh(meshBox);
-
-    model.addEffect(material._effect);
-    model.setNode(node);
-
-    scene.addModel(model);
+    let modelComp = ent.addComp('Model');
+    modelComp.mesh = meshBox;
+    modelComp.material = material;
   }
-
-  return scene;
 })();

@@ -4,9 +4,8 @@
 
   const resl = cc.resl;
   const gfx = cc.gfx;
-  const { Node, StandardMaterial } = cc;
-  const { Scene, Model } = cc.renderer;
-  const { vec3, quat, color4 } = cc.math;
+  const { StandardMaterial } = cc;
+  const { quat, vec3, color4 } = cc.math;
 
   // create material
   let material = new StandardMaterial({
@@ -16,10 +15,6 @@
   material.useTexture = true;
   material.useSkinning = false;
   material.blendType = cc.BLEND_NONE;
-
-  // scene
-  let model = new Model();
-  let scene = new Scene();
 
   let Cerberus = {
     gltf: {
@@ -76,9 +71,13 @@
 
     onDone (assets) {
       cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
-        for (let i = 0; i < asset.meshCount; ++i) {
-          model.addMesh(asset.getMesh(i));
-        }
+        let ent = app.createEntity('model');
+        quat.fromEuler(ent.lrot, 0, 0, 0);
+        vec3.set(ent.lscale, 10, 10, 10);
+
+        let modelComp = ent.addComp('Model');
+        modelComp.mesh = asset;
+        modelComp.material = material;
 
         let image = assets.image_A;
         let texture = new gfx.Texture2D(app.device, {
@@ -90,17 +89,7 @@
           images: [image]
         });
         material.mainTexture = texture;
-        model.addEffect(material._effect);
-
-        let node = new Node('Cerberus');
-        quat.fromEuler(node.lrot, 0, 0, 0);
-        vec3.set(node.lscale, 10, 10, 10);
-        model.setNode(node);
-
-        scene.addModel(model);
       });
     }
   });
-
-  return scene;
 })();
