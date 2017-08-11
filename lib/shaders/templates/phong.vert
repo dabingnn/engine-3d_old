@@ -14,13 +14,6 @@ uniform mat3 normalMatrix;
   varying vec3 normal_w;
 {{/useNormal}}
 
-{{#useNormalMap}}
-  attribute vec3 a_tangent;
-  attribute vec3 a_bitangent;
-  varying vec3 tangent_w;
-  varying vec3 bitangent_w;
-{{/useNormalMap}}
-
 varying vec3 pos_w;
 
 {{#useSkinning}}
@@ -45,13 +38,6 @@ void main () {
     normal_w = normalMatrix * a_normal;
     normal_w = normalize(normal_w);
   {{/useNormal}}
-
-  {{#useNormalMap}}
-    tangent_w = normalMatrix * a_tangent;
-    bitangent_w = normalMatrix * a_bitangent;
-    tangent_w = normalize(tangent_w);
-    bitangent_w = normalize(bitangent_w);
-  {{/useNormalMap}}
 
   gl_Position = pos;
 }
