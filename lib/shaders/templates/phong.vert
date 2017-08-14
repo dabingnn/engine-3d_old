@@ -29,7 +29,7 @@ void main () {
 
   pos_w = (model * pos).xyz;
   pos = viewProj * model * pos;
-  
+
   {{#useUV0}}
     uv0 = a_uv0;
   {{/useUV0}}
