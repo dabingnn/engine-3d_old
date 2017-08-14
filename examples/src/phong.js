@@ -10,32 +10,28 @@
   const resl = cc.resl;
   const gfx = cc.gfx;
   const { Node, PhongMaterial } = cc;
-  const { vec3, color3, color4, quat, randomRange } = cc.math;
+  const { vec2, vec3, color3, color4, quat, randomRange } = cc.math;
   const { Scene, Model, Light } = cc.renderer;
   const { box } = cc.primitives;
 
   // create mesh
-  let meshBox = cc.utils.createMesh(app.device, box(1, 1, 1, {
+  let meshBox = cc.utils.createMesh(app, box(1, 1, 1, {
     widthSegments: 1,
     heightSegments: 1,
     lengthSegments: 1,
   }));
 
-  // create material
-  let material = new PhongMaterial({
-    // mainTexture: ???,
-    color: color4.new(1.0, 1.0, 1.0, 0.6),
+  // create groundmaterial
+  let groundmaterial = new PhongMaterial({
   });
-  material.blendType = cc.BLEND_NONE;
-  material.useColor = true;
-  material.useTexture = true;
-  material.useSkinning = false;
+  groundmaterial.blendType = cc.BLEND_NONE;
+  let assetsSrc = '../node_modules/assets-3d';
 
   resl({
     manifest: {
       image: {
         type: 'image',
-        src: '../node_modules/assets-3d/textures/uv_checker_02.jpg'
+        src: `${assetsSrc}/textures/uv_checker_02.jpg`
       },
     },
     onDone(assets) {
@@ -43,12 +39,14 @@
       let texture = new gfx.Texture2D(app.device, {
         width: image.width,
         height: image.height,
-        wrapS: gfx.WRAP_CLAMP,
-        wrapT: gfx.WRAP_CLAMP,
+        wrapS: gfx.WRAP_REPEAT,
+        wrapT: gfx.WRAP_REPEAT,
         mipmap: true,
         images: [image]
       });
-      material.mainTexture = texture;
+      groundmaterial.useDiffuseTexture = true;
+      groundmaterial.diffuseTexture = texture;
+      groundmaterial.diffuseUVTiling = vec2.new(10, 10);
     }
   });
 
@@ -57,94 +55,104 @@
 
   // light
   for (let index = 0; index < 1; ++index) {
-    let light = new Light();
-    light.color = color3.new(randomRange(0, 0.5), randomRange(0, 0.5), randomRange(0, 0.5));
-    let node = new Node(`light0`);
-    quat.fromEuler(node.lrot,
-      randomRange(0, -90),
+    let entity = app.createEntity(`light_${index}`);
+    let light = entity.addComp('Light');
+    quat.fromEuler(entity.lrot,
+      randomRange(-10, -70),
       randomRange(0, 0),
       randomRange(0, 0)
     );
-    light.setNode(node);
-    scene.addLight(light);
-  }
-
-  for (let index = 0; index < 0; ++index) {
-    let light = new Light();
-    light.type = cc.renderer.LIGHT_POINT;
-    light.color = color3.new(randomRange(0, 0.5), randomRange(0, 0.5), randomRange(0, 0.5));
-    light.range = 50;
-    let node = new Node(`ptlight0`);
-    vec3.set(node.lpos,
-      randomRange(-50, 50),
-      randomRange(-10, 10),
-      randomRange(-50, 50)
-    );
-    light.setNode(node);
-    scene.addLight(light);
-  }
-
-  for (let index = 0; index < 0; ++index) {
-    let light = new Light();
-    light.type = cc.renderer.LIGHT_SPOT;
-    light.color = color3.new(randomRange(1, 1), randomRange(1, 1), randomRange(1, 1));
-    light.range = 40;
-    light.spotExp = 10;
-    let node = new Node(`spotlight1`);
-    vec3.set(node.lpos,
-      randomRange(-0, 0),
-      randomRange(10, 10),
-      randomRange(-0, 0)
-    );
-    quat.fromEuler(node.lrot,
-      randomRange(-90, -90),
-      randomRange(0, 0),
-      randomRange(0, 0)
-    );
-    light.setNode(node);
-    scene.addLight(light);
+    light.setColor(randomRange(0.5, 0.5), randomRange(0.5, 0.5), randomRange(0.5, 0.5));
   }
 
   // big plane
+  let plane = null;
   {
-    let node = new Node(`node_plane`);
-    vec3.set(node.lpos, 0, -10, 0);
-    vec3.set(node.lscale, 100, 0.1, 100);
-    let model = new Model();
-    model.addMesh(meshBox);
-
-    model.addEffect(material._effect);
-    model.setNode(node);
-
-    scene.addModel(model);
+    let entity = app.createEntity(`plane`);
+    let com = entity.addComp('Model');
+    plane = com;
+    vec3.set(entity.lpos, 0, -10, 0);
+    vec3.set(entity.lscale, 100, 0.1, 100);
+    com.mesh = meshBox;
+    com.material = groundmaterial;
   }
-  // models
-  for (let i = 0; i < 100; ++i) {
-    let node = new Node(`node_${i}`);
-    vec3.set(node.lpos,
-      randomRange(-50, 50),
-      randomRange(-10, 10),
-      randomRange(-50, 50)
-    );
-    quat.fromEuler(node.lrot,
-      randomRange(0, 360),
-      randomRange(0, 360),
-      randomRange(0, 360)
-    );
-    vec3.set(node.lscale,
-      randomRange(1, 5),
-      randomRange(1, 5),
-      randomRange(1, 5)
-    );
 
-    let model = new Model();
-    model.addMesh(meshBox);
+  let paladin = {
+    gltf: {
+      type: 'text',
+      parser: JSON.parse,
+      src: `${assetsSrc}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.gltf`
+    },
+    bin: {
+      type: 'binary',
+      src: `${assetsSrc}/models/Paladin/Paladin_w_Prop_J_Nordstrom_6e101c6123cad4071a9442b6463e7611.bin`
+    },
+    image: {
+      type: 'image',
+      src: `${assetsSrc}/models/Paladin/Paladin_diffuse.png`
+    },
+    specualarMap: {
+      type: 'image',
+      src: `${assetsSrc}/models/Paladin/Paladin_specular.png`
+    },
+    normalMap: {
+      type: 'image',
+      src: `${assetsSrc}/models/Paladin/Paladin_normal.png`
+    },
+  };
 
-    model.addEffect(material._effect);
-    model.setNode(node);
+  resl({
+    manifest: paladin,
 
-    scene.addModel(model);
-  }
+    onDone(assets) {
+      // create material
+      let diffuseMap = new gfx.Texture2D(app.device, {
+        width: assets.image.width,
+        height: assets.image.height,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
+        images: [assets.image]
+      });
+      let specularMap = new gfx.Texture2D(app.device, {
+        width: assets.specualarMap.width,
+        height: assets.specualarMap.height,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
+        images: [assets.specualarMap]
+      });
+      let normalMap = new gfx.Texture2D(app.device, {
+        width: assets.normalMap.width,
+        height: assets.normalMap.height,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
+        images: [assets.normalMap]
+      });
+
+      let mtl = new PhongMaterial({});
+      mtl.blendType = cc.BLEND_NONE;
+      mtl.useDiffuseTexture = true;
+      mtl.useSpecular = true;
+      mtl.useSpecularTexture = true;
+      mtl.useNormalTexture = true;
+      mtl.diffuseTexture = diffuseMap;
+      mtl.specularTexture = specularMap;
+      mtl.glossiness = 30;
+      mtl.normalTexture = normalMap;
+
+      // create mesh
+      cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, meshAsset) => {
+        let ent = app.createEntity('Paladin');
+        vec3.set(ent.lscale, 10, 10, 10);
+        quat.fromEuler(ent.lrot,0,180,0);
+        let modelComp = ent.addComp('Model');
+        modelComp.mesh = meshAsset;
+        modelComp.material = mtl;
+      });
+    }
+  });
 
   return scene;
 })();
