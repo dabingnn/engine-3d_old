@@ -14,7 +14,7 @@ import PhongMaterial from './lib/materials/phong-material';
 // assets
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
-import Skin from './lib/assets/skin';
+import Skinning from './lib/assets/skinning';
 import Material from './lib/assets/material';
 import LevelInfo from './lib/assets/level-info';
 
@@ -50,7 +50,7 @@ let cc = {
   // assets
   Asset,
   Mesh,
-  Skin,
+  Skinning,
   Material,
   LevelInfo,
 
