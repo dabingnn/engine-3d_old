@@ -1,10 +1,19 @@
-// intenral
 import App from './lib/app';
-import Orbit from './lib/orbit';
-import Level from './lib/level';
-import resl from './lib/resl';
 import utils from './lib/utils';
 import enums from './lib/enums';
+
+// misc
+import Orbit from './lib/misc/orbit';
+import resl from './lib/misc/resl';
+
+// framework
+import Level from './lib/framework/level';
+
+// components
+import ScriptComponent from './lib/framework/script-component';
+import ModelComponent from './lib/framework/model-component';
+import SkinningModelComponent from './lib/framework/skinning-model-component';
+import AnimationComponent from './lib/framework/animation-component';
 
 // materials
 import ShaderMaterial from './lib/materials/shader-material';
@@ -21,12 +30,6 @@ import LevelInfo from './lib/assets/level-info';
 // renderer
 import SkinningModel from './lib/renderer/skinning-model';
 
-// components
-import ScriptComponent from './lib/framework/script-component';
-import ModelComponent from './lib/framework/model-component';
-import SkinningModelComponent from './lib/framework/skinning-model-component';
-import AnimationComponent from './lib/framework/animation-component';
-
 // deps
 import { Node } from 'scene-graph';
 import { Component, System } from 'ecs.js';
@@ -36,13 +39,9 @@ import renderer from 'renderer.js';
 import gfx from 'gfx.js';
 
 let cc = {
-  // engine
-  App,
+  // misc
   Orbit,
-  Level,
   Node,
-  System,
-  Component,
 
   // rendering
   SkinningModel,
@@ -58,6 +57,12 @@ let cc = {
   ShaderMaterial,
   StandardMaterial,
   PhongMaterial,
+
+  // framework
+  App,
+  Level,
+  System,
+  Component,
 
   // components
   ScriptComponent,
