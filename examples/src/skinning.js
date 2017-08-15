@@ -63,7 +63,7 @@
     manifest: paladin,
 
     onDone (assets) {
-      cc.utils.loadSkin(app, assets.gltf, assets.bin, (err, root) => {
+      cc.utils.loadSkinning(app, assets.gltf, assets.bin, (err, root) => {
         // create material
         let mainTexture = new gfx.Texture2D(app.device, {
           width: assets.image.width,

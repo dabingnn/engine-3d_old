@@ -9,7 +9,7 @@
 
   //
   let light0 = app.createEntity('light0');
-  quat.fromEuler(light0.lrot, 45, 135, 0);
+  quat.fromEuler(light0.lrot, -45, 135, 0);
 
   let lightComp0 = light0.addComp('Light');
   lightComp0.setColor(1, 1, 1);
@@ -51,6 +51,10 @@
     image_S: {
       type: 'image',
       src: './test-assets/biohazard/spec.jpg'
+    },
+    image_N: {
+      type: 'image',
+      src: './test-assets/biohazard/normal.jpg'
     }
   };
 
@@ -71,6 +75,8 @@
         material.useEmissiveTexture = true;
         material.useSpecular = true;
         material.useSpecularTexture = true;
+        material.useNormal = true;
+        material.useNormalTexture = true;
 
         let image = assets.image_A;
         let diffuseTexture = new gfx.Texture2D(app.device, {
@@ -102,9 +108,20 @@
           images: [image]
         });
 
+        image = assets.image_N;
+        let normalTexture = new gfx.Texture2D(app.device, {
+          width: image.width,
+          height: image.height,
+          wrapS: gfx.WRAP_REPEAT,
+          wrapT: gfx.WRAP_REPEAT,
+          mipmap: true,
+          images: [image]
+        });
+
         material.diffuseTexture = diffuseTexture;
         material.emissiveTexture = emissiveTexture;
         material.specularTexture = specularTexture;
+        material.normalTexture = normalTexture;
         material.specularColor = color3.new(1,1,1);
 
         // create entity
