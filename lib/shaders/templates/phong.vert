@@ -17,14 +17,15 @@ uniform mat3 normalMatrix;
 varying vec3 pos_w;
 
 {{#useSkinning}}
-  {{> chunks.skinning}}
+  {{> skinning.vert}}
 {{/useSkinning}}
 
 void main () {
   vec4 pos = vec4(a_position, 1);
 
   {{#useSkinning}}
-    pos = skinMatrix() * pos;
+    mat4 skinMat = skinMatrix();
+    pos = skinMat * pos;
   {{/useSkinning}}
 
   pos_w = (model * pos).xyz;
@@ -35,7 +36,11 @@ void main () {
   {{/useUV0}}
 
   {{#useNormal}}
-    normal_w = normalMatrix * a_normal;
+    vec4 normal = vec4(a_normal, 0);
+    {{#useSkinning}}
+      normal = skinMat * normal;
+    {{/useSkinning}}
+    normal_w = normalMatrix * normal.xyz;
     normal_w = normalize(normal_w);
   {{/useNormal}}
 

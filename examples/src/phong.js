@@ -99,6 +99,15 @@
       type: 'image',
       src: `${assetsSrc}/models/Paladin/Paladin_normal.png`
     },
+    animGltf: {
+      type: 'text',
+      parser: JSON.parse,
+      src: `${assetsSrc}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.gltf`
+    },
+    animBin: {
+      type: 'binary',
+      src: `${assetsSrc}/anims/Paladin_ctrl_c8c64eecdcc8d43b882f479bf2a936d3.bin`
+    },
   };
 
   resl({
@@ -143,13 +152,23 @@
       mtl.normalTexture = normalMap;
 
       // create mesh
-      cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, meshAsset) => {
-        let ent = app.createEntity('Paladin');
-        vec3.set(ent.lscale, 10, 10, 10);
-        quat.fromEuler(ent.lrot,0,180,0);
-        let modelComp = ent.addComp('Model');
-        modelComp.mesh = meshAsset;
-        modelComp.material = mtl;
+      cc.utils.loadSkin(app, assets.gltf, assets.bin, (err, root) => {
+
+        // assign material to skinning model
+        let comps = root.getCompsInChildren('SkinningModel');
+        for (let i = 0; i < comps.length; ++i) {
+          comps[i].material = mtl;
+        }
+
+        // load animations
+        cc.utils.loadAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
+          let animComp = root.getComp('Animation');
+          for (let i = 0; i < animClips.length; ++i) {
+            animComp.addClip(animClips[i]);
+          }
+
+          animComp.play('85_03');
+        });
       });
     }
   });
