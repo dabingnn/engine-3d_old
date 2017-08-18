@@ -5,9 +5,7 @@ import enums from './lib/enums';
 // misc
 import Orbit from './lib/misc/orbit';
 import resl from './lib/misc/resl';
-
-// framework
-import Level from './lib/framework/level';
+import path from './lib/misc/path';
 
 // components
 import ScriptComponent from './lib/framework/script-component';
@@ -25,19 +23,19 @@ import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
 import Skinning from './lib/assets/skinning';
 import Material from './lib/assets/material';
-import LevelInfo from './lib/assets/level-info';
 
 // renderer
 import SkinningModel from './lib/renderer/skinning-model';
 
 // deps
 import { Node } from 'scene-graph';
-import { Component, System } from 'ecs.js';
+import { Component, System, Level } from 'ecs.js';
 import * as math from 'vmath';
 import * as primitives from 'primitives.js';
 import renderer from 'renderer.js';
 import gfx from 'gfx.js';
 
+//
 let cc = {
   // misc
   Orbit,
@@ -51,7 +49,6 @@ let cc = {
   Mesh,
   Skinning,
   Material,
-  LevelInfo,
 
   // materials
   ShaderMaterial,
@@ -79,6 +76,7 @@ let cc = {
   // DELME: temporary
   utils,
   resl,
+  path,
 };
 Object.assign(cc, enums);
 
