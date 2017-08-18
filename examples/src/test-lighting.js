@@ -63,7 +63,7 @@
     manifest: biohazard,
 
     onDone (assets) {
-      cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
+      cc.utils.parseMesh(app, assets.gltf, assets.bin, (err, asset) => {
         // create material
         let material = new PhongMaterial({
           color: color4.new(1.0, 1.0, 1.0, 1.0),

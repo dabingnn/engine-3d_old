@@ -63,7 +63,7 @@
     manifest: paladin,
 
     onDone (assets) {
-      cc.utils.loadSkinning(app, assets.gltf, assets.bin, (err, root) => {
+      cc.utils.parseSkinning(app, assets.gltf, assets.bin, (err, root) => {
         // create material
         let mainTexture = new gfx.Texture2D(app.device, {
           width: assets.image.width,
@@ -88,7 +88,7 @@
         }
 
         // load animations
-        cc.utils.loadAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
+        cc.utils.parseAnim(app, assets.animGltf, assets.animBin, (err, animClips) => {
           let animComp = root.getComp('Animation');
           for (let i = 0; i < animClips.length; ++i) {
             animComp.addClip(animClips[i]);

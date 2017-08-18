@@ -70,7 +70,7 @@
     // manifest: vikingroom,
 
     onDone (assets) {
-      cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, asset) => {
+      cc.utils.parseMesh(app, assets.gltf, assets.bin, (err, asset) => {
         let ent = app.createEntity('model');
         quat.fromEuler(ent.lrot, 0, 0, 0);
         vec3.set(ent.lscale, 10, 10, 10);

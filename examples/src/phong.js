@@ -143,7 +143,7 @@
       mtl.normalTexture = normalMap;
 
       // create mesh
-      cc.utils.loadMesh(app, assets.gltf, assets.bin, (err, meshAsset) => {
+      cc.utils.parseMesh(app, assets.gltf, assets.bin, (err, meshAsset) => {
         let ent = app.createEntity('Paladin');
         vec3.set(ent.lscale, 10, 10, 10);
         quat.fromEuler(ent.lrot,0,180,0);
