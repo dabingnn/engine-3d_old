@@ -33,15 +33,15 @@
   },
   "homepage": "https://github.com/cocos-creator/engine-3d/issues",
   "dependencies": {
-    "ecs.js": "^1.1.2",
-    "event-sys": "^1.0.3",
+    "ecs.js": "^1.2.0",
+    "event-sys": "^1.0.4",
     "gfx.js": "^1.2.6",
     "input.js": "^1.1.6",
     "memop": "^1.4.5",
     "primitives.js": "^1.1.0",
-    "renderer.js": "^1.3.1",
-    "scene-graph": "^1.3.2",
-    "vmath": "^1.4.4"
+    "renderer.js": "^1.3.2",
+    "scene-graph": "^1.3.3",
+    "vmath": "^1.4.5"
   },
   "devDependencies": {
     "assets-3d": "git+ssh://git@github.com/cocos-creator/assets-3d.git",
