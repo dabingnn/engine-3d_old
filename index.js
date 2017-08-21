@@ -1,10 +1,17 @@
-// intenral
 import App from './lib/app';
-import Orbit from './lib/orbit';
-import Level from './lib/level';
-import resl from './lib/resl';
 import utils from './lib/utils';
 import enums from './lib/enums';
+
+// misc
+import Orbit from './lib/misc/orbit';
+import resl from './lib/misc/resl';
+import path from './lib/misc/path';
+
+// components
+import ScriptComponent from './lib/framework/script-component';
+import ModelComponent from './lib/framework/model-component';
+import SkinningModelComponent from './lib/framework/skinning-model-component';
+import AnimationComponent from './lib/framework/animation-component';
 
 // materials
 import ShaderMaterial from './lib/materials/shader-material';
@@ -14,35 +21,25 @@ import PhongMaterial from './lib/materials/phong-material';
 // assets
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
-import Skin from './lib/assets/skin';
+import Skinning from './lib/assets/skinning';
 import Material from './lib/assets/material';
-import LevelInfo from './lib/assets/level-info';
 
 // renderer
 import SkinningModel from './lib/renderer/skinning-model';
 
-// components
-import ScriptComponent from './lib/framework/script-component';
-import ModelComponent from './lib/framework/model-component';
-import SkinningModelComponent from './lib/framework/skinning-model-component';
-import AnimationComponent from './lib/framework/animation-component';
-
 // deps
 import { Node } from 'scene-graph';
-import { Component, System } from 'ecs.js';
+import { Component, System, Level } from 'ecs.js';
 import * as math from 'vmath';
 import * as primitives from 'primitives.js';
 import renderer from 'renderer.js';
 import gfx from 'gfx.js';
 
+//
 let cc = {
-  // engine
-  App,
+  // misc
   Orbit,
-  Level,
   Node,
-  System,
-  Component,
 
   // rendering
   SkinningModel,
@@ -50,14 +47,19 @@ let cc = {
   // assets
   Asset,
   Mesh,
-  Skin,
+  Skinning,
   Material,
-  LevelInfo,
 
   // materials
   ShaderMaterial,
   StandardMaterial,
   PhongMaterial,
+
+  // framework
+  App,
+  Level,
+  System,
+  Component,
 
   // components
   ScriptComponent,
@@ -74,6 +76,7 @@ let cc = {
   // DELME: temporary
   utils,
   resl,
+  path,
 };
 Object.assign(cc, enums);
 
