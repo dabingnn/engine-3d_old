@@ -152,8 +152,7 @@
       mtl.normalTexture = normalMap;
 
       // create mesh
-      cc.utils.loadSkin(app, assets.gltf, assets.bin, (err, root) => {
-
+      cc.utils.parseSkin(app, assets.gltf, assets.bin, (err, root) => {
         // assign material to skinning model
         let comps = root.getCompsInChildren('SkinningModel');
         for (let i = 0; i < comps.length; ++i) {

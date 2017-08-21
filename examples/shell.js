@@ -1,7 +1,7 @@
 'use strict';
 
 (() => {
-  const { App, Orbit, Node, Level } = window.cc;
+  const { App, Orbit, Node } = window.cc;
   const { vec3 } = window.cc.math;
   const { Camera } = window.cc.renderer;
   const { createGrid } = window.cc.utils;
@@ -66,9 +66,6 @@
       window.app = app;
 
       // init example modules
-      let level = new Level();
-      app.setLevel(level);
-
       eval(`${result}\n//# sourceURL=${url}`);
 
       orbit._input = app._input;
@@ -80,7 +77,7 @@
 
       // add grid
       let grid = createGrid(app.device, new Node('grid'), 100, 100, 100 );
-      level._scene.addModel(grid);
+      app.scene.addModel(grid);
 
       //
       app.run();
