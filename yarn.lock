@@ -1836,11 +1836,7 @@ vlq@^0.2.1:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/vlq/-/vlq-0.2.2.tgz#e316d5257b40b86bb43cb8d5fea5d7f54d6b0ca1"
 
-vmath@^1.3.1:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/vmath/-/vmath-1.4.4.tgz#ff0249e341fb48c88c8357e4e994c87e11cdbe4b"
-
-vmath@^1.4.5:
+vmath@^1.3.1, vmath@^1.4.5:
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/vmath/-/vmath-1.4.5.tgz#08c1233c5ad71442a80b2d92117d00f1bf26f3c6"
 
