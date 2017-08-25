@@ -6,6 +6,7 @@ import enums from './lib/enums';
 import Orbit from './lib/misc/orbit';
 import resl from './lib/misc/resl';
 import path from './lib/misc/path';
+import async from './lib/misc/async';
 
 // components
 import ScriptComponent from './lib/framework/script-component';
@@ -73,10 +74,11 @@ let cc = {
   renderer,
   gfx,
 
-  // DELME: temporary
+  // misc
   utils,
   resl,
   path,
+  async,
 };
 Object.assign(cc, enums);
 
