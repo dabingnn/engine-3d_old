@@ -1,5 +1,4 @@
 import App from './lib/app';
-import utils from './lib/utils';
 import enums from './lib/enums';
 
 // misc
@@ -7,6 +6,7 @@ import Orbit from './lib/misc/orbit';
 import resl from './lib/misc/resl';
 import path from './lib/misc/path';
 import async from './lib/misc/async';
+import utils from './lib/misc/utils';
 
 // components
 import ScriptComponent from './lib/framework/script-component';
