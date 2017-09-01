@@ -3,26 +3,27 @@
   const cc = window.cc;
 
   const {resl, path} = cc;
+  // const baseUrl = './test-assets/levels_03';
+  const baseUrl = '/Users/johnny/gamedev-js/u3d-exporter/out';
 
   resl({
     manifest: {
       assetInfos: {
         type: 'text',
         parser: JSON.parse,
-        src: './test-assets/levels/assets.json'
+        src: `${baseUrl}/assets.json`
       },
 
       scene: {
         type: 'text',
         parser: JSON.parse,
-        src: './test-assets/levels/test-01.json'
+        src: `${baseUrl}/test-01.json`
       },
     },
 
     onDone (data) {
       const sceneJson = data.scene;
       const assetInfos = data.assetInfos;
-      const baseUrl = './test-assets/levels/';
 
       for ( let uuid in assetInfos) {
         let info = assetInfos[uuid];
