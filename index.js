@@ -28,7 +28,8 @@ import Prefab from './lib/assets/prefab';
 import AnimationClip from './lib/assets/animation-clip';
 import Gltf from './lib/assets/gltf';
 import Texture from './lib/assets/texture';
-import Texture2D from './lib/assets/texture2d';
+import Texture2D from './lib/assets/texture-2d';
+import TextureCube from './lib/assets/texture-cube';
 
 // renderer
 import SkinningModel from './lib/renderer/skinning-model';
@@ -60,6 +61,7 @@ let cc = {
   Gltf,
   Texture,
   Texture2D,
+  TextureCube,
 
   // materials
   ShaderMaterial,
