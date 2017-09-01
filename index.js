@@ -22,8 +22,13 @@ import PhongMaterial from './lib/materials/phong-material';
 // assets
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
-import Skinning from './lib/assets/skinning';
+import Joints from './lib/assets/joints';
 import Material from './lib/assets/material';
+import Prefab from './lib/assets/prefab';
+import AnimationClip from './lib/assets/animation-clip';
+import Gltf from './lib/assets/gltf';
+import Texture from './lib/assets/texture';
+import Texture2D from './lib/assets/texture2d';
 
 // renderer
 import SkinningModel from './lib/renderer/skinning-model';
@@ -48,8 +53,13 @@ let cc = {
   // assets
   Asset,
   Mesh,
-  Skinning,
+  Joints,
   Material,
+  Prefab,
+  AnimationClip,
+  Gltf,
+  Texture,
+  Texture2D,
 
   // materials
   ShaderMaterial,
