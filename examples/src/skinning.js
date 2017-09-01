@@ -29,10 +29,10 @@
     manifest: paladin,
 
     onDone (assets) {
-      app.assets.loadUrls('skinning', {
+      app.assets.loadUrls('gltf', {
         gltf: paladin.gltf,
         bin: paladin.bin,
-      }, (err, root) => {
+      }, (err, gltfAsset) => {
         // create material
         let mainTexture = new gfx.Texture2D(app.device, {
           width: assets.image.width,
