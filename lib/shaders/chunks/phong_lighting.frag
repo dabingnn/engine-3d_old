@@ -5,15 +5,20 @@ struct LightInfo {
   {{/useSpecular}}
 };
 
-LightInfo computeDirecionalLighting(vec3 lightDirection, vec3 lightColor, vec3 normal, vec3 viewDirection, float glossiness)
-{
+LightInfo computeDirecionalLighting(
+  vec3 lightDirection,
+  vec3 lightColor,
+  vec3 normal,
+  vec3 viewDirection,
+  float glossiness
+) {
   LightInfo lightingResult;
   float ndl = 0.0;
   float ndh = 0.0;
   vec3 lightDir = -normalize(lightDirection);
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl;
-  
+
   {{#useSpecular}}
     vec3 dirH = normalize(viewDirection + lightDir);
     ndh = max(0.0, dot(normal, dirH));
@@ -25,8 +30,15 @@ LightInfo computeDirecionalLighting(vec3 lightDirection, vec3 lightColor, vec3 n
   return lightingResult;
 }
 
-LightInfo computePointLighting(vec3 lightPosition, vec3 lightColor, float lightRange, vec3 normal, vec3 positionW, vec3 viewDirection, float glossiness)
-{
+LightInfo computePointLighting(
+  vec3 lightPosition,
+  vec3 lightColor,
+  float lightRange,
+  vec3 normal,
+  vec3 positionW,
+  vec3 viewDirection,
+  float glossiness
+) {
   LightInfo lightingResult;
   float ndl = 0.0;
   float ndh = 0.0;
@@ -49,9 +61,17 @@ LightInfo computePointLighting(vec3 lightPosition, vec3 lightColor, float lightR
   return lightingResult;
 }
 
-LightInfo computeSpotLighting(vec3 lightPosition, vec3 lightDirection, vec3 lightColor, float lightRange, vec2 lightSpot,
-                              vec3 normal, vec3 positionW, vec3 viewDirection, float glossiness)
-{
+LightInfo computeSpotLighting(
+  vec3 lightPosition,
+  vec3 lightDirection,
+  vec3 lightColor,
+  float lightRange,
+  vec2 lightSpot,
+  vec3 normal,
+  vec3 positionW,
+  vec3 viewDirection,
+  float glossiness
+) {
   LightInfo lightingResult;
   float ndl = 0.0;
   float ndh = 0.0;
@@ -98,7 +118,12 @@ LightInfo computeSpotLighting(vec3 lightPosition, vec3 lightDirection, vec3 ligh
   uniform vec2 spot_light{{id}}_spot;
 {{/spotLightSlots}}
 
-LightInfo getPhongLighting(vec3 normal, vec3 positionW, vec3 viewDirection, float glossiness) {
+LightInfo getPhongLighting(
+  vec3 normal,
+  vec3 positionW,
+  vec3 viewDirection,
+  float glossiness
+) {
   LightInfo result;
   result.diffuse = vec3(0, 0, 0);
   {{#useSpecular}}
@@ -115,7 +140,7 @@ LightInfo getPhongLighting(vec3 normal, vec3 positionW, vec3 viewDirection, floa
 
   LightInfo pointLighting;
   {{#pointLightSlots}}
-    pointLighting = computePointLighting(point_light{{id}}_position, point_light{{id}}_color, point_light{{id}}_range, 
+    pointLighting = computePointLighting(point_light{{id}}_position, point_light{{id}}_color, point_light{{id}}_range,
                                          normal, positionW, viewDirection, glossiness);
     result.diffuse += pointLighting.diffuse;
     {{#useSpecular}}
@@ -125,7 +150,7 @@ LightInfo getPhongLighting(vec3 normal, vec3 positionW, vec3 viewDirection, floa
 
   LightInfo spotLighting;
   {{#spotLightSlots}}
-    spotLighting = computeSpotLighting(spot_light{{id}}_position, spot_light{{id}}_direction, spot_light{{id}}_color, 
+    spotLighting = computeSpotLighting(spot_light{{id}}_position, spot_light{{id}}_direction, spot_light{{id}}_color,
                     spot_light{{id}}_range, spot_light{{id}}_spot,normal, positionW, viewDirection, glossiness);
     result.diffuse += spotLighting.diffuse;
     {{#useSpecular}}
