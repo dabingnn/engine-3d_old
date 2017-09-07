@@ -2,48 +2,26 @@
   const app = window.app;
   const cc = window.cc;
 
-  const resl = cc.resl;
-  const gfx = cc.gfx;
-  const { StandardMaterial } = cc;
   const { vec3, color4, quat, randomRange } = cc.math;
-  const { box } = cc.primitives;
 
   // create mesh
-  let meshBox = cc.utils.createMesh(app, box(1, 1, 1, {
+  let meshBox = cc.utils.createMesh(app, cc.primitives.box(1, 1, 1, {
     widthSegments: 1,
     heightSegments: 1,
     lengthSegments: 1,
   }));
 
   // create material
-  let material = new StandardMaterial({
-    // mainTexture: ???,
-    color: color4.new(1.0, 1.0, 1.0, 0.6),
-  });
-  material.blendType = cc.BLEND_NORMAL;
+  let material = new cc.UnlitMaterial();
   material.useColor = true;
   material.useTexture = true;
-  material.useSkinning = false;
+  material.blendType = cc.BLEND_NORMAL;
+  material.color = color4.new(1, 1, 1, 0.6);
 
-  resl({
-    manifest: {
-      image: {
-        type: 'image',
-        src: '../node_modules/assets-3d/textures/uv_checker_02.jpg'
-      },
-    },
-    onDone (assets) {
-      let image = assets.image;
-      let texture = new gfx.Texture2D(app.device, {
-        width : image.width,
-        height: image.height,
-        wrapS: gfx.WRAP_CLAMP,
-        wrapT: gfx.WRAP_CLAMP,
-        mipmap: true,
-        images : [image]
-      });
-      material.mainTexture = texture;
-    }
+  app.assets.loadUrls('texture-2d', {
+    image: '../node_modules/assets-3d/textures/uv_checker_02.jpg'
+  }, (err, texture) => {
+    material.mainTexture = texture;
   });
 
   // models

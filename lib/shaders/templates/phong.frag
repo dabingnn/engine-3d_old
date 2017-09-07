@@ -101,9 +101,9 @@ phongMaterial getPhongMaterial() {
       result.diffuse = result.diffuse * texture2D(diffuseTexture, uv).rgb;
     {{/useDiffuseTexture}}
   {{/useDiffuse}}
-  
+
   {{#useEmissive}}
-    result.emissive = emissiveColor; 
+    result.emissive = emissiveColor;
     {{#useEmissiveTexture}}
       uv = uv0 * emissiveTiling + emissiveOffset;
       result.emissive = result.emissive * texture2D(emissiveTexture, uv).rgb;
@@ -135,7 +135,7 @@ phongMaterial getPhongMaterial() {
 vec4 composePhongShading(LightInfo lighting, phongMaterial mtl)
 {
   vec4 o = vec4(0.0, 0.0, 0.0, 1.0);
-  
+
   //diffuse is always calculated
   o.xyz = lighting.diffuse * mtl.diffuse;
 
@@ -156,7 +156,7 @@ vec4 composePhongShading(LightInfo lighting, phongMaterial mtl)
 void main () {
   LightInfo phongLighting;
   vec3 viewDirection = normalize(eye - pos_w);
-  
+
   phongMaterial mtl = getPhongMaterial();
   {{#useAlphaTest}}
     if(mtl.opacity < alphaTestThreshold) discard;
