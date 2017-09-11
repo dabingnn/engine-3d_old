@@ -33,6 +33,10 @@
     clamp: gfx.WRAP_CLAMP,
     mirror: gfx.WRAP_MIRROR,
   };
+  
+  let ent = app.createEntity(`node_${0}`);
+  let skyCmp = ent.addComp('Skybox');
+
   resl({
     manifest: {
       json: {
@@ -85,16 +89,8 @@
 
       let texture = new gfx.TextureCube(app.device, opts);
       asset._texture = texture;
-
-
+      skyCmp.sky = texture;
     }
   });
-  // create material
-  let material = new SkyboxMaterial();
-  material.blendType = cc.BLEND_NONE;
 
-  let ent = app.createEntity(`node_${0}`);
-  let modelComp = ent.addComp('Model');
-  modelComp.mesh = meshBox;
-  modelComp.material = material;
 })();
