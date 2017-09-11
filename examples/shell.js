@@ -70,10 +70,10 @@
 
       orbit._input = app._input;
 
-      // add camera
+      // add debug camera
       let camera = new Camera();
       camera.setNode(orbit._node);
-      app.setCamera(camera);
+      app.scene.addCamera(camera);
 
       // add grid
       let grid = createGrid(app.device, new Node('grid'), 100, 100, 100 );
