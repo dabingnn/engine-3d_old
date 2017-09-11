@@ -15,10 +15,11 @@ import SkinningModelComponent from './lib/framework/skinning-model-component';
 import AnimationComponent from './lib/framework/animation-component';
 
 // materials
-import ShaderMaterial from './lib/materials/shader-material';
-import StandardMaterial from './lib/materials/standard-material';
 import PhongMaterial from './lib/materials/phong-material';
 import SkyboxMaterial from './lib/materials/skybox-material';
+import ShaderMaterial from './lib/materials/shader-material';
+import UnlitMaterial from './lib/materials/unlit-material';
+
 // assets
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
@@ -64,10 +65,10 @@ let cc = {
   TextureCube,
 
   // materials
-  ShaderMaterial,
-  StandardMaterial,
   PhongMaterial,
   SkyboxMaterial,
+  ShaderMaterial,
+  UnlitMaterial,
 
   // framework
   App,
