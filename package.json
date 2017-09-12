@@ -39,7 +39,7 @@
     "input.js": "^1.1.6",
     "memop": "^1.4.5",
     "primitives.js": "^1.1.0",
-    "renderer.js": "^1.3.2",
+    "renderer.js": "^1.4.0",
     "scene-graph": "^1.3.4",
     "vmath": "^1.4.5"
   },
