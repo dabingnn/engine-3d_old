@@ -1,7 +1,7 @@
-varying vec3 vViewDir;
+varying vec3 viewDir;
 
-uniform samplerCube texture_cubeMap;
+uniform samplerCube cubeMap;
 
 void main(void) {
-    gl_FragColor = textureCube(texture_cubeMap, vViewDir);
+    gl_FragColor = textureCube(cubeMap, viewDir);
 }
