@@ -17,7 +17,7 @@
       scene: {
         type: 'text',
         parser: JSON.parse,
-        src: `${baseUrl}/test-04.json`
+        src: `${baseUrl}/scene.json`
       },
     },
 
