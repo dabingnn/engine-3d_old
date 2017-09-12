@@ -16,6 +16,7 @@ import AnimationComponent from './lib/framework/animation-component';
 
 // materials
 import PhongMaterial from './lib/materials/phong-material';
+import SkyboxMaterial from './lib/materials/skybox-material';
 import ShaderMaterial from './lib/materials/shader-material';
 import UnlitMaterial from './lib/materials/unlit-material';
 
@@ -65,6 +66,7 @@ let cc = {
 
   // materials
   PhongMaterial,
+  SkyboxMaterial,
   ShaderMaterial,
   UnlitMaterial,
 
