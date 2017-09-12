@@ -99,7 +99,7 @@ assert-plus@^0.2.0:
 
 "assets-3d@git+ssh://git@github.com/cocos-creator/assets-3d.git":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/cocos-creator/assets-3d.git#18351414cf2220d489eac13dbab51510ebd7f4ee"
+  resolved "git+ssh://git@github.com/cocos-creator/assets-3d.git#6def55eebe30f14ebaa060845b55632bab948bae"
 
 async-each@^1.0.0:
   version "1.0.1"
