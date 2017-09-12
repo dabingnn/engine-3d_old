@@ -11,9 +11,9 @@
     imageNegZ: `${skyboxSrc}/skybox/skybox_nz.jpg`,
   };
 
-  let ent = app.createEntity(`node_${0}`);
-  let skyCmp = ent.addComp('Skybox');
   app.assets.loadUrls('texture-cube', urls, (err, cubeMap) => {
+    let ent = app.createEntity(`node_${0}`);
+    let skyCmp = ent.addComp('Skybox');
     skyCmp.cubeMap = cubeMap;
   });
 
