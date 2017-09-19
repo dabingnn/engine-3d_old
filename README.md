@@ -17,7 +17,6 @@ npm install engine-3d
 After that, restore the electron field and run the command below:
 
 ```bash
-cd engine-3d
 cnpm install electron
 ```
 
