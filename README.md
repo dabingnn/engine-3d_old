@@ -5,13 +5,20 @@ A simple 3d game engine
 ## Install
 
 ```bash
--- chinese user 
-delete "electron": "^1.7.5", in package.json
-npm install 
-recovery   "electron": "^1.7.5",
-cnpm install
---other user
 npm install engine-3d
+```
+
+If you're having trouble installing electron, try to use a Chinese mirror for it. To achieve this, just comment out electron field in dependencies section in package.json, then run:
+
+```bash
+npm install engine-3d
+```
+
+After that, restore the electron field and run the command below:
+
+```bash
+cd engine-3d
+cnpm install electron
 ```
 
 ## Usage
