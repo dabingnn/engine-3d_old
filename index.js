@@ -19,6 +19,7 @@ import PhongMaterial from './lib/materials/phong-material';
 import SkyboxMaterial from './lib/materials/skybox-material';
 import ShaderMaterial from './lib/materials/shader-material';
 import UnlitMaterial from './lib/materials/unlit-material';
+import SpriteMaterial from './lib/materials/sprite-material';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -69,6 +70,7 @@ let cc = {
   SkyboxMaterial,
   ShaderMaterial,
   UnlitMaterial,
+  SpriteMaterial,
 
   // framework
   App,
