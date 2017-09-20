@@ -24,6 +24,22 @@ After that, restore the electron field and run the command below:
 cnpm install electron
 ```
 
+## Development
+
+To build the project, please run:
+
+```bash
+npm run build
+```
+
+If you change the code frequently, you can just start a dev process:
+
+```bash
+npm run dev
+```
+
+The process will watch your files, and build the project when they changes.
+
 ## Documentation
 
 TODO
