@@ -24,6 +24,11 @@
     material.mainTexture = texture;
   });
 
+  let camEnt = app.createEntity('camera');
+  vec3.set(camEnt.lpos, 10, 10, 10);
+  camEnt.lookAt(vec3.new(0, 0, 0));
+  camEnt.addComp('Camera');
+
   // models
   for (let i = 0; i < 100; ++i) {
     let ent = app.createEntity(`node_${i}`);

@@ -2,7 +2,6 @@ import App from './lib/app';
 import enums from './lib/enums';
 
 // misc
-import Orbit from './lib/misc/orbit';
 import resl from './lib/misc/resl';
 import path from './lib/misc/path';
 import async from './lib/misc/async';
@@ -47,7 +46,6 @@ import gfx from 'gfx.js';
 //
 let cc = {
   // misc
-  Orbit,
   Node,
 
   // rendering
