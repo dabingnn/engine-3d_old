@@ -62,13 +62,13 @@
       });
       window.app = app;
 
-      // start debugger
-      if (localStorage.getItem('engine.enableDebugger') === 'true') {
-        app.debugger.start(vec3.new(10, 10, 10), vec3.new(0, 0, 0));
-      }
-
       // init example modules
       eval(`${result}\n//# sourceURL=${url}`);
+
+      // start debugger
+      if (localStorage.getItem('engine.enableDebugger') === 'true') {
+        app.debugger.start();
+      }
 
       //
       app.run();
@@ -129,7 +129,7 @@
       localStorage.setItem('engine.enableDebugger', event.target.checked);
 
       if (event.target.checked) {
-        window.app.debugger.start(vec3.new(10, 10, 10), vec3.new(0, 0, 0));
+        window.app.debugger.start();
       } else {
         window.app.debugger.stop();
       }
