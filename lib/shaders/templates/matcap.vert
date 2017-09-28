@@ -3,7 +3,7 @@ attribute vec3 a_normal;
 uniform   mat4 model;
 uniform   mat4 viewProj;
 uniform   mat3 normalMatrix;
-varying   vec2 matcapUv;
+varying   vec2 matcapUV;
 
 {{#useMainTex}}
   attribute vec2 a_uv0;
@@ -32,6 +32,6 @@ void main(void){
       normal = skinMat * normal;
     {{/useSkinning}}
     normal = vec4(normalize(normalMatrix * normal.xyz), 0);
-    matcapUv = normal.xy;
-    matcapUv = matcapUv * 0.5 + 0.5;
+    matcapUV = normal.xy;
+    matcapUV = matcapUV * 0.5 + 0.5;
 }
