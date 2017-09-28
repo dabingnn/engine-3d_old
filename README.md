@@ -4,16 +4,19 @@ A simple 3d game engine
 
 ## Install
 
+Clone the repo and run in the directory:
+
 ```bash
-npm install engine-3d
- ```
- 
-If you can't install electron because of you can't connect to official node, maybe you can delete "electron" in package.json/"dependencies" and use other mirror to install electron
+npm install
+```
+
+**NOTE**
+
 If you're having trouble installing electron, try to use a Chinese mirror for it. To achieve this, just comment out electron field in dependencies section in package.json, then run:
 
 ```bash
-npm install engine-3d
- ```
+npm install
+```
 
 After that, restore the electron field and run the command below:
 
@@ -21,17 +24,25 @@ After that, restore the electron field and run the command below:
 cnpm install electron
 ```
 
-## Usage
+## Development
 
-TODO
+To build the project, please run:
+
+```bash
+npm run build
+```
+
+If you change the code frequently, you can just start a dev process:
+
+```bash
+npm run dev
+```
+
+The process will watch your files, and build the project when they changes.
 
 ## Documentation
 
 TODO
-
-## TODO
-
-  - Compile all rollup code
 
 ## License
 

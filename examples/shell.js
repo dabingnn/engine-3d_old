@@ -1,16 +1,14 @@
 'use strict';
 
 (() => {
-  const { App, Orbit, Node } = window.cc;
+  const { App, Node } = window.cc;
   const { vec3 } = window.cc.math;
   const { Camera } = window.cc.renderer;
-  const { createGrid } = window.cc.utils;
 
   // create global camera
   let nodeCam = new Node('nodeCam');
   vec3.set(nodeCam.lpos, 10, 10, 10);
   nodeCam.lookAt(vec3.new(0, 0, 0));
-  let orbit = new Orbit(nodeCam, null);
 
   function _loadPromise(url) {
     return new Promise((resolve, reject) => {
@@ -61,23 +59,16 @@
       app.resize();
       app.on('tick', () => {
         window.stats.tick();
-        orbit.tick(app.deltaTime);
       });
       window.app = app;
 
       // init example modules
       eval(`${result}\n//# sourceURL=${url}`);
 
-      orbit._input = app._input;
-
-      // add debug camera
-      let camera = new Camera();
-      camera.setNode(orbit._node);
-      app.scene.addCamera(camera);
-
-      // add grid
-      let grid = createGrid(app.device, new Node('grid'), 100, 100, 100 );
-      app.scene.addModel(grid);
+      // start debugger
+      if (localStorage.getItem('engine.enableDebugger') === 'true') {
+        app.debugger.start();
+      }
 
       //
       app.run();
@@ -92,30 +83,41 @@
       return;
     }
 
-    // let spector = new window.SPECTOR.Spector();
-    // spector.displayUI();
-
     let view = document.getElementById('view');
     let showFPS = document.getElementById('showFPS');
+    let enableDebugger = document.getElementById('debugger');
+    let enableSpector = document.getElementById('spector');
     let exampleList = document.getElementById('exampleList');
 
     // update profile
-    showFPS.checked = localStorage.getItem('gfx.showFPS') === 'true';
-    let exampleIndex = parseInt(localStorage.getItem('gfx.exampleIndex'));
+    showFPS.checked = localStorage.getItem('engine.showFPS') === 'true';
+    enableDebugger.checked = localStorage.getItem('engine.enableDebugger') === 'true';
+    enableSpector.checked = localStorage.getItem('engine.enableSpector') === 'true';
+    let exampleIndex = parseInt(localStorage.getItem('engine.exampleIndex'));
     if (isNaN(exampleIndex)) {
       exampleIndex = 0;
     }
     exampleList.selectedIndex = exampleIndex;
 
-    // init
+    // init lstats
     let stats = new window.LStats(document.body);
     showFPS.checked ? stats.show() : stats.hide();
-
     window.stats = stats;
+
+    // init spector
+    if (enableSpector.checked) {
+      let url = '../node_modules/spectorjs/dist/spector.bundle.js';
+      _loadPromise(url).then(result => {
+        eval(`${result}\n//# sourceURL=${url}`);
+        let spector = new window.SPECTOR.Spector();
+        spector.displayUI();
+      });
+    }
+
     _load(view, exampleList.value);
 
     showFPS.addEventListener('click', event => {
-      localStorage.setItem('gfx.showFPS', event.target.checked);
+      localStorage.setItem('engine.showFPS', event.target.checked);
       if (event.target.checked) {
         stats.show();
       } else {
@@ -123,8 +125,22 @@
       }
     });
 
+    enableDebugger.addEventListener('click', event => {
+      localStorage.setItem('engine.enableDebugger', event.target.checked);
+
+      if (event.target.checked) {
+        window.app.debugger.start();
+      } else {
+        window.app.debugger.stop();
+      }
+    });
+
+    enableSpector.addEventListener('click', event => {
+      localStorage.setItem('engine.enableSpector', event.target.checked);
+    });
+
     exampleList.addEventListener('change', event => {
-      localStorage.setItem('gfx.exampleIndex', event.target.selectedIndex);
+      localStorage.setItem('engine.exampleIndex', event.target.selectedIndex);
       _load(view, exampleList.value);
     });
   });
