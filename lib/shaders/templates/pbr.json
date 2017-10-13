@@ -1,0 +1,13 @@
+{
+  "useNormal": true,
+  "useUV0": true,
+  "useSkinning": false,
+  "useNormalTexture": true,
+  "useAlbedoTexture": true,
+  "useMetallicTexture": true,
+  "useRoughnessTexture": true,
+  "useAoTexture": true,
+  "directionalLightSlots": [],
+  "pointLightSlots": [],
+  "spotLightSlots": []
+}
