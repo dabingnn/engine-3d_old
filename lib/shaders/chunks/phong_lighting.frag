@@ -5,7 +5,7 @@ struct LightInfo {
   {{/useSpecular}}
 };
 
-LightInfo computeDirecionalLighting(
+LightInfo computeDirectionalLighting(
   vec3 lightDirection,
   vec3 lightColor,
   vec3 normal,
@@ -131,7 +131,7 @@ LightInfo getPhongLighting(
   {{/useSpecular}}
   LightInfo dirLighting;
   {{#directionalLightSlots}}
-    dirLighting = computeDirecionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,normal, viewDirection, glossiness);
+    dirLighting = computeDirectionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,normal, viewDirection, glossiness);
     result.diffuse += dirLighting.diffuse;
     {{#useSpecular}}
       result.specular += dirLighting.specular;
