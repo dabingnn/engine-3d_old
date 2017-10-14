@@ -43,6 +43,7 @@ import * as math from 'vmath';
 import * as primitives from 'primitives.js';
 import renderer from 'renderer.js';
 import gfx from 'gfx.js';
+import * as memop from 'memop';
 
 //
 let cc = {
@@ -86,6 +87,7 @@ let cc = {
 
   // modules
   math,
+  memop,
   primitives,
   renderer,
   gfx,
