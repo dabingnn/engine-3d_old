@@ -1,7 +1,7 @@
 struct LightInfo {
   vec3 lightDir;
   vec3 radiance;
-}
+};
 
 {{#directionalLightSlots}}
   uniform vec3 dir_light{{id}}_direction;

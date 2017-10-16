@@ -18,21 +18,29 @@ const float PI = 3.14159265359;
 // material parameters
 uniform vec3 albedo;
 {{#useAlbedoTexture}}
+  uniform vec2 albedoTiling;
+  uniform vec2 albedoOffset;
   uniform sampler2D albedoTexture;
 {{/useAlbedoTexture}}
 
 uniform float metallic;
 {{#useMetallicTexture}}
+  uniform vec2 metallicTiling;
+  uniform vec2 metallicOffset;
   uniform sampler2D metallicTexture;
 {{/useMetallicTexture}}
 
 uniform float roughness;
 {{#useRoughnessTexture}}
+  uniform vec2 roughnessTiling;
+  uniform vec2 roughnessOffset;
   uniform sampler2D roughnessTexture;
 {{/useRoughnessTexture}}
 
 uniform float ao;
 {{#useAoTexture}}
+  uniform vec2 aoTiling;
+  uniform vec2 aoOffset;
   uniform sampler2D aoTexture;
 {{/useAoTexture}}
 
@@ -43,7 +51,7 @@ uniform float ao;
   // get world-space normal from normal texture
   vec3 getNormalFromTexture() {
     vec3 tangentNormal = texture2D(normalTexture, uv0).rgb * 2.0 - 1.0;
-    vec3 q1  = dFdx(pos_w)；
+    vec3 q1  = dFdx(pos_w);
     vec3 q2  = dFdy(pos_w);
     vec2 uv  = uv0 * normalMapTiling + normalMapOffset;
     vec2 st1 = dFdx(uv);
@@ -95,12 +103,12 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
 }
 // BRDF equation
 vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float roughness) {
-  vec3 H = normalize(V + pointLight.lightDir);
-  float NDF = DistributionGGX(N, H, roughness);
-  float G   = GeometrySmith(N, V, lightInfo.lightDir, roughness);
+  vec3 H = normalize(V + lightInfo.lightDir);
+  float NDF = distributionGGX(N, H, roughness);
+  float G   = geometrySmith(N, V, lightInfo.lightDir, roughness);
   vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
   vec3 nominator    = NDF * G * F;
-  float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, lightInfo.lightDir), 0.0) + 0.001; // 0.001 to prevent divide by zero.
+  float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, lightInfo.lightDir), 0.0) + 0.001; // 0.001 to prevent divide by zero.
   vec3 specular = nominator / denominator;
   // kS is equal to Fresnel
   vec3 kS = F;
@@ -120,17 +128,21 @@ vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float rough
 
 void main() {
   {{#useAlbedoTexture}}
-    vec3 albedo     = texture2D(albedoTexture, uv0).rgb; // without gamma-correction
+    vec2 albedoUV = uv0 * albedoTiling + albedoOffset;
+    vec3 albedo     = texture2D(albedoTexture, albedoUV).rgb; // without gamma-correction
   {{/useAlbedoTexture}}
   // TODO: pack metallic and roughness into one texture maybe better
   {{#useMetallicTexture}}
-    float metallic  = texture2D(metallicTexture, uv0).r;
+    vec2 metallicUV = uv0 * metallicTiling + metallicOffset;
+    float metallic  = texture2D(metallicTexture, metallicUV).r;
   {{/useMetallicTexture}}
   {{#useRoughnessTexture}}
-    float roughness = texture2D(roughnessTexture, uv0).r;
+    vec2 roughnessUV = uv0 * roughnessTiling + roughnessOffset;
+    float roughness  = texture2D(roughnessTexture, roughnessUV).r;
   {{/useRoughnessTexture}}
   {{#useAoTexture}}
-    float ao        = texture2D(aoTexture, uv0).r;
+    vec2 aoUV = uv0 * aoTiling + aoOffset;
+    float ao  = texture2D(aoTexture, aoUV).r;
   {{/useAoTexture}}
 
   vec3 N = normalize(normal_w);
