@@ -35,7 +35,7 @@
   "dependencies": {
     "ecs.js": "^1.2.1",
     "event-sys": "^1.0.4",
-    "gfx.js": "^1.2.8",
+    "gfx.js": "^1.2.10",
     "input.js": "^1.1.6",
     "memop": "^1.6.0",
     "primitives.js": "^1.1.0",
