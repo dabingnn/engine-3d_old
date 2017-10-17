@@ -15,6 +15,12 @@ const float PI = 3.14159265359;
   varying vec2 uv0;
 {{/useUV0}}
 
+{{#useIBL}}
+  uniform samplerCube irradianceMap;
+  uniform samplerCube prefilterMap;
+  uniform sampler2D brdfLUT;
+{{/useIBL}}
+
 // material parameters
 uniform vec3 albedo;
 {{#useAlbedoTexture}}
@@ -22,6 +28,12 @@ uniform vec3 albedo;
   uniform vec2 albedoOffset;
   uniform sampler2D albedoTexture;
 {{/useAlbedoTexture}}
+
+{{#useMetalRoughnessTexture}}
+  uniform vec2 metalRoughnessTiling;
+  uniform vec2 metalRoughnessOffset;
+  uniform vec2 sampler2D metalRoughnessTexture;
+{{/useMetalRoughnessTexture}}
 
 uniform float metallic;
 {{#useMetallicTexture}}
@@ -101,8 +113,12 @@ float geometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
 vec3 fresnelSchlick(float cosTheta, vec3 F0) {
   return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
 }
+vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness) {
+  return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
+}
+
 // BRDF equation
-vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float roughness) {
+vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float metallic, float roughness) {
   vec3 H = normalize(V + lightInfo.lightDir);
   float NDF = distributionGGX(N, H, roughness);
   float G   = geometrySmith(N, V, lightInfo.lightDir, roughness);
@@ -132,6 +148,14 @@ void main() {
     vec3 albedo     = texture2D(albedoTexture, albedoUV).rgb; // without gamma-correction
   {{/useAlbedoTexture}}
   // TODO: pack metallic and roughness into one texture maybe better
+  {{#useMetalRoughnessTexture}}
+    // Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
+    // This layout intentionally reserves the 'r' channel for (optional) occlusion map data
+    vec2 metalRoughnessUV = uv0 * metalRoughnessTiling + metalRoughnessOffset;
+    vec3 metalRoughness = texture2D(metalRoughnessTexture, metalRoughnessUV).rgb;
+    float metallic = metalRoughness.b;
+    float roughness = metalRoughness.g;
+  {{/useMetalRoughnessTexture}}
   {{#useMetallicTexture}}
     vec2 metallicUV = uv0 * metallicTiling + metallicOffset;
     float metallic  = texture2D(metallicTexture, metallicUV).r;
@@ -163,27 +187,45 @@ void main() {
   {{#pointLightSlots}}
     LightInfo pointLight;
     pointLight = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color);
-    Lo += brdf(pointLight, N, V, F0, albedo, roughness);
+    Lo += brdf(pointLight, N, V, F0, albedo, metallic, roughness);
   {{/pointLightSlots}}
 
   // directional light (a 'for' loop to accumulate all light sources)
   {{#directionalLightSlots}}
     LightInfo directionalLight;
     directionalLight = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
-    Lo += brdf(directionalLight, N, V, F0, albedo, roughness);
+    Lo += brdf(directionalLight, N, V, F0, albedo, metallic, roughness);
   {{/directionalLightSlots}}
 
   // spot light (a 'for' loop to accumulate all light sources)
   {{#spotLightSlots}}
     LightInfo spotLight;
     spotLight = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot);
-    Lo += brdf(spotLight, N, V, F0, albedo, roughness);
+    Lo += brdf(spotLight, N, V, F0, albedo, metallic, roughness);
   {{/spotLightSlots}}
 
-  // ambient lighting, will be replaced by IBL later
+  // ambient lighting, will be replaced by IBL if IBL used.
   vec3 ambient = vec3(0.03) * albedo * ao;
+
+  {{#useIBL}}
+    // generate ambient when using IBL.
+    vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+    vec3 kS = F;
+    vec3 kD = vec3(1.0) - kS;
+    kD *= 1.0 - metallic;
+    vec3 irradiance = texture(irradianceMap, N).rgb;
+    vec3 diffuse = irradiance * albedo;
+    // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
+    const float MAX_REFLECTION_LOD = 5.0;
+    vec3 R = reflect(-V, N);
+    vec3 prefilteredColor = textureLod(prefilterMap, R,  roughness * MAX_REFLECTION_LOD).rgb;
+    vec2 brdf  = texture(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
+    vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+    ambient = (kD * diffuse + specular) * ao;
+  {{/useIBL}}
+
   vec3 color = ambient + Lo;
-  // HDR tone mapping
+  // HDR tone mapping.
   color = color / (color + vec3(1.0));
   // gamma correction ?
 
