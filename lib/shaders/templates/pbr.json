@@ -4,6 +4,7 @@
   "useSkinning": false,
   "useNormalTexture": true,
   "useAlbedoTexture": true,
+  "useMetalRoughnessTexture": false,
   "useMetallicTexture": true,
   "useRoughnessTexture": true,
   "useAoTexture": true,

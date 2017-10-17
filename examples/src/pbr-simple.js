@@ -155,11 +155,11 @@
     light.setIntensity(1000.0);
     light.setRange(10000.0);
   }
-  let light1 = app.createEntity('light1');
-  quat.fromEuler(light1.lrot, -45, 135, 0);
+  // let light1 = app.createEntity('light1');
+  // quat.fromEuler(light1.lrot, -45, 135, 0);
 
-  let lightComp1 = light1.addComp('Light');
-  lightComp1.setColor(1, 1, 1);
+  // let lightComp1 = light1.addComp('Light');
+  // lightComp1.setColor(1, 1, 1);
 
   // camera
   let camEnt = app.createEntity('camera');
