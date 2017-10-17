@@ -1,5 +1,9 @@
 (() => {
   const app = window.app;
+  const cc = window.cc;
+
+  const { vec3 } = cc.math;
+
   let skyboxSrc = '../node_modules/assets-3d/textures';
   const urls = {
     json: `${skyboxSrc}/skybox/skybox.json`,
@@ -12,6 +16,11 @@
   };
 
   app.assets.loadUrls('texture-cube', urls, (err, cubeMap) => {
+    let camEnt = app.createEntity('camera');
+    vec3.set(camEnt.lpos, 10, 10, 10);
+    camEnt.lookAt(vec3.new(0, 0, 0));
+    camEnt.addComp('Camera');
+
     let ent = app.createEntity(`node_${0}`);
     let skyCmp = ent.addComp('Skybox');
     skyCmp.cubeMap = cubeMap;
