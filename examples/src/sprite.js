@@ -1,5 +1,6 @@
 (() => {
   const app = window.app;
+  const cc = window.cc;
   let screen = app.createEntity('screen');
   screen.addComp('Screen');
   let spriteCmps = [];
@@ -23,7 +24,7 @@
     let spriteCmp = entity.addComp('Sprite');
     spriteCmp.width = 512;
     spriteCmp.height = 256;
-    spriteCmp.type = 1;
+    spriteCmp.type = cc.SPRITE_SLICED;
     spriteCmps.push(spriteCmp);
   }
 
