@@ -22,6 +22,7 @@
 
   // create material
   let pbrMaterial = new PbrMaterial({});
+  pbrMaterial.useIBL = false;
   pbrMaterial.metallic = 0.6;
   pbrMaterial.roughness = 0.2;
   let assetsSrc = '../node_modules/assets-3d/textures/pbr/rusted_iron';
@@ -56,7 +57,7 @@
         height: albedoImg.height,
         wrapS: gfx.WRAP_REPEAT,
         wrapT: gfx.WRAP_REPEAT,
-        mipmap: false,
+        mipmap: true,
         images: [albedoImg]
       });
       albedoAsset._texture = albedoTex;
@@ -70,7 +71,7 @@
         height: aoImg.height,
         wrapS: gfx.WRAP_REPEAT,
         wrapT: gfx.WRAP_REPEAT,
-        mipmap: false,
+        mipmap: true,
         images: [aoImg]
       });
       aoAsset._texture = aoTex;
@@ -84,7 +85,7 @@
         height: metallicImg.height,
         wrapS: gfx.WRAP_REPEAT,
         wrapT: gfx.WRAP_REPEAT,
-        mipmap: false,
+        mipmap: true,
         images: [metallicImg]
       });
       metallicAsset._texture = metallicTex;

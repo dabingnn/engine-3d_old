@@ -8,6 +8,7 @@
   "useMetallicTexture": true,
   "useRoughnessTexture": true,
   "useAoTexture": true,
+  "useIBL": true,
   "directionalLightSlots": [],
   "pointLightSlots": [],
   "spotLightSlots": []
