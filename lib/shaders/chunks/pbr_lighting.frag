@@ -11,6 +11,7 @@ struct LightInfo {
 {{#pointLightSlots}}
   uniform vec3 point_light{{id}}_position;
   uniform vec3 point_light{{id}}_color;
+  uniform float point_light{{id}}_range;
 {{/pointLightSlots}}
 
 {{#spotLightSlots}}
@@ -18,6 +19,7 @@ struct LightInfo {
   uniform vec3 spot_light{{id}}_direction;
   uniform vec3 spot_light{{id}}_color;
   uniform vec2 spot_light{{id}}_spot;
+  uniform float spot_light{{id}}_range;
 {{/spotLightSlots}}
 
 // directional light
@@ -36,12 +38,12 @@ LightInfo computeDirectionalLighting(
 LightInfo computePointLighting(
   vec3 lightPosition,
   vec3 positionW,
-  vec3 lightColor
+  vec3 lightColor,
+  float lightRange
 ) {
   LightInfo ret;
   vec3 lightDir = lightPosition - positionW;
-  float distance = length(lightDir);
-  float attenuation = 1.0 / (distance * distance);
+  float attenuation = max(0., 1.0 - length(lightDir) / lightRange);
   ret.lightDir = normalize(lightDir);
   ret.radiance = lightColor * attenuation;
 
@@ -54,12 +56,12 @@ LightInfo computeSpotLight(
   vec3 positionW,
   vec3 lightDirection,
   vec3 lightColor,
-  vec2 lightSpot
+  vec2 lightSpot,
+  float lightRange
 ) {
   LightInfo ret;
   vec3 lightDir = lightPosition - positionW;
-  float distance = length(lightDir);
-  float attenuation = 1.0 / (distance * distance);
+  float attenuation = max(0., 1.0 - length(lightDir) / lightRange);
   float cosConeAngle = max(0., dot(lightDirection, -lightDir));
   cosConeAngle = cosConeAngle < lightSpot.x ? 0.0 : cosConeAngle;
   cosConeAngle = pow(cosConeAngle,lightSpot.y);

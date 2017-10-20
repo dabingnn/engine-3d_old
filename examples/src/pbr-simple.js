@@ -1,7 +1,6 @@
 (() => {
   const app = window.app;
   const cc = window.cc;
-
   const resl = cc.resl;
   const gfx = cc.gfx;
   const { Node, PbrMaterial, Texture2D } = cc;
@@ -11,7 +10,7 @@
 
   // create sphere mesh
   let meshSphere = cc.utils.createMesh(app, sphere(1, {
-      segments: 64,
+    segments: 64,
   }));
 
   let meshBox = cc.utils.createMesh(app,box(1, 1, 1, {
@@ -25,7 +24,7 @@
   pbrMaterial.useIBL = false;
   pbrMaterial.metallic = 0.6;
   pbrMaterial.roughness = 0.2;
-  let assetsSrc = '../node_modules/assets-3d/textures/pbr/rusted_iron';
+  let assetsSrc = '../node_modules/assets-3d/textures/pbr/0';
   resl({
     manifest: {
       albedoImage: {
@@ -55,8 +54,8 @@
       let albedoTex = new gfx.Texture2D(app.device, {
         width: albedoImg.width,
         height: albedoImg.height,
-        wrapS: gfx.WRAP_REPEAT,
-        wrapT: gfx.WRAP_REPEAT,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
         mipmap: true,
         images: [albedoImg]
       });
@@ -69,8 +68,8 @@
       let aoTex = new gfx.Texture2D(app.device, {
         width: aoImg.width,
         height: aoImg.height,
-        wrapS: gfx.WRAP_REPEAT,
-        wrapT: gfx.WRAP_REPEAT,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
         mipmap: true,
         images: [aoImg]
       });
@@ -83,8 +82,8 @@
       let metallicTex = new gfx.Texture2D(app.device, {
         width: metallicImg.width,
         height: metallicImg.height,
-        wrapS: gfx.WRAP_REPEAT,
-        wrapT: gfx.WRAP_REPEAT,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
         mipmap: true,
         images: [metallicImg]
       });
@@ -111,15 +110,110 @@
       let roughnessTex = new gfx.Texture2D(app.device, {
         width: roughnessImg.width,
         height: roughnessImg.height,
-        wrapS: gfx.WRAP_REPEAT,
-        wrapT: gfx.WRAP_REPEAT,
-        mipmap: false,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
         images: [roughnessImg]
       });
       roughnessAsset._texture = roughnessTex;
       pbrMaterial.useRoughnessTexture = true;
       pbrMaterial.roughnessTexture = roughnessAsset;
     }
+  });
+
+  let cerberusMaterial = new PbrMaterial({}); // use for cerberus
+  cerberusMaterial.useIBL = false;
+  let cerberusSrc = '../node_modules/assets-3d/textures/pbr/cerberus';
+  resl({
+    manifest: {
+      albedoImage: {
+        type: 'image',
+        src: `${cerberusSrc}/Cerberus_A.png`
+      },
+      metallicImage: {
+        type: 'image',
+        src: `${cerberusSrc}/Cerberus_M.png`
+      },
+      normalImage: {
+        type: 'image',
+        src: `${cerberusSrc}/Cerberus_N.png`
+      },
+      roughnessImage: {
+        type: 'image',
+        src: `${cerberusSrc}/Cerberus_R.png`
+      },
+    },
+    onDone(assets) {
+      let albedoAsset = new Texture2D();
+      let albedoImg = assets.albedoImage;
+      let albedoTex = new gfx.Texture2D(app.device, {
+        width: albedoImg.width,
+        height: albedoImg.height,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
+        images: [albedoImg]
+      });
+      albedoAsset._texture = albedoTex;
+      cerberusMaterial.useAlbedoTexture = true;
+      cerberusMaterial.albedoTexture = albedoAsset;
+
+      let metallicAsset = new Texture2D();
+      let metallicImg = assets.metallicImage;
+      let metallicTex = new gfx.Texture2D(app.device, {
+        width: metallicImg.width,
+        height: metallicImg.height,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
+        images: [metallicImg]
+      });
+      metallicAsset._texture = metallicTex;
+      cerberusMaterial.useMetallicTexture = true;
+      cerberusMaterial.metallicTexture = metallicAsset;
+
+      let normalAsset = new Texture2D();
+      let normalImg = assets.normalImage;
+      let normalTex = new gfx.Texture2D(app.device, {
+        width: normalImg.width,
+        height: normalImg.height,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
+        images: [normalImg]
+      });
+      normalAsset._texture = normalTex;
+      cerberusMaterial.useNormalTexture = true;
+      cerberusMaterial.normalTexture = normalAsset;
+
+      let roughnessAsset = new Texture2D();
+      let roughnessImg = assets.roughnessImage;
+      let roughnessTex = new gfx.Texture2D(app.device, {
+        width: roughnessImg.width,
+        height: roughnessImg.height,
+        wrapS: gfx.WRAP_CLAMP,
+        wrapT: gfx.WRAP_CLAMP,
+        mipmap: true,
+        images: [roughnessImg]
+      });
+      roughnessAsset._texture = roughnessTex;
+      cerberusMaterial.useRoughnessTexture = true;
+      cerberusMaterial.roughnessTexture = roughnessAsset;
+    }
+  });
+
+  let Cerberus = {
+    gltf: '../node_modules/assets-3d/textures/pbr/cerberus/a5c37fd97fce24fea81d95160e2f1caf.gltf',
+    bin: '../node_modules/assets-3d/textures/pbr/cerberus/a5c37fd97fce24fea81d95160e2f1caf.bin'
+  }
+  app.assets.loadUrls('mesh', Cerberus, (err, mesh) =>{
+    let ent = app.createEntity('model');
+    quat.fromEuler(ent.lrot, 60, 0, 0);
+    vec3.set(ent.lscale, 10, 10, 10);
+    vec3.set(ent.lpos,10,8,5);
+    let modelComp = ent.addComp('Model');
+    modelComp.mesh = mesh;
+    modelComp.material = cerberusMaterial;
   });
 
   // models
@@ -153,14 +247,14 @@
     let light = entity.addComp('Light');
     light.setType(cc.renderer.LIGHT_POINT);
     light.setColor(1.0, 1.0, 1.0);
-    light.setIntensity(1000.0);
-    light.setRange(10000.0);
+    light.setIntensity(10.0);
+    light.setRange(1000.0);
   }
-  // let light1 = app.createEntity('light1');
-  // quat.fromEuler(light1.lrot, -45, 135, 0);
+  let light1 = app.createEntity('light1');
+  quat.fromEuler(light1.lrot, -45, 135, 0);
 
-  // let lightComp1 = light1.addComp('Light');
-  // lightComp1.setColor(1, 1, 1);
+  let lightComp1 = light1.addComp('Light');
+  lightComp1.setColor(1, 1, 1);
 
   // camera
   let camEnt = app.createEntity('camera');
