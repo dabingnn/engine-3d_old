@@ -9,6 +9,7 @@
   "useRoughnessTexture": true,
   "useAoTexture": true,
   "useIBL": true,
+  "useTexLod": false,
   "directionalLightSlots": [],
   "pointLightSlots": [],
   "spotLightSlots": []
