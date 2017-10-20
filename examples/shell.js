@@ -1,14 +1,7 @@
 'use strict';
 
 (() => {
-  const { App, Node } = window.cc;
-  const { vec3 } = window.cc.math;
-  const { Camera } = window.cc.renderer;
-
-  // create global camera
-  let nodeCam = new Node('nodeCam');
-  vec3.set(nodeCam.lpos, 10, 10, 10);
-  nodeCam.lookAt(vec3.new(0, 0, 0));
+  const { cc, dat } = window;
 
   function _loadPromise(url) {
     return new Promise((resolve, reject) => {
@@ -48,6 +41,11 @@
         window.app = null;
       }
 
+      if (window.dgui) {
+        window.dgui.destroy();
+        window.dgui = null;
+      }
+
       // create new canvas
       let canvas = document.createElement('canvas');
       canvas.classList.add('fit');
@@ -55,12 +53,17 @@
       view.appendChild(canvas);
 
       // init app
-      let app = new App(canvas);
+      let app = new cc.App(canvas);
       app.resize();
       app.on('tick', () => {
         window.stats.tick();
       });
       window.app = app;
+
+      // init dgui
+      let dgui = new dat.GUI();
+      dgui.domElement.classList.add('dgui');
+      window.dgui = dgui;
 
       // init example modules
       eval(`${result}\n//# sourceURL=${url}`);

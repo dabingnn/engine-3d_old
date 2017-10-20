@@ -1,23 +1,28 @@
 (() => {
-  const app = window.app;
-  const cc = window.cc;
+  const { cc, app, dgui } = window;
+  const { resl, path } = cc;
 
-  const {resl, path} = cc;
-  // const baseUrl = './test-assets/levels_03';
-  const baseUrl = '/Users/johnny/gamedev-js/u3d-exporter/out';
+  let dobj = {
+    baseUrl: '/Users/johnny/gamedev-js/u3d-exporter/out',
+    scene: 'scene'
+  };
+
+  dgui.remember(dobj);
+  dgui.add(dobj, 'baseUrl');
+  dgui.add(dobj, 'scene');
 
   resl({
     manifest: {
       assetInfos: {
         type: 'text',
         parser: JSON.parse,
-        src: `${baseUrl}/assets.json`
+        src: `${dobj.baseUrl}/assets.json`
       },
 
       scene: {
         type: 'text',
         parser: JSON.parse,
-        src: `${baseUrl}/debug.json`
+        src: `${dobj.baseUrl}/${dobj.scene}.json`
       },
     },
 
@@ -28,7 +33,7 @@
       for ( let uuid in assetInfos) {
         let info = assetInfos[uuid];
         for (let item in info.urls) {
-          info.urls[item] = path.join(baseUrl, info.urls[item]);
+          info.urls[item] = path.join(dobj.baseUrl, info.urls[item]);
         }
 
         app.assets.registerAsset(uuid, info);
