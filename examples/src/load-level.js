@@ -26,11 +26,11 @@
       },
     },
 
-    onDone (data) {
+    onDone(data) {
       const sceneJson = data.scene;
       const assetInfos = data.assetInfos;
 
-      for ( let uuid in assetInfos) {
+      for (let uuid in assetInfos) {
         let info = assetInfos[uuid];
         for (let item in info.urls) {
           info.urls[item] = path.join(dobj.baseUrl, info.urls[item]);
