@@ -116,11 +116,15 @@ float geometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
   return ggx1 * ggx2;
 }
 // F() Fresnel equation
+// Optimized variant (presented by Epic at SIGGRAPH '13)
+// https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
 vec3 fresnelSchlick(float cosTheta, vec3 F0) {
-  return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+  float fresnel = exp2((-5.55473 * cosTheta - 6.98316) * cosTheta);
+  return F0 + (1.0 - F0) * fresnel;
 }
 vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness) {
-  return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
+  float fresnel = exp2((-5.55473 * cosTheta - 6.98316) * cosTheta);
+  return F0 + (max(vec3(1.0 - roughness), F0) - F0) * fresnel;
 }
 
 // BRDF equation
