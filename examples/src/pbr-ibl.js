@@ -1,6 +1,5 @@
 (() => {
-  const app = window.app;
-  const cc = window.cc;
+  const { cc, app, dgui } = window;
   const resl = cc.resl;
   const gfx = cc.gfx;
   const { Node, PbrMaterial, Texture2D } = cc;
@@ -8,16 +7,26 @@
   const { Scene, Model, Light } = cc.renderer;
   const { box, sphere } = cc.primitives;
 
+  let dobj = {
+    useTexLod: true,
+    maxRefLod: 9.0,
+    envSrcUrl: '../node_modules/assets-3d/textures/pbr/papermill'
+  }
+  dgui.remember(dobj);
+  dgui.add(dobj, 'useTexLod');
+  dgui.add(dobj, 'maxRefLod');
+  dgui.add(dobj, 'envSrcUrl');
+
   // load environment box.
-  let envSrc = '../node_modules/assets-3d/textures/pbr/papermill/environment';
+  let envSrc = `${dobj.envSrcUrl}/environment`;
   const envUrls = {
     json: `${envSrc}/environment.json`,
-    imagePosX: `${envSrc}/environment_right`,
-    imageNegX: `${envSrc}/environment_left`,
-    imagePosY: `${envSrc}/environment_top`,
-    imageNegY: `${envSrc}/environment_bottom`,
-    imagePosZ: `${envSrc}/environment_front`,
-    imageNegZ: `${envSrc}/environment_back`,
+    imagePosX: `${envSrc}/environment_right_0.jpg`,
+    imageNegX: `${envSrc}/environment_left_0.jpg`,
+    imagePosY: `${envSrc}/environment_top_0.jpg`,
+    imageNegY: `${envSrc}/environment_bottom_0.jpg`,
+    imagePosZ: `${envSrc}/environment_front_0.jpg`,
+    imageNegZ: `${envSrc}/environment_back_0.jpg`,
   };
   app.assets.loadUrls('texture-cube', envUrls, (err, cubeMap) => {
     let ent = app.createEntity(`node_${0}`);
@@ -36,8 +45,8 @@
   for (let i = 0; i < 5; ++i) {
     pbrMaterial[i] = new PbrMaterial({});
     pbrMaterial[i].useIBL = true;
-    pbrMaterial[i].useTexLod = true;
-    pbrMaterial[i].maxReflectionLod = 9;
+    pbrMaterial[i].useTexLod = dobj.useTexLod;
+    pbrMaterial[i].maxReflectionLod = dobj.maxRefLod;
   }
   // cerberus material
   let cerberusMaterial = new PbrMaterial({});
@@ -46,41 +55,43 @@
   cerberusMaterial.useAoTexture = false;
 
   // load indirect lighting resource
-  let diffuseSrc = '../node_modules/assets-3d/textures/pbr/papermill/diffuse';
+  let diffuseSrc = `${dobj.envSrcUrl}/diffuse`;
   const difUrls = {
     json: `${diffuseSrc}/diffuse.json`,
-    imagePosX: `${diffuseSrc}/diffuse_right`,
-    imageNegX: `${diffuseSrc}/diffuse_left`,
-    imagePosY: `${diffuseSrc}/diffuse_top`,
-    imageNegY: `${diffuseSrc}/diffuse_bottom`,
-    imagePosZ: `${diffuseSrc}/diffuse_front`,
-    imageNegZ: `${diffuseSrc}/diffuse_back`,
+    imagePosX: `${diffuseSrc}/diffuse_right_0.jpg`,
+    imageNegX: `${diffuseSrc}/diffuse_left_0.jpg`,
+    imagePosY: `${diffuseSrc}/diffuse_top_0.jpg`,
+    imageNegY: `${diffuseSrc}/diffuse_bottom_0.jpg`,
+    imagePosZ: `${diffuseSrc}/diffuse_front_0.jpg`,
+    imageNegZ: `${diffuseSrc}/diffuse_back_0.jpg`,
   };
   app.assets.loadUrls('texture-cube', difUrls, (err, cubeMap) => {
     for (let i = 0; i < 5; ++i) {
-      pbrMaterial[i].irradianceMap = cubeMap;
+      pbrMaterial[i].diffuseEnvTexture = cubeMap;
     }
-    cerberusMaterial.irradianceMap = cubeMap;
+    cerberusMaterial.diffuseEnvTexture = cubeMap;
   });
 
-  let specularSrc = '../node_modules/assets-3d/textures/pbr/papermill/specular';
-  const specUrls = {
+  let specularSrc = `${dobj.envSrcUrl}/specular`;
+  let specUrls = {
     json: `${specularSrc}/specular.json`,
-    imagePosX: `${specularSrc}/specular_right`,
-    imageNegX: `${specularSrc}/specular_left`,
-    imagePosY: `${specularSrc}/specular_top`,
-    imageNegY: `${specularSrc}/specular_bottom`,
-    imagePosZ: `${specularSrc}/specular_front`,
-    imageNegZ: `${specularSrc}/specular_back`,
   };
+  for(let i = 0; i < 10; ++i) {
+    let suffix = i === 0 ? '' : `@${i}`;
+    specUrls[`imagePosX${suffix}`] = `${specularSrc}/specular_right_${i}.jpg`;
+    specUrls[`imageNegX${suffix}`] = `${specularSrc}/specular_left_${i}.jpg`;
+    specUrls[`imagePosY${suffix}`] = `${specularSrc}/specular_top_${i}.jpg`;
+    specUrls[`imageNegY${suffix}`] = `${specularSrc}/specular_bottom_${i}.jpg`;
+    specUrls[`imagePosZ${suffix}`] = `${specularSrc}/specular_front_${i}.jpg`;
+    specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_back_${i}.jpg`;
+  }
   app.assets.loadUrls('texture-cube', specUrls, (err, cubeMap) => {
-    let texLod = cubeMap._opts.mipLevel > 1;
     for (let i = 0; i < 5; ++i) {
-      pbrMaterial[i].prefilterMap = cubeMap;
-      pbrMaterial[i].useTexLod = texLod;
+      pbrMaterial[i].specularEnvTexture = cubeMap;
+      pbrMaterial[i].useTexLod = dobj.useTexLod;
     }
-    cerberusMaterial.prefilterMap = cubeMap;
-    cerberusMaterial.useTexLod = texLod;
+    cerberusMaterial.specularEnvTexture = cubeMap;
+    cerberusMaterial.useTexLod = dobj.useTexLod;
   });
 
   const lutUrls = {
@@ -193,9 +204,9 @@
         // model
         let ent = app.createEntity(`node_${i}`);
         vec3.set(ent.lpos,
-            10*i - 20,//randomRange(-20, 20),
-            0,//randomRange(-10, 10),
-            0,//randomRange(-20, 20)
+            10*i - 20,
+            0,
+            0,
           );
           quat.fromEuler(ent.lrot,
             randomRange(0, 360),
@@ -203,9 +214,9 @@
             randomRange(0, 360)
           );
           vec3.set(ent.lscale,
-            3, //randomRange(1, 5),
-            3, //randomRange(1, 5),
-            3 //randomRange(1, 5)
+            3,
+            3,
+            3
           );
         let modelComp = ent.addComp('Model');
         modelComp.mesh = meshSphere;
@@ -241,8 +252,8 @@
       let albedoTex = new gfx.Texture2D(app.device, {
         width: albedoImg.width,
         height: albedoImg.height,
-        wrapS: gfx.WRAP_CLAMP,
-        wrapT: gfx.WRAP_CLAMP,
+        wrapS: gfx.WRAP_REPEAT,
+        wrapT: gfx.WRAP_REPEAT,
         mipmap: true,
         images: [albedoImg]
       });
@@ -255,8 +266,8 @@
       let metallicTex = new gfx.Texture2D(app.device, {
         width: metallicImg.width,
         height: metallicImg.height,
-        wrapS: gfx.WRAP_CLAMP,
-        wrapT: gfx.WRAP_CLAMP,
+        wrapS: gfx.WRAP_REPEAT,
+        wrapT: gfx.WRAP_REPEAT,
         mipmap: true,
         images: [metallicImg]
       });
@@ -269,8 +280,8 @@
       let normalTex = new gfx.Texture2D(app.device, {
         width: normalImg.width,
         height: normalImg.height,
-        wrapS: gfx.WRAP_CLAMP,
-        wrapT: gfx.WRAP_CLAMP,
+        wrapS: gfx.WRAP_REPEAT,
+        wrapT: gfx.WRAP_REPEAT,
         mipmap: true,
         images: [normalImg]
       });
@@ -283,8 +294,8 @@
       let roughnessTex = new gfx.Texture2D(app.device, {
         width: roughnessImg.width,
         height: roughnessImg.height,
-        wrapS: gfx.WRAP_CLAMP,
-        wrapT: gfx.WRAP_CLAMP,
+        wrapS: gfx.WRAP_REPEAT,
+        wrapT: gfx.WRAP_REPEAT,
         mipmap: true,
         images: [roughnessImg]
       });

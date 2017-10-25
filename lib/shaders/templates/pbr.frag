@@ -1,5 +1,9 @@
+{{#useNormalTexture}}
 #extension GL_OES_standard_derivatives : enable
+{{/useNormalTexture}}
+{{#useTexLod}}
 #extension GL_EXT_shader_texture_lod: enable
+{{/useTexLod}}
 
 varying vec3 pos_w;
 uniform vec3 eye;
@@ -15,8 +19,8 @@ const float PI = 3.14159265359;
 {{/useUV0}}
 
 {{#useIBL}}
-  uniform samplerCube irradianceMap;
-  uniform samplerCube prefilterMap;
+  uniform samplerCube diffuseEnvTexture;
+  uniform samplerCube specularEnvTexture;
   uniform sampler2D brdfLUT;
   {{#useTexLod}}
     uniform float maxReflectionLod;
@@ -218,18 +222,18 @@ void main() {
     vec3 kS = F;
     vec3 kD = vec3(1.0) - kS;
     kD *= 1.0 - metallic;
-    vec3 irradiance = textureCube(irradianceMap, N).rgb;
-    vec3 diffuse = irradiance * albedo;
-    // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
+    vec3 diffuseEnv = textureCube(diffuseEnvTexture, N).rgb;
+    vec3 diffuse = diffuseEnv * albedo;
+    // sample both the specularEnvTexture and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     vec3 R = reflect(-V, N);
     {{#useTexLod}}
-      vec3 prefilteredColor = textureCubeLodEXT(prefilterMap, R, roughness * maxReflectionLod).rgb;
+      vec3 specularEnv = textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod).rgb;
     {{/useTexLod}}
     {{^useTexLod}}
-      vec3 prefilteredColor = textureCube(prefilterMap, R).rgb;
+      vec3 specularEnv = textureCube(specularEnvTexture, R).rgb;
     {{/useTexLod}}
     vec2 brdf  = texture2D(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
-    vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+    vec3 specular = specularEnv * (F * brdf.x + brdf.y);
     ambient = (kD * diffuse + specular) * ao;
   {{/useIBL}}
 
