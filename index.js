@@ -20,6 +20,7 @@ import ShaderMaterial from './lib/materials/shader-material';
 import UnlitMaterial from './lib/materials/unlit-material';
 import SpriteMaterial from './lib/materials/sprite-material';
 import MatcapMaterial from './lib/materials/matcap-material';
+import PbrMaterial from './lib/materials/pbr-material';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -72,6 +73,7 @@ let cc = {
   UnlitMaterial,
   SpriteMaterial,
   MatcapMaterial,
+  PbrMaterial,
 
   // framework
   App,
