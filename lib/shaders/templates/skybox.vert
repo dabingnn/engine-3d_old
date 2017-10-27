@@ -17,5 +17,4 @@ void main() {
 
   gl_Position.z = gl_Position.w - 0.00001;
   viewDir = a_position;
-  viewDir.x *= -1.0;
 }
