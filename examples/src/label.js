@@ -25,12 +25,16 @@
     entity.setParent(screen);
     entity.lpos.x = Math.random() * 400;
     entity.lpos.y = Math.random() * 300;
+    let spriteCmp = entity.addComp('Sprite');
+    spriteCmp.width = 192;
+    spriteCmp.height = 128;
     let labelCmp = entity.addComp('Label');
-    labelCmp.width = 256;
+    labelCmp.width = 192;
     labelCmp.height = 128;
-    labelCmp.label = 'Hello,Engine3D!';
+    labelCmp.label = 'Hello,Engine3D!\n  this is the second line';
     labelCmp.color = color4.new(1, 1, 1, 1);
     labelCmps.push(labelCmp);
+    window._testlabel = labelCmp;
   }
 
   let spriteDir = '../node_modules/assets-3d/sprites';
