@@ -5,10 +5,10 @@
 #extension GL_EXT_shader_texture_lod: enable
 {{/useTexLod}}
 
+{{> common.frag}}
+
 varying vec3 pos_w;
 uniform vec3 eye;
-
-const float PI = 3.14159265359;
 
 {{#useNormal}}
   varying vec3 normal_w;
@@ -174,7 +174,7 @@ void main() {
 
   {{#useAlbedoTexture}}
     vec2 albedoUV = uv0 * albedoTiling + albedoOffset;
-    vec3 albedo   = pow(texture2D(albedoTexture, albedoUV).rgb, vec3(2.2));
+    vec3 albedo   = gammaToLinearSpace(texture2D(albedoTexture, albedoUV).rgb);
   {{/useAlbedoTexture}}
 
   {{#useMetalRoughnessTexture}} // if using metalroughness texture
@@ -264,7 +264,7 @@ void main() {
   // HDR tone mapping.
   color = color / (color + vec3(1.0));
   // gamma correction.
-  color = pow(color, vec3(1.0/2.2));
+  color = linearToGammaSpace(color);
 
   {{#useOpacity}}
     gl_FragColor = vec4(color, opacity);
