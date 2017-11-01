@@ -217,23 +217,23 @@ void main() {
 
   // point light (a 'for' loop to accumulate all light sources)
   {{#pointLightSlots}}
-    LightInfo pointLight;
-    pointLight = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color, point_light{{id}}_range);
-    Lo += brdf(pointLight, N, V, F0, albedo, metallic, roughness);
+    LightInfo pointLight{{id}};
+    pointLight{{id}} = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color, point_light{{id}}_range);
+    Lo += brdf(pointLight{{id}}, N, V, F0, albedo, metallic, roughness);
   {{/pointLightSlots}}
 
   // directional light (a 'for' loop to accumulate all light sources)
   {{#directionalLightSlots}}
-    LightInfo directionalLight;
-    directionalLight = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
-    Lo += brdf(directionalLight, N, V, F0, albedo, metallic, roughness);
+    LightInfo directionalLight{{id}};
+    directionalLight{{id}} = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
+    Lo += brdf(directionalLight{{id}}, N, V, F0, albedo, metallic, roughness);
   {{/directionalLightSlots}}
 
   // spot light (a 'for' loop to accumulate all light sources)
   {{#spotLightSlots}}
-    LightInfo spotLight;
-    spotLight = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot, spot_light{{id}}_range);
-    Lo += brdf(spotLight, N, V, F0, albedo, metallic, roughness);
+    LightInfo spotLight{{id}};
+    spotLight{{id}} = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot, spot_light{{id}}_range);
+    Lo += brdf(spotLight{{id}}, N, V, F0, albedo, metallic, roughness);
   {{/spotLightSlots}}
 
   // ambient lighting, will be replaced by IBL if IBL used.
@@ -267,6 +267,10 @@ void main() {
   color = linearToGammaSpace(color);
 
   {{#useOpacity}}
+    {{#useOpacityTexture}}
+      vec2 opacityUV = uv0 * opacityTiling + opacityOffset;
+      float opacity  = texture2D(opacityTexture, opacityUV).r;
+    {{/useOpacityTexture}}
     gl_FragColor = vec4(color, opacity);
   {{/useOpacity}}
   {{^useOpacity}}
