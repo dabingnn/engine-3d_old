@@ -41,7 +41,7 @@ void main () {
       normal = skinMat * normal;
     {{/useSkinning}}
     normal_w = normalMatrix * normal.xyz;
-    normal_w = normalize(normal_w);
+    //normal_w = normalize(normal_w);
   {{/useNormal}}
 
   gl_Position = pos;

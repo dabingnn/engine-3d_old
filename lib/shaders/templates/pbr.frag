@@ -5,10 +5,10 @@
 #extension GL_EXT_shader_texture_lod: enable
 {{/useTexLod}}
 
+{{> common.frag}}
+
 varying vec3 pos_w;
 uniform vec3 eye;
-
-const float PI = 3.14159265359;
 
 {{#useNormal}}
   varying vec3 normal_w;
@@ -62,6 +62,19 @@ uniform float ao;
   uniform sampler2D aoTexture;
 {{/useAoTexture}}
 
+{{#useOpacity}}
+  uniform float opacity;
+  {{#useOpacityTexture}}
+    uniform vec2 opacityTiling;
+    uniform vec2 opacityOffset;
+    uniform sampler2D opacityTexture;
+  {{/useOpacityTexture}}
+{{/useOpacity}}
+
+{{#useAlphaTest}}
+  uniform float alphaTestThreshold;
+{{/useAlphaTest}}
+
 {{#useNormalTexture}}
   uniform vec2 normalMapTiling;
   uniform vec2 normalMapOffset;
@@ -85,8 +98,9 @@ uniform float ao;
 
 {{> pbr_lighting.frag}}
 
-// Cook-Torrance BRDF model (https://learnopengl.com/#!PBR/Theory)
-// D() Normal distribution function
+// Cook-Torrance BRDF model
+// D() Normal distribution function (Trowbridge-Reitz GGX)
+// https://disney-animation.s3.amazonaws.com/library/s2012_pbs_disney_brdf_notes_v2.pdf
 float distributionGGX(vec3 N, vec3 H, float roughness) {
   float a = roughness * roughness;
   float a2 = a * a;
@@ -98,7 +112,8 @@ float distributionGGX(vec3 N, vec3 H, float roughness) {
 
   return nom / denom;
 }
-// G() Geometry function
+// G() Geometry function (Smith's Schlick GGX)
+// https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
 float geometrySchlickGGX(float NdotV, float roughness) {
   float r = (roughness + 1.0);
   float k = (r * r) / 8.0;
@@ -115,7 +130,7 @@ float geometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
 
   return ggx1 * ggx2;
 }
-// F() Fresnel equation
+// F() Fresnel equation (Fresnel-Schlick approximation)
 // Optimized variant (presented by Epic at SIGGRAPH '13)
 // https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
 vec3 fresnelSchlick(float cosTheta, vec3 F0) {
@@ -153,9 +168,13 @@ vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float metal
 
 
 void main() {
+  {{#useAlphaTest}}
+    if(opacity < alphaTestThreshold) discard;
+  {{/useAlphaTest}}
+
   {{#useAlbedoTexture}}
     vec2 albedoUV = uv0 * albedoTiling + albedoOffset;
-    vec3 albedo     = texture2D(albedoTexture, albedoUV).rgb; // without gamma-correction
+    vec3 albedo   = gammaToLinearSpace(texture2D(albedoTexture, albedoUV).rgb);
   {{/useAlbedoTexture}}
 
   {{#useMetalRoughnessTexture}} // if using metalroughness texture
@@ -198,23 +217,23 @@ void main() {
 
   // point light (a 'for' loop to accumulate all light sources)
   {{#pointLightSlots}}
-    LightInfo pointLight;
-    pointLight = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color, point_light{{id}}_range);
-    Lo += brdf(pointLight, N, V, F0, albedo, metallic, roughness);
+    LightInfo pointLight{{id}};
+    pointLight{{id}} = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color, point_light{{id}}_range);
+    Lo += brdf(pointLight{{id}}, N, V, F0, albedo, metallic, roughness);
   {{/pointLightSlots}}
 
   // directional light (a 'for' loop to accumulate all light sources)
   {{#directionalLightSlots}}
-    LightInfo directionalLight;
-    directionalLight = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
-    Lo += brdf(directionalLight, N, V, F0, albedo, metallic, roughness);
+    LightInfo directionalLight{{id}};
+    directionalLight{{id}} = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
+    Lo += brdf(directionalLight{{id}}, N, V, F0, albedo, metallic, roughness);
   {{/directionalLightSlots}}
 
   // spot light (a 'for' loop to accumulate all light sources)
   {{#spotLightSlots}}
-    LightInfo spotLight;
-    spotLight = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot, spot_light{{id}}_range);
-    Lo += brdf(spotLight, N, V, F0, albedo, metallic, roughness);
+    LightInfo spotLight{{id}};
+    spotLight{{id}} = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot, spot_light{{id}}_range);
+    Lo += brdf(spotLight{{id}}, N, V, F0, albedo, metallic, roughness);
   {{/spotLightSlots}}
 
   // ambient lighting, will be replaced by IBL if IBL used.
@@ -244,6 +263,17 @@ void main() {
   vec3 color = ambient + Lo;
   // HDR tone mapping.
   color = color / (color + vec3(1.0));
+  // gamma correction.
+  color = linearToGammaSpace(color);
 
-  gl_FragColor = vec4(color, 1.0);
+  {{#useOpacity}}
+    {{#useOpacityTexture}}
+      vec2 opacityUV = uv0 * opacityTiling + opacityOffset;
+      float opacity  = texture2D(opacityTexture, opacityUV).r;
+    {{/useOpacityTexture}}
+    gl_FragColor = vec4(color, opacity);
+  {{/useOpacity}}
+  {{^useOpacity}}
+    gl_FragColor = vec4(color, 1.0);
+  {{/useOpacity}}
 }
