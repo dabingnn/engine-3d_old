@@ -32,8 +32,8 @@
     // draw line 2d
     for (let i = 0; i < 10; ++i) {
       app.debugger.drawLine2D(
-        vec2.set(start, i * 10, 50),
-        vec2.set(end, i * 10, 150),
+        vec2.set(start, i * 10 + 10, 50),
+        vec2.set(end, i * 10 + 10, 140),
         color3.set(color, 1.0, 0.0, 0.0)
       );
     }
