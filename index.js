@@ -9,9 +9,16 @@ import utils from './lib/misc/utils';
 
 // components
 import ScriptComponent from './lib/framework/script-component';
+import CameraComponent from './lib/framework/camera-component';
+import LightComponent from './lib/framework/light-component';
 import ModelComponent from './lib/framework/model-component';
 import SkinningModelComponent from './lib/framework/skinning-model-component';
 import AnimationComponent from './lib/framework/animation-component';
+import SkyboxComponent from './lib/framework/skybox-component';
+import SpriteComponent from './lib/framework/sprite-component';
+import LabelComponent from './lib/framework/label-component';
+import ScreenComponent from './lib/framework/screen-component';
+import WidgetComponent from './lib/framework/widget-component';
 
 // materials
 import PhongMaterial from './lib/materials/phong-material';
@@ -83,9 +90,16 @@ let cc = {
 
   // components
   ScriptComponent,
+  CameraComponent,
+  LightComponent,
   ModelComponent,
   SkinningModelComponent,
   AnimationComponent,
+  SkyboxComponent,
+  SpriteComponent,
+  LabelComponent,
+  ScreenComponent,
+  WidgetComponent,
 
   // modules
   math,
