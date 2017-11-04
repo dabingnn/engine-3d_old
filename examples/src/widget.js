@@ -4,12 +4,14 @@
 
   const { vec3, quat, color3, color4 } = cc.math;
 
-  let color = color3.new(0, 1, 0);
+  let color = color3.new(0.5, 0.5, 0.0);
   let wmat = vec3.create();
   let a = vec3.create();
   let b = vec3.create();
   let c = vec3.create();
   let d = vec3.create();
+  let wpos = vec3.create();
+  let wrot = quat.create();
 
   // create cube
   app.assets.loadUrls('texture-2d', {
@@ -58,20 +60,30 @@
   let div2 = app.createEntity('div2');
   div2.setParent(div);
   widget = div2.addComp('Widget');
-  widget.pivotX = 0.0;
-  widget.pivotY = 0.0;
-  widget.width = 10.0;
-  widget.height = 10.0;
+  widget.pivotX = 0.5;
+  widget.pivotY = 0.5;
+  widget.width = 40.0;
+  widget.height = 40.0;
   widget.offsetX = 0;
   widget.offsetY = 0;
-  widget.right = 2;
-  widget.alignRight = true;
+  widget.left = 2;
+  widget.alignLeft = true;
   widget.top = 2;
   widget.alignTop = true;
   widget.bottom = 2;
   widget.alignBottom = true;
 
-  let div3 = app.createEntity('div2');
+    let div22 = app.createEntity('div22');
+    div22.setParent(div2);
+    widget = div22.addComp('Widget');
+    widget.pivotX = 0.5;
+    widget.pivotY = 0.5;
+    widget.width = 10.0;
+    widget.height = 10.0;
+    widget.offsetX = 0;
+    widget.offsetY = 10;
+
+  let div3 = app.createEntity('div3');
   div3.setParent(div);
   widget = div3.addComp('Widget');
   widget.pivotX = 0.0;
@@ -80,10 +92,40 @@
   widget.height = 10.0;
   widget.offsetX = 0;
   widget.offsetY = 0;
-  widget.left = 2;
-  widget.alignLeft = true;
   widget.top = 2;
   widget.alignTop = true;
+  widget.left = 44;
+  widget.alignLeft = true;
+  widget.right = 2;
+  widget.alignRight = true;
+
+  let div4 = app.createEntity('div4');
+  div4.setParent(div);
+  widget = div4.addComp('Widget');
+  widget.pivotX = 0.0;
+  widget.pivotY = 0.0;
+  widget.width = 40.0;
+  widget.height = 10.0;
+  widget.offsetX = 0;
+  widget.offsetY = 0;
+  widget.bottom = 2;
+  widget.alignBottom = true;
+  widget.right = 2;
+  widget.alignRight = true;
+
+  let div5 = app.createEntity('div5');
+  div5.setParent(div);
+  widget = div5.addComp('Widget');
+  widget.pivotX = 0.0;
+  widget.pivotY = 0.0;
+  widget.width = 40.0;
+  widget.height = 10.0;
+  widget.offsetX = 0;
+  widget.offsetY = 0;
+  widget.bottom = 2;
+  widget.alignBottom = true;
+  widget.right = 44;
+  widget.alignRight = true;
 
   // debug draw
   app.on('tick', () => {
@@ -128,6 +170,12 @@
       app.debugger.drawLine2D(b, c, color);
       app.debugger.drawLine2D(c, d, color);
       app.debugger.drawLine2D(d, a, color);
+
+      app.debugger.drawAxes2D(
+        ent.getWorldPos(wpos),
+        ent.getWorldRot(wrot),
+        5.0
+      );
     });
   });
 
