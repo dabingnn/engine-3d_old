@@ -2,7 +2,7 @@
   const app = window.app;
   const cc = window.cc;
 
-  const { vec3, color3, quat, randomRange } = cc.math;
+  const { vec2, vec3, color3, quat, randomRange } = cc.math;
 
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, 10, 10, 10);
@@ -28,6 +28,28 @@
         );
       }
     }
+
+    // draw line 2d
+    for (let i = 0; i < 10; ++i) {
+      app.debugger.drawLine2D(
+        vec2.set(start, i * 10 + 10, 50),
+        vec2.set(end, i * 10 + 10, 140),
+        color3.set(color, 1.0, 0.0, 0.0)
+      );
+    }
+    for (let i = 0; i < 10; ++i) {
+      app.debugger.drawLine2D(
+        vec2.set(start, 10, i * 10 + 50),
+        vec2.set(end, 100, i * 10 + 50),
+        color3.set(color, 0.0, 0.0, 1.0)
+      );
+    }
+
+    // rect
+    app.debugger.drawRect(
+      10, 10, 30, 30,
+      color3.set(color, 0.0, 1.0, 0.0)
+    );
 
     app.debugger.drawAxes(
       vec3.set(start, 0, 0.01, 0),
