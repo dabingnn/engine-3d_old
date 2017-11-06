@@ -5,7 +5,7 @@
   screen.addComp('Screen');
   let spriteCmps = [];
 
-  for (let i = 0; i < 3000; ++i) {
+  for (let i = 0; i < 10000; ++i) {
     let entity = app.createEntity(`sprite${i}`);
     entity.setParent(screen);
     entity.lpos.x = Math.random() * 800;
@@ -16,7 +16,7 @@
     spriteCmps.push(spriteCmp);
   }
 
-  for (let i = 0; i < 1; ++i) {
+  for (let i = 0; i < 2; ++i) {
     let entity = app.createEntity(`sprite${i}`);
     entity.setParent(screen);
     entity.lpos.x = Math.random() * 800;
