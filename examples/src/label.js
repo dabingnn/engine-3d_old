@@ -28,11 +28,12 @@
     let spriteCmp = entity.addComp('Sprite');
     spriteCmp.width = 192;
     spriteCmp.height = 128;
+    spriteCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     let labelCmp = entity.addComp('Label');
     labelCmp.width = 192;
     labelCmp.height = 128;
     labelCmp.label = 'Hello,Engine3D!\n  this is the second line';
-    labelCmp.color = color4.new(1, 1, 1, 1);
+    labelCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     labelCmps.push(labelCmp);
     window._testlabel = labelCmp;
   }
