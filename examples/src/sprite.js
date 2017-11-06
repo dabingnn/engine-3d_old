@@ -1,6 +1,7 @@
 (() => {
   const app = window.app;
   const cc = window.cc;
+  const { color4 } = cc.math;
   let screen = app.createEntity('screen');
   screen.addComp('Screen');
   let spriteCmps = [];
@@ -13,6 +14,7 @@
     let spriteCmp = entity.addComp('Sprite');
     spriteCmp.width = 64;
     spriteCmp.height = 32;
+    spriteCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     spriteCmps.push(spriteCmp);
   }
 
