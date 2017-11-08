@@ -9,8 +9,11 @@
   for (let i = 0; i < 1; ++i) {
     let entity = app.createEntity(`sprite${i}`);
     entity.setParent(screen);
-    entity.lpos.x = Math.random() * 400;
-    entity.lpos.y = Math.random() * 300;
+    let widget = entity.addComp('Widget');
+    widget.width = 128;
+    widget.height = 64;
+    widget._offsetX = Math.random() * 400;
+    widget._offsetY = Math.random() * 300;
     let spriteCmp = entity.addComp('Sprite');
     spriteCmp.width = 128;
     spriteCmp.height = 64;
@@ -23,8 +26,11 @@
   for (let i = 0; i < 1; ++i) {
     let entity = app.createEntity(`label${i}`);
     entity.setParent(screen);
-    entity.lpos.x = Math.random() * 400;
-    entity.lpos.y = Math.random() * 300;
+    let widget = entity.addComp('Widget');
+    widget.width = 192;
+    widget.height = 128;
+    widget._offsetX = Math.random() * 400;
+    widget._offsetY = Math.random() * 300;
     let spriteCmp = entity.addComp('Sprite');
     spriteCmp.width = 192;
     spriteCmp.height = 128;
