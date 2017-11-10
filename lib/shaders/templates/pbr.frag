@@ -7,6 +7,10 @@
 
 {{> common.frag}}
 
+{{#useShadowMap}}
+  {{> shadow_mapping.frag}}
+{{/useShadowMap}}
+
 varying vec3 pos_w;
 uniform vec3 eye;
 
@@ -259,6 +263,12 @@ void main() {
     vec3 specular = specularEnv * (F * brdf.x + brdf.y);
     ambient = (kD * diffuse + specular) * ao;
   {{/useIBL}}
+
+  {{#useShadowMap}}
+    float shadow = calculateShadow(pos_lightspace);
+    Lo = Lo * (1.0 - shadow);
+    //Lo = texture2D(shadowMap, uv0).rgb;
+  {{/useShadowMap}}
 
   vec3 color = ambient + Lo;
   // HDR tone mapping.
