@@ -9,8 +9,11 @@
   for (let i = 0; i < 1; ++i) {
     let entity = app.createEntity(`sprite${i}`);
     entity.setParent(screen);
-    entity.lpos.x = Math.random() * 400;
-    entity.lpos.y = Math.random() * 300;
+    let widget = entity.addComp('Widget');
+    widget.width = 128;
+    widget.height = 64;
+    widget._offsetX = Math.random() * 400;
+    widget._offsetY = Math.random() * 300;
     let spriteCmp = entity.addComp('Sprite');
     spriteCmp.width = 128;
     spriteCmp.height = 64;
@@ -21,21 +24,42 @@
 
   let labelCmps = [];
   for (let i = 0; i < 1; ++i) {
-    let entity = app.createEntity(`label${i}`);
+    let entity = app.createEntity(`label_big${i}`);
     entity.setParent(screen);
-    entity.lpos.x = Math.random() * 400;
-    entity.lpos.y = Math.random() * 300;
+    let widget = entity.addComp('Widget');
+    widget.width = 512;
+    widget.height = 512;
+    widget._offsetX = 0;
+    widget._offsetY = 0;
     let spriteCmp = entity.addComp('Sprite');
-    spriteCmp.width = 192;
-    spriteCmp.height = 128;
+    spriteCmp.width = 512;
+    spriteCmp.height = 512;
     spriteCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     let labelCmp = entity.addComp('Label');
-    labelCmp.width = 192;
-    labelCmp.height = 128;
-    labelCmp.label = 'Hello,Engine3D!\n  this is the second line';
+    labelCmp.width = 512;
+    labelCmp.height = 512;
+    labelCmp.label = 'Hello,Engine3D!\n  this is the second line. \ this is the third line. \n this is the four line.\n' + 
+    'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.\n' + 
+    'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.';
     labelCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     labelCmps.push(labelCmp);
     window._testlabel = labelCmp;
+  }
+
+  for (let i = 0; i < 100; ++i) {
+    let entity = app.createEntity(`label_small${i}`);
+    entity.setParent(screen);
+    let widget = entity.addComp('Widget');
+    widget.width = 512;
+    widget.height = 128;
+    widget._offsetX = Math.random() * 600 + 500;
+    widget._offsetY = Math.random() * 300;
+    let labelCmp = entity.addComp('Label');
+    labelCmp.width = 512;
+    labelCmp.height = 128;
+    labelCmp.label = 'Hello,Engine3D!';
+    labelCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
+    labelCmps.push(labelCmp);
   }
 
   let spriteDir = '../node_modules/assets-3d/sprites';
