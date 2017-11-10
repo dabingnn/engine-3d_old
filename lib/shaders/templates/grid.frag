@@ -1,6 +1,9 @@
 varying vec2 uv0;
-varying vec4 wpos;
-varying vec3 wnormal;
+varying vec4 pos_w;
+
+{{#useWorldPos}}
+  varying vec3 normal_w;
+{{/useWorldPos}}
 
 uniform vec2 tiling;
 
@@ -27,18 +30,20 @@ void main () {
   vec2 uvSub2 = uv * subPattern2Tiling + subPattern2Offset;
 
   {{#useWorldPos}}
-    if (abs(wnormal.x)>0.5) { // side
-      uvBase = (wpos.zy * tiling * basePatternTiling) + basePatternOffset;
-      uvSub = (wpos.zy * tiling * subPatternTiling) + subPatternOffset;
-      uvSub2 = (wpos.zy * tiling * subPattern2Tiling) + subPattern2Offset;
-    } else if (abs(wnormal.z)>0.5) { // front
-      uvBase = (wpos.xy * tiling * basePatternTiling) + basePatternOffset;
-      uvSub = (wpos.xy * tiling * subPatternTiling) + subPatternOffset;
-      uvSub2 = (wpos.xy * tiling * subPattern2Tiling) + subPattern2Offset;
+    vec3 dnormal_w = normalize(normal_w);
+
+    if (abs(dnormal_w.x)>0.5) { // side
+      uvBase = (pos_w.zy * tiling * basePatternTiling) + basePatternOffset;
+      uvSub = (pos_w.zy * tiling * subPatternTiling) + subPatternOffset;
+      uvSub2 = (pos_w.zy * tiling * subPattern2Tiling) + subPattern2Offset;
+    } else if (abs(dnormal_w.z)>0.5) { // front
+      uvBase = (pos_w.xy * tiling * basePatternTiling) + basePatternOffset;
+      uvSub = (pos_w.xy * tiling * subPatternTiling) + subPatternOffset;
+      uvSub2 = (pos_w.xy * tiling * subPattern2Tiling) + subPattern2Offset;
     } else { // top
-      uvBase = (wpos.xz * tiling * basePatternTiling) + basePatternOffset;
-      uvSub = (wpos.xz * tiling * subPatternTiling) + subPatternOffset;
-      uvSub2 = (wpos.xz * tiling * subPattern2Tiling) + subPattern2Offset;
+      uvBase = (pos_w.xz * tiling * basePatternTiling) + basePatternOffset;
+      uvSub = (pos_w.xz * tiling * subPatternTiling) + subPatternOffset;
+      uvSub2 = (pos_w.xz * tiling * subPattern2Tiling) + subPattern2Offset;
     }
   {{/useWorldPos}}
 
