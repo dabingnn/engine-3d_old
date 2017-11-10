@@ -20,6 +20,11 @@ uniform mat3 normalMatrix;
   {{> skinning.vert}}
 {{/useSkinning}}
 
+{{#useShadowMap}}
+  uniform mat4 lightSpaceMatrix;
+  varying vec4 pos_lightspace;
+{{/useShadowMap}}
+
 void main () {
   vec4 pos = vec4(a_position, 1);
 
@@ -43,6 +48,10 @@ void main () {
     normal_w = normalMatrix * normal.xyz;
     //normal_w = normalize(normal_w);
   {{/useNormal}}
+
+  {{#useShadowMap}}
+    pos_lightspace = lightSpaceMatrix * vec4(pos_w, 1.0);
+  {{/useShadowMap}}
 
   gl_Position = pos;
 }
