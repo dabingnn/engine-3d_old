@@ -26,6 +26,8 @@ profile
 *.log
 
 # project files
+lib/shaders/chunks/index.js
+lib/shaders/templates/index.js
 examples/test-assets
 node_modules
 bower_components
