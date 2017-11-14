@@ -15,8 +15,6 @@
     widget._offsetX = Math.random() * 800;
     widget._offsetY = Math.random() * 600;
     let spriteCmp = entity.addComp('Sprite');
-    spriteCmp.width = 64;
-    spriteCmp.height = 32;
     spriteCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     spriteCmps.push(spriteCmp);
   }
@@ -30,8 +28,6 @@
     widget._offsetX = Math.random() * 800;
     widget._offsetY = Math.random() * 600;
     let spriteCmp = entity.addComp('Sprite');
-    spriteCmp.width = 512;
-    spriteCmp.height = 256;
     spriteCmp.type = cc.SPRITE_SLICED;
     spriteCmps.push(spriteCmp);
   }
