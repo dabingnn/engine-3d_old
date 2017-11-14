@@ -15,15 +15,13 @@
     widget._offsetX = Math.random() * 400;
     widget._offsetY = Math.random() * 300;
     let spriteCmp = entity.addComp('Sprite');
-    spriteCmp.width = 128;
-    spriteCmp.height = 64;
     // spriteCmp.type = cc.SPRITE_SLICED;
     // spriteCmp.color = color4.new(1, 0, 0, 1);
     spriteCmps.push(spriteCmp);
   }
 
   let labelCmps = [];
-  for (let i = 0; i < 1; ++i) {
+  for (let i = 0; i < 100; ++i) {
     let entity = app.createEntity(`label_big${i}`);
     entity.setParent(screen);
     let widget = entity.addComp('Widget');
@@ -31,17 +29,17 @@
     widget.height = 512;
     widget._offsetX = 0;
     widget._offsetY = 0;
+    widget.pivotX = 0;
+    widget.pivotY = 0;
     let spriteCmp = entity.addComp('Sprite');
-    spriteCmp.width = 512;
-    spriteCmp.height = 512;
     spriteCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     let labelCmp = entity.addComp('Label');
-    labelCmp.width = 512;
-    labelCmp.height = 512;
     labelCmp.label = 'Hello,Engine3D!\n  this is the second line. \ this is the third line. \n this is the four line.\n' + 
     'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.\n' + 
     'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.';
     labelCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
+    labelCmp.horizontalAlign = cc.TEXT_ALIGN_CENTER;
+    labelCmp.verticalAlign = cc.TEXT_ALIGN_CENTER;
     labelCmps.push(labelCmp);
     window._testlabel = labelCmp;
   }
@@ -55,8 +53,6 @@
     widget._offsetX = Math.random() * 600 + 500;
     widget._offsetY = Math.random() * 300;
     let labelCmp = entity.addComp('Label');
-    labelCmp.width = 512;
-    labelCmp.height = 128;
     labelCmp.label = 'Hello,Engine3D!';
     labelCmp.color = color4.new(Math.random(), Math.random(), Math.random(), 1.0);
     labelCmps.push(labelCmp);
