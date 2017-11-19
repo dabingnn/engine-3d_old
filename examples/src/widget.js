@@ -2,10 +2,10 @@
   const app = window.app;
   const cc = window.cc;
 
-  const { vec3, quat, color3, color4 } = cc.math;
+  const { vec3, mat4, quat, color3, color4 } = cc.math;
 
   let color = color3.new(0.5, 0.5, 0.0);
-  let wmat = vec3.create();
+  let wmat = mat4.create();
   let a = vec3.create();
   let b = vec3.create();
   let c = vec3.create();
@@ -139,7 +139,7 @@
         -widget.pivotY * widget._calcHeight,
         0.0
       );
-      vec3.transformMat4(a, a, wmat),
+      vec3.transformMat4(a, a, wmat);
 
       // b
       vec3.set(b,
@@ -147,7 +147,7 @@
         (1.0 - widget.pivotY) * widget._calcHeight,
         0.0
       );
-      vec3.transformMat4(b, b, wmat),
+      vec3.transformMat4(b, b, wmat);
 
       // c
       vec3.set(c,
@@ -155,7 +155,7 @@
         (1.0 - widget.pivotY) * widget._calcHeight,
         0.0
       );
-      vec3.transformMat4(c, c, wmat),
+      vec3.transformMat4(c, c, wmat);
 
       // d
       vec3.set(d,
@@ -163,7 +163,7 @@
         -widget.pivotY * widget._calcHeight,
         0.0
       );
-      vec3.transformMat4(d, d, wmat),
+      vec3.transformMat4(d, d, wmat);
 
       // rect
       app.debugger.drawLine2D(a, b, color);

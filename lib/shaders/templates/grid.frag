@@ -23,6 +23,8 @@ uniform sampler2D subPattern2;
 uniform vec2 subPattern2Tiling;
 uniform vec2 subPattern2Offset;
 
+// {{> common.frag}}
+
 void main () {
   vec2 uv = uv0 * tiling;
   vec2 uvBase = uv * basePatternTiling + basePatternOffset;
@@ -51,15 +53,22 @@ void main () {
   vec4 texColSub = texture2D(subPattern, uvSub);
   vec4 texColSub2 = texture2D(subPattern2, uvSub2);
 
-  vec4 color = vec4(baseColorWhite,1) * texColBase + vec4(baseColorBlack,1) * (vec4(1)-texColBase);
+  // texColBase.rgb = gammaToLinearSpace(texColBase.rgb);
+  // texColSub.rgb = gammaToLinearSpace(texColSub.rgb);
+  // texColSub2.rgb = gammaToLinearSpace(texColSub2.rgb);
+
+  vec4 color = vec4(baseColorWhite,1) * texColBase + vec4(baseColorBlack,1) * (1.0-texColBase);
   color =
-    color * (vec4(1) - texColSub) +
+    color * (1.0 - texColSub) +
     (subPatternColor * subPatternColor.a + color * (1.0-subPatternColor.a)) * texColSub
     ;
   color =
-    color * (vec4(1) - texColSub2) +
+    color * (1.0 - texColSub2) +
     (subPatternColor2 * subPatternColor2.a + color * (1.0-subPatternColor2.a)) * texColSub2
     ;
+
+  // gamma correction.
+  // color.rgb = linearToGammaSpace(color.rgb);
 
   gl_FragColor = color;
 }
