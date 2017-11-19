@@ -402,9 +402,9 @@ estree-walker@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.3.1.tgz#e6b1a51cf7292524e7237c312e5fe6660c1ce1aa"
 
-event-sys@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/event-sys/-/event-sys-1.0.4.tgz#3f83ab5ad58ea5b9b8f10329b64b30192b625d13"
+event-sys@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/event-sys/-/event-sys-1.1.0.tgz#eaf64361acf885a7e6a8eae3e7cc3acfc9aed23a"
 
 eventemitter3@1.x.x:
   version "1.2.0"
@@ -568,6 +568,13 @@ gauge@~2.7.3:
     string-width "^1.0.1"
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
+
+geom-utils@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/geom-utils/-/geom-utils-1.0.0.tgz#419b48980b9278fee5d6ea57b24b37ea2f4e22e7"
+  dependencies:
+    memop "^1.6.0"
+    vmath "^1.4.7"
 
 get-caller-file@^1.0.1:
   version "1.0.2"
