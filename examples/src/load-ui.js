@@ -1,0 +1,51 @@
+(() => {
+  const { cc, app, dgui } = window;
+  const { resl, path } = cc;
+
+  let dobj = {
+    baseUrl: '/Users/johnny/gamedev-js/u3d-exporter/out',
+    scene: 'scene'
+  };
+
+  dgui.remember(dobj);
+  dgui.add(dobj, 'baseUrl');
+  dgui.add(dobj, 'scene');
+
+  resl({
+    manifest: {
+      assetInfos: {
+        type: 'text',
+        parser: JSON.parse,
+        src: `${dobj.baseUrl}/assets.json`
+      },
+
+      scene: {
+        type: 'text',
+        parser: JSON.parse,
+        src: `${dobj.baseUrl}/${dobj.scene}.json`
+      },
+    },
+
+    onDone(data) {
+      const sceneJson = data.scene;
+      const assetInfos = data.assetInfos;
+
+      for (let uuid in assetInfos) {
+        let info = assetInfos[uuid];
+        for (let item in info.urls) {
+          info.urls[item] = path.join(dobj.baseUrl, info.urls[item]);
+        }
+
+        app.assets.registerAsset(uuid, info);
+      }
+
+      cc.utils.parseLevel(
+        app,
+        sceneJson,
+        (err, level) => {
+          app.loadLevel(level);
+        }
+      );
+    }
+  });
+})();
