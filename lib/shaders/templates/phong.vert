@@ -20,6 +20,14 @@ varying vec3 pos_w;
   {{> skinning.vert}}
 {{/useSkinning}}
 
+{{#useShadowMap}}
+  uniform mat4 lightViewProjMatrix;
+  uniform float minDepth;
+  uniform float maxDepth;
+  varying vec4 pos_lightspace;
+  varying float vDepth;
+{{/useShadowMap}}
+
 void main () {
   vec4 pos = vec4(a_position, 1);
 
@@ -43,6 +51,11 @@ void main () {
     normal_w = normalMatrix * normal.xyz;
     normal_w = normalize(normal_w);
   {{/useNormal}}
+
+  {{#useShadowMap}}
+    pos_lightspace = lightViewProjMatrix * vec4(pos_w, 1.0);
+    vDepth = (pos_lightspace.z + minDepth) / (minDepth + maxDepth);
+  {{/useShadowMap}}
 
   gl_Position = pos;
 }

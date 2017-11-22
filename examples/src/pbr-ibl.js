@@ -313,7 +313,7 @@
     let ent = app.createEntity('model');
     quat.fromEuler(ent.lrot, 90, 0, 0);
     vec3.set(ent.lscale, 10, 10, 10);
-    vec3.set(ent.lpos,8,8,0);
+    vec3.set(ent.lpos,8 - 15,8,0);
     let modelComp = ent.addComp('Model');
     modelComp.mesh = mesh;
     modelComp.material = cerberusMaterial;
@@ -322,12 +322,15 @@
   // light
   for (let index = 0; index < 1; ++index) {
     let entity = app.createEntity(`light_${index}`);
-    vec3.set(entity.lpos, 0, 10, 0);
+    vec3.set(entity.lpos, 0, 100, 0);
+    quat.fromEuler(entity.lrot, -90, 0, 0);
     let light = entity.addComp('Light');
-    light.setType(cc.renderer.LIGHT_POINT);
-    light.setColor(1.0, 1.0, 1.0);
-    light.setIntensity(5.0);
-    light.setRange(1000.0);
+    //light.type = cc.renderer.LIGHT_SPOT;
+    light.type = cc.renderer.LIGHT_DIRECTIONAL;
+    light.color = color3.new(1.0, 1.0, 1.0);
+    light.intensity = 3.0;
+    light.range = 1000.0;
+    light.castShadow = true;
   }
   // let light1 = app.createEntity('light1');
   // quat.fromEuler(light1.lrot, -45, 135, 0);
@@ -341,5 +344,20 @@
   vec3.set(camEnt.lpos, 10, 10, 10);
   camEnt.lookAt(vec3.new(0, 0, 0));
   camEnt.addComp('Camera');
+
+  let meshBox = cc.utils.createMesh(app, cc.primitives.box(1, 1, 1, {
+    widthSegments: 1,
+    heightSegments: 1,
+    lengthSegments: 1,
+  }));
+  let material = new cc.PbrMaterial();
+  material.roughness = 0.5;
+  material.metallic = 1.0;
+  let plane = app.createEntity(`node_2`);
+  vec3.set(plane.lpos, 0, -8, 0);
+  vec3.set(plane.lscale, 100, 1, 100);
+  let modelPlane = plane.addComp('Model');
+  modelPlane.mesh = meshBox;
+  modelPlane.material = material;
 
 })();
