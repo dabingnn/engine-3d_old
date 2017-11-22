@@ -2,7 +2,7 @@
   const app = window.app;
   const cc = window.cc;
 
-  const { vec3, color4, quat, randomRange } = cc.math;
+  const { vec3, color3, quat, randomRange } = cc.math;
 
   // create mesh
   let meshBox = cc.utils.createMesh(app, cc.primitives.box(1, 1, 1, {
@@ -46,7 +46,7 @@
   }
 
   let plane = app.createEntity(`node_2`);
-  vec3.set(plane.lpos, 0, 0, 0);
+  vec3.set(plane.lpos, 0, -2, 0);
   vec3.set(plane.lscale, 100, 1, 100);
   let modelPlane = plane.addComp('Model');
   modelPlane.mesh = meshBox;
@@ -54,15 +54,14 @@
 
   let light1 = app.createEntity('light1');
   quat.fromEuler(light1.lrot, -90, 0, 0);
-  vec3.set(light1.lpos, 1, 30, 0);
-  //light1.lookAt(vec3.new(0, 0, 0));
+  vec3.set(light1.lpos, 1, 50, 0);
 
   let lightComp1 = light1.addComp('Light');
-  //lightComp1.setType(cc.renderer.LIGHT_SPOT);
-  lightComp1.setType(cc.renderer.LIGHT_DIRECTIONAL);
-  lightComp1.setColor(1, 1, 1);
-  lightComp1.setIntensity(10);
-  lightComp1.setRange(1000.0);
-  lightComp1.setCastShadow(true);
+  //lightComp1.type = cc.renderer.LIGHT_SPOT;
+  lightComp1.type = cc.renderer.LIGHT_DIRECTIONAL;
+  lightComp1.color = color3.new(1, 1, 1);
+  lightComp1.intensity = 5;
+  lightComp1.range = 1000.0;
+  lightComp1.castShadow = true;
 
 })();

@@ -265,9 +265,8 @@ void main() {
   {{/useIBL}}
 
   {{#useShadowMap}}
-    float shadow = calculateShadow(pos_lightspace);
-    Lo = Lo * (1.0 - shadow);
-    //Lo = texture2D(shadowMap, uv0).rgb;
+    float shadow = computeShadowESM();
+    Lo = Lo * shadow;
   {{/useShadowMap}}
 
   vec3 color = ambient + Lo;
