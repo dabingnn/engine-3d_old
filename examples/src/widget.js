@@ -12,6 +12,29 @@
   let wpos = vec3.create();
   let wrot = quat.create();
 
+  let curHover = null;
+  let curMousedown = null;
+
+  function _debugEvent (ent) {
+    ent.on('mouseenter', () => {
+      curHover = ent;
+    });
+    ent.on('mouseleave', () => {
+      curHover = null;
+      curMousedown = null;
+    });
+    ent.on('mousedown', () => {
+      if (curHover === ent) {
+        curMousedown = ent;
+      }
+    });
+    ent.on('mouseup', () => {
+      if (curHover === ent) {
+        curMousedown = null;
+      }
+    });
+  }
+
   // create cube
   app.assets.loadUrls('texture-2d', {
     image: '../node_modules/assets-3d/textures/uv_checker_02.jpg'
@@ -111,17 +134,34 @@
   widget.alignRight(44);
   widget.alignBottom(2);
 
+  _debugEvent(div);
+  _debugEvent(div2);
+  _debugEvent(div22);
+  _debugEvent(div3);
+  _debugEvent(div33);
+  _debugEvent(div4);
+  _debugEvent(div5);
+
   // debug draw
+  let lineColor = color3.new(0.5, 0.5, 0.0);
   app.on('tick', () => {
     cc.utils.walk(screen, ent => {
       let widget = ent.getComp('Widget');
       widget.getWorldCorners(a,b,c,d);
 
+      if (ent === curMousedown) {
+        color3.set(lineColor, 0, 1, 0);
+      } else if (ent === curHover) {
+        color3.set(lineColor, 1, 0, 0);
+      } else {
+        color3.copy(lineColor, color);
+      }
+
       // rect
-      app.debugger.drawLine2D(a, b, color);
-      app.debugger.drawLine2D(b, c, color);
-      app.debugger.drawLine2D(c, d, color);
-      app.debugger.drawLine2D(d, a, color);
+      app.debugger.drawLine2D(a, b, lineColor);
+      app.debugger.drawLine2D(b, c, lineColor);
+      app.debugger.drawLine2D(c, d, lineColor);
+      app.debugger.drawLine2D(d, a, lineColor);
 
       app.debugger.drawAxes2D(
         ent.getWorldPos(wpos),
