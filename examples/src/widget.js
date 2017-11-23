@@ -49,64 +49,67 @@
   let div = app.createEntity('div');
   div.setParent(screen);
   let widget = div.addComp('Widget');
-  widget.pivotX = 0.5;
-  widget.pivotY = 0.0;
+  widget.setPivot(0.5, 0.0);
+  widget.setSize(200, 50);
   widget.setAnchors(0, 0, 1, 0);
-  widget.setMargin(10, 10, 10, 10);
-  widget.setRect(10, 5, 200, 50);
+  widget.alignLeft(10);
+  widget.alignRight(10);
+  widget.alignBottom(5);
 
   let div2 = app.createEntity('div2');
   div2.setParent(div);
   widget = div2.addComp('Widget');
-  widget.pivotX = 0.5;
-  widget.pivotY = 0.5;
+  widget.setPivot(0.5, 0.5);
+  widget.setSize(40, 40);
   widget.setAnchors(0, 0, 0, 1);
-  widget.setMargin(2, 2, 2, 2);
-  widget.setRect(22, 0, 40, 40);
+  widget.alignLeft(2);
+  widget.alignTop(2);
+  widget.alignBottom(2);
 
     let div22 = app.createEntity('div22');
     div22.setParent(div2);
     widget = div22.addComp('Widget');
-    widget.pivotX = 0.5;
-    widget.pivotY = 0.5;
-    widget.setRect(0, 10, 10, 10);
+    widget.setPivot(0.5, 0.5);
+    widget.setSize(10, 10);
+    widget.setOffset(0, 10);
 
   let div3 = app.createEntity('div3');
   div3.setParent(div);
   widget = div3.addComp('Widget');
-  widget.pivotX = 0.0;
-  widget.pivotY = 1.0;
+  widget.setPivot(0, 1);
+  widget.setSize(10, 20);
   widget.setAnchors(0, 1, 1, 1);
-  widget.setMargin(44, 2, 2, 2);
-  widget.setRect(0, -2, 10, 10);
+  widget.alignTop(2);
+  widget.alignLeft(44);
+  widget.alignRight(2);
 
-  // let div4 = app.createEntity('div4');
-  // div4.setParent(div);
-  // widget = div4.addComp('Widget');
-  // widget.pivotX = 0.0;
-  // widget.pivotY = 0.0;
-  // widget.width = 40.0;
-  // widget.height = 10.0;
-  // widget.offsetX = 0;
-  // widget.offsetY = 0;
-  // widget.bottom = 2;
-  // widget.alignBottom = true;
-  // widget.right = 2;
-  // widget.alignRight = true;
+    let div33 = app.createEntity('div33');
+    div33.setParent(div3);
+    widget = div33.addComp('Widget');
+    widget.setPivot(0, 1);
+    widget.setSize(10, 20);
+    widget.setAnchors(0, 0, 0.3, 1);
+    widget.alignLeft(10);
+    widget.alignTop(5);
+    widget.alignBottom(5);
 
-  // let div5 = app.createEntity('div5');
-  // div5.setParent(div);
-  // widget = div5.addComp('Widget');
-  // widget.pivotX = 0.0;
-  // widget.pivotY = 0.0;
-  // widget.width = 40.0;
-  // widget.height = 10.0;
-  // widget.offsetX = 0;
-  // widget.offsetY = 0;
-  // widget.bottom = 2;
-  // widget.alignBottom = true;
-  // widget.right = 44;
-  // widget.alignRight = true;
+  let div4 = app.createEntity('div4');
+  div4.setParent(div);
+  widget = div4.addComp('Widget');
+  widget.setPivot(0, 0);
+  widget.setSize(40, 10);
+  widget.setAnchors(1, 0, 1, 0);
+  widget.alignRight(2);
+  widget.alignBottom(2);
+
+  let div5 = app.createEntity('div5');
+  div5.setParent(div);
+  widget = div5.addComp('Widget');
+  widget.setPivot(0, 0);
+  widget.setSize(40, 10);
+  widget.setAnchors(1, 0, 1, 0);
+  widget.alignRight(44);
+  widget.alignBottom(2);
 
   // debug draw
   app.on('tick', () => {
@@ -127,5 +130,4 @@
       );
     });
   });
-
 })();
