@@ -37,7 +37,7 @@
     "event-sys": "^1.1.0",
     "geom-utils": "^1.0.0",
     "gfx.js": "^1.2.11",
-    "input.js": "^1.2.1",
+    "input.js": "^1.2.2",
     "memop": "^1.6.0",
     "primitives.js": "^1.1.0",
     "renderer.js": "^1.5.2",
