@@ -5,7 +5,6 @@
   const { vec3, mat4, quat, color3, color4 } = cc.math;
 
   let color = color3.new(0.5, 0.5, 0.0);
-  let wmat = mat4.create();
   let a = vec3.create();
   let b = vec3.create();
   let c = vec3.create();
@@ -50,120 +49,73 @@
   let div = app.createEntity('div');
   div.setParent(screen);
   let widget = div.addComp('Widget');
-  widget.pivotX = 0.0;
-  widget.pivotY = 0.0;
-  widget.width = 200.0;
-  widget.height = 50.0;
-  widget.offsetX = 10;
-  widget.offsetY = 10;
+  widget.setPivot(0.5, 0.0);
+  widget.setSize(200, 50);
+  widget.setAnchors(0, 0, 1, 0);
+  widget.alignLeft(10);
+  widget.alignRight(10);
+  widget.alignBottom(5);
 
   let div2 = app.createEntity('div2');
   div2.setParent(div);
   widget = div2.addComp('Widget');
-  widget.pivotX = 0.5;
-  widget.pivotY = 0.5;
-  widget.width = 40.0;
-  widget.height = 40.0;
-  widget.offsetX = 0;
-  widget.offsetY = 0;
-  widget.left = 2;
-  widget.alignLeft = true;
-  widget.top = 2;
-  widget.alignTop = true;
-  widget.bottom = 2;
-  widget.alignBottom = true;
+  widget.setPivot(0.5, 0.5);
+  widget.setSize(40, 40);
+  widget.setAnchors(0, 0, 0, 1);
+  widget.alignLeft(2);
+  widget.alignTop(2);
+  widget.alignBottom(2);
 
     let div22 = app.createEntity('div22');
     div22.setParent(div2);
     widget = div22.addComp('Widget');
-    widget.pivotX = 0.5;
-    widget.pivotY = 0.5;
-    widget.width = 10.0;
-    widget.height = 10.0;
-    widget.offsetX = 0;
-    widget.offsetY = 10;
+    widget.setPivot(0.5, 0.5);
+    widget.setSize(10, 10);
+    widget.setOffset(0, 10);
 
   let div3 = app.createEntity('div3');
   div3.setParent(div);
   widget = div3.addComp('Widget');
-  widget.pivotX = 0.0;
-  widget.pivotY = 0.0;
-  widget.width = 10.0;
-  widget.height = 10.0;
-  widget.offsetX = 0;
-  widget.offsetY = 0;
-  widget.top = 2;
-  widget.alignTop = true;
-  widget.left = 44;
-  widget.alignLeft = true;
-  widget.right = 2;
-  widget.alignRight = true;
+  widget.setPivot(0, 1);
+  widget.setSize(10, 20);
+  widget.setAnchors(0, 1, 1, 1);
+  widget.alignTop(2);
+  widget.alignLeft(44);
+  widget.alignRight(2);
+
+    let div33 = app.createEntity('div33');
+    div33.setParent(div3);
+    widget = div33.addComp('Widget');
+    widget.setPivot(0, 1);
+    widget.setSize(10, 20);
+    widget.setAnchors(0, 0, 0.3, 1);
+    widget.alignLeft(10);
+    widget.alignTop(5);
+    widget.alignBottom(5);
 
   let div4 = app.createEntity('div4');
   div4.setParent(div);
   widget = div4.addComp('Widget');
-  widget.pivotX = 0.0;
-  widget.pivotY = 0.0;
-  widget.width = 40.0;
-  widget.height = 10.0;
-  widget.offsetX = 0;
-  widget.offsetY = 0;
-  widget.bottom = 2;
-  widget.alignBottom = true;
-  widget.right = 2;
-  widget.alignRight = true;
+  widget.setPivot(0, 0);
+  widget.setSize(40, 10);
+  widget.setAnchors(1, 0, 1, 0);
+  widget.alignRight(2);
+  widget.alignBottom(2);
 
   let div5 = app.createEntity('div5');
   div5.setParent(div);
   widget = div5.addComp('Widget');
-  widget.pivotX = 0.0;
-  widget.pivotY = 0.0;
-  widget.width = 40.0;
-  widget.height = 10.0;
-  widget.offsetX = 0;
-  widget.offsetY = 0;
-  widget.bottom = 2;
-  widget.alignBottom = true;
-  widget.right = 44;
-  widget.alignRight = true;
+  widget.setPivot(0, 0);
+  widget.setSize(40, 10);
+  widget.setAnchors(1, 0, 1, 0);
+  widget.alignRight(44);
+  widget.alignBottom(2);
 
   // debug draw
   app.on('tick', () => {
     cc.utils.walk(screen, ent => {
-      ent.getWorldMatrix(wmat);
       let widget = ent.getComp('Widget');
-
-      // a
-      vec3.set(a,
-        -widget.pivotX * widget._calcWidth,
-        -widget.pivotY * widget._calcHeight,
-        0.0
-      );
-      vec3.transformMat4(a, a, wmat);
-
-      // b
-      vec3.set(b,
-        -widget.pivotX * widget._calcWidth,
-        (1.0 - widget.pivotY) * widget._calcHeight,
-        0.0
-      );
-      vec3.transformMat4(b, b, wmat);
-
-      // c
-      vec3.set(c,
-        (1.0 - widget.pivotX) * widget._calcWidth,
-        (1.0 - widget.pivotY) * widget._calcHeight,
-        0.0
-      );
-      vec3.transformMat4(c, c, wmat);
-
-      // d
-      vec3.set(d,
-        (1.0 - widget.pivotX) * widget._calcWidth,
-        -widget.pivotY * widget._calcHeight,
-        0.0
-      );
-      vec3.transformMat4(d, d, wmat);
+      widget.getWorldCorners(a,b,c,d);
 
       // rect
       app.debugger.drawLine2D(a, b, color);
@@ -178,5 +130,4 @@
       );
     });
   });
-
 })();
