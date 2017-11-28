@@ -12,6 +12,7 @@
     let widget = entity.addComp('Widget');
     widget.width = 64;
     widget.height = 32;
+    widget.setAnchors(0, 0, 0, 0);
     widget._offsetX = Math.random() * 800;
     widget._offsetY = Math.random() * 600;
     let spriteCmp = entity.addComp('Sprite');
@@ -25,6 +26,7 @@
     let widget = entity.addComp('Widget');
     widget.width = 512;
     widget.height = 256;
+    widget.setAnchors(0, 0, 0, 0);
     widget._offsetX = Math.random() * 800;
     widget._offsetY = Math.random() * 600;
     let spriteCmp = entity.addComp('Sprite');
