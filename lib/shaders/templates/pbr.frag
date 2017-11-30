@@ -265,11 +265,15 @@ void main() {
   {{/useIBL}}
 
   {{#useShadowMap}}
-    float shadow = computeShadowESM();
-    Lo = Lo * shadow;
+    float shadow = 1.0;
+    {{#shadowLightSlots}}
+      shadow *= computeShadowESM(shadowMap_{{id}}, pos_lightspace_{{id}}, vDepth_{{id}}, depthScale_{{id}}, darkness_{{id}}, frustumEdgeFalloff_{{id}});
+    {{/shadowLightSlots}}
+    vec3 color = (ambient + Lo) * shadow;
   {{/useShadowMap}}
-
-  vec3 color = ambient + Lo;
+  {{^useShadowMap}}
+    vec3 color = ambient + Lo;
+  {{/useShadowMap}}
   // HDR tone mapping.
   color = color / (color + vec3(1.0));
   // gamma correction.

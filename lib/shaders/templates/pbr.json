@@ -16,5 +16,6 @@
   "useShadowMap": true,
   "directionalLightSlots": [],
   "pointLightSlots": [],
-  "spotLightSlots": []
+  "spotLightSlots": [],
+  "shadowLightSlots": []
 }

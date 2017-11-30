@@ -21,12 +21,14 @@ uniform mat3 normalMatrix;
 {{/useSkinning}}
 
 {{#useShadowMap}}
-  uniform mat4 lightViewProjMatrix;
-  //uniform vec2 depthValues;
-  uniform float minDepth;
-  uniform float maxDepth;
-  varying vec4 pos_lightspace;
-  varying float vDepth;
+  {{#shadowLightSlots}}
+    uniform mat4 lightViewProjMatrix_{{id}};
+    //uniform vec2 depthValues;
+    uniform float minDepth_{{id}};
+    uniform float maxDepth_{{id}};
+    varying vec4 pos_lightspace_{{id}};
+    varying float vDepth_{{id}};
+  {{/shadowLightSlots}}
 {{/useShadowMap}}
 
 void main () {
@@ -54,8 +56,10 @@ void main () {
   {{/useNormal}}
 
   {{#useShadowMap}}
-    pos_lightspace = lightViewProjMatrix * vec4(pos_w, 1.0);
-    vDepth = (pos_lightspace.z + minDepth) / (minDepth + maxDepth);
+    {{#shadowLightSlots}}
+      pos_lightspace_{{id}} = lightViewProjMatrix_{{id}} * vec4(pos_w, 1.0);
+      vDepth_{{id}} = (pos_lightspace_{{id}}.z + minDepth_{{id}}) / (minDepth_{{id}} + maxDepth_{{id}});
+    {{/shadowLightSlots}}
   {{/useShadowMap}}
 
   gl_Position = pos;
