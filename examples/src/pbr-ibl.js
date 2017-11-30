@@ -330,7 +330,7 @@
     light.color = color3.new(1.0, 1.0, 1.0);
     light.intensity = 3.0;
     light.range = 1000.0;
-    light.castShadow = true;
+    light.shadowType = cc.renderer.SHADOW_SOFT;
   }
   // let light1 = app.createEntity('light1');
   // quat.fromEuler(light1.lrot, -45, 135, 0);
