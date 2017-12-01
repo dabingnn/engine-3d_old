@@ -7,6 +7,10 @@
 
 {{> common.frag}}
 
+{{#useShadowMap}}
+  {{> shadow_mapping.frag}}
+{{/useShadowMap}}
+
 varying vec3 pos_w;
 uniform vec3 eye;
 
@@ -260,7 +264,16 @@ void main() {
     ambient = (kD * diffuse + specular) * ao;
   {{/useIBL}}
 
-  vec3 color = ambient + Lo;
+  {{#useShadowMap}}
+    float shadow = 1.0;
+    {{#shadowLightSlots}}
+      shadow *= computeShadowESM(shadowMap_{{id}}, pos_lightspace_{{id}}, vDepth_{{id}}, depthScale_{{id}}, darkness_{{id}}, frustumEdgeFalloff_{{id}});
+    {{/shadowLightSlots}}
+    vec3 color = (ambient + Lo) * shadow;
+  {{/useShadowMap}}
+  {{^useShadowMap}}
+    vec3 color = ambient + Lo;
+  {{/useShadowMap}}
   // HDR tone mapping.
   color = color / (color + vec3(1.0));
   // gamma correction.

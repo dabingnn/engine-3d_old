@@ -2,6 +2,8 @@
 #extension GL_OES_standard_derivatives : enable
 {{/useNormalTexture}}
 
+{{> common.frag}}
+
 {{#useUV0}}
   varying vec2 uv0;
 {{/useUV0}}
@@ -9,6 +11,10 @@
 {{#useNormal}}
   varying vec3 normal_w;
 {{/useNormal}}
+
+{{#useShadowMap}}
+  {{> shadow_mapping.frag}}
+{{/useShadowMap}}
 
 varying vec3 pos_w;
 uniform vec3 eye;
@@ -168,5 +174,11 @@ void main () {
   phongLighting = getPhongLighting(normal, pos_w, viewDirection, mtl.glossiness);
   phongLighting.diffuse += sceneAmbient;
 
-  gl_FragColor = composePhongShading(phongLighting, mtl);
+  {{#useShadowMap}}
+    float shadow = computeShadowESM();//calculateShadow(pos_lightspace);
+    gl_FragColor = composePhongShading(phongLighting, mtl) * shadow;
+  {{/useShadowMap}}
+  {{^useShadowMap}}
+    gl_FragColor = composePhongShading(phongLighting, mtl);
+  {{/useShadowMap}}
 }

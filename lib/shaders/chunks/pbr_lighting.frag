@@ -51,7 +51,7 @@ LightInfo computePointLighting(
 }
 
 // spot light
-LightInfo computeSpotLight(
+LightInfo computeSpotLighting(
   vec3 lightPosition,
   vec3 positionW,
   vec3 lightDirection,
