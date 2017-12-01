@@ -12,7 +12,7 @@
   quat.fromEuler(light0.lrot, -45, 135, 0);
 
   let lightComp0 = light0.addComp('Light');
-  lightComp0.setColor(1, 1, 1);
+  lightComp0.color = color3.new(1, 1, 1);
 
   let Cerberus = {
     gltf: {

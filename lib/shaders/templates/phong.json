@@ -15,5 +15,6 @@
   "useNormalTexture": false,
   "useOpacity": false,
   "useOpacityTexture": false,
-  "useAlphaTest": false
+  "useAlphaTest": false,
+  "useShadowMap": true
 }
