@@ -6,6 +6,7 @@ import resl from './lib/misc/resl';
 import path from './lib/misc/path';
 import async from './lib/misc/async';
 import utils from './lib/misc/utils';
+import extensions from './lib/misc/extensions';
 
 // components
 import ScriptComponent from './lib/framework/script-component';
@@ -54,8 +55,7 @@ import renderer from 'renderer.js';
 import gfx from 'gfx.js';
 import * as memop from 'memop';
 
-//
-let cc = {
+export default Object.assign({
   // misc
   Node,
 
@@ -111,11 +111,9 @@ let cc = {
   gfx,
 
   // misc
+  extensions,
   utils,
   resl,
   path,
   async,
-};
-Object.assign(cc, enums);
-
-export default cc;
+}, enums);
