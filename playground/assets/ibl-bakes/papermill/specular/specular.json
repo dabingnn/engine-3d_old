@@ -1,0 +1,9 @@
+{
+  "type": "cube",
+  "anisotropy": 1,
+  "minFilter": "linear",
+  "magFilter": "linear",
+  "mipFilter": "nearest",
+  "wrapS": "repeat",
+  "wrapT": "repeat"
+}
