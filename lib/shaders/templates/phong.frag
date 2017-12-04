@@ -1,20 +1,20 @@
-{{#useNormalTexture}}
+#ifdef useNormalTexture
 #extension GL_OES_standard_derivatives : enable
-{{/useNormalTexture}}
+#endif
 
-{{> common.frag}}
+#include <common.frag>
 
-{{#useUV0}}
+#ifdef useUV0
   varying vec2 uv0;
-{{/useUV0}}
+#endif
 
-{{#useNormal}}
+#ifdef useNormal
   varying vec3 normal_w;
-{{/useNormal}}
+#endif
 
-{{#useShadowMap}}
-  {{> shadow_mapping.frag}}
-{{/useShadowMap}}
+#ifdef useShadowMap
+  #include <shadow-mapping.frag>
+#endif
 
 varying vec3 pos_w;
 uniform vec3 eye;
@@ -28,46 +28,46 @@ struct phongMaterial
   float opacity;
 };
 
-{{#useDiffuse}}
+#ifdef useDiffuse
   uniform vec3 diffuseColor;
-  {{#useDiffuseTexture}}
+  #ifdef useDiffuseTexture
     uniform vec2 diffuseTiling;
     uniform vec2 diffuseOffset;
     uniform sampler2D diffuseTexture;
-  {{/useDiffuseTexture}}
-{{/useDiffuse}}
+  #endif
+#endif
 
 uniform vec3 sceneAmbient;
 
-{{#useEmissive}}
+#ifdef useEmissive
   uniform vec3 emissiveColor;
-  {{#useEmissiveTexture}}
+  #ifdef useEmissiveTexture
     uniform vec2 emissiveTiling;
     uniform vec2 emissiveOffset;
     uniform sampler2D emissiveTexture;
-  {{/useEmissiveTexture}}
-{{/useEmissive}}
+  #endif
+#endif
 
-{{#useSpecular}}
+#ifdef useSpecular
   uniform vec3 specularColor;
   uniform float glossiness;
-  {{#useSpecularTexture}}
+  #ifdef useSpecularTexture
     uniform vec2 specularTiling;
     uniform vec2 specularOffset;
     uniform sampler2D specularTexture;
-  {{/useSpecularTexture}}
-{{/useSpecular}}
+  #endif
+#endif
 
-{{#useOpacity}}
+#ifdef useOpacity
   uniform float opacity;
-  {{#useOpacityTexture}}
+  #ifdef useOpacityTexture
     uniform vec2 opacityTiling;
     uniform vec2 opacityOffset;
     uniform sampler2D opacityTexture;
-  {{/useOpacityTexture}}
-{{/useOpacity}}
+  #endif
+#endif
 
-{{#useNormalTexture}}
+#ifdef useNormalTexture
   uniform vec2 normalMapTiling;
   uniform vec2 normalMapOffset;
   uniform sampler2D normalTexture;
@@ -86,11 +86,11 @@ uniform vec3 sceneAmbient;
     mat3 tsn = mat3( S, T, N );
     return normalize( tsn * mapN );
   }
-{{/useNormalTexture}}
+#endif
 
-{{#useAlphaTest}}
+#ifdef useAlphaTest
   uniform float alphaTestThreshold;
-{{/useAlphaTest}}
+#endif
 
 phongMaterial getPhongMaterial() {
   phongMaterial result;
@@ -100,43 +100,43 @@ phongMaterial getPhongMaterial() {
   result.glossiness = 10.0;
   result.opacity = 1.0;
   vec2 uv;
-  {{#useDiffuse}}
+  #ifdef useDiffuse
     result.diffuse = diffuseColor;
-    {{#useDiffuseTexture}}
+    #ifdef useDiffuseTexture
       uv = uv0 * diffuseTiling + diffuseOffset;
       result.diffuse = result.diffuse * texture2D(diffuseTexture, uv).rgb;
-    {{/useDiffuseTexture}}
-  {{/useDiffuse}}
+    #endif
+  #endif
 
-  {{#useEmissive}}
+  #ifdef useEmissive
     result.emissive = emissiveColor;
-    {{#useEmissiveTexture}}
+    #ifdef useEmissiveTexture
       uv = uv0 * emissiveTiling + emissiveOffset;
       result.emissive = result.emissive * texture2D(emissiveTexture, uv).rgb;
-    {{/useEmissiveTexture}}
-  {{/useEmissive}}
+    #endif
+  #endif
 
-  {{#useSpecular}}
+  #ifdef useSpecular
     result.specular = specularColor;
     result.glossiness = glossiness;
-    {{#useSpecularTexture}}
+    #ifdef useSpecularTexture
       uv = uv0 * specularTiling + specularOffset;
       result.specular = result.specular * texture2D(specularTexture, uv).rgb;
-    {{/useSpecularTexture}}
-  {{/useSpecular}}
+    #endif
+  #endif
 
-  {{#useOpacity}}
+  #ifdef useOpacity
     result.opacity = opacity;
-    {{#useOpacityTexture}}
+    #ifdef useOpacityTexture
       uv = uv0 * opacityTiling + opacityOffset;
       result.opacity = result.opacity * texture2D(opacityTexture, uv).a;
-    {{/useOpacityTexture}}
-  {{/useOpacity}}
+    #endif
+  #endif
 
   return result;
 }
 
-{{> phong_lighting.frag}}
+#include <phong-lighting.frag>
 
 vec4 composePhongShading(LightInfo lighting, phongMaterial mtl)
 {
@@ -145,17 +145,17 @@ vec4 composePhongShading(LightInfo lighting, phongMaterial mtl)
   //diffuse is always calculated
   o.xyz = lighting.diffuse * mtl.diffuse;
 
-  {{#useEmissive}}
+  #ifdef useEmissive
     o.xyz += mtl.emissive;
-  {{/useEmissive}}
+  #endif
 
-  {{#useSpecular}}
+  #ifdef useSpecular
     o.xyz += lighting.specular * mtl.specular;
-  {{/useSpecular}}
+  #endif
 
-  {{#useOpacity}}
+  #ifdef useOpacity
     o.a = mtl.opacity;
-  {{/useOpacity}}
+  #endif
   return o;
 }
 
@@ -164,21 +164,25 @@ void main () {
   vec3 viewDirection = normalize(eye - pos_w);
 
   phongMaterial mtl = getPhongMaterial();
-  {{#useAlphaTest}}
+  #ifdef useAlphaTest
     if(mtl.opacity < alphaTestThreshold) discard;
-  {{/useAlphaTest}}
+  #endif
   vec3 normal = normal_w;
-  {{#useNormalTexture}}
+  #ifdef useNormalTexture
     normal = getNormal(pos_w, normal);
-  {{/useNormalTexture}}
+  #endif
   phongLighting = getPhongLighting(normal, pos_w, viewDirection, mtl.glossiness);
   phongLighting.diffuse += sceneAmbient;
 
-  {{#useShadowMap}}
-    float shadow = computeShadowESM();//calculateShadow(pos_lightspace);
+  #ifdef useShadowMap
+    float shadow = 1.0;
+    #if NUM_SHADOW_LIGHTS > 0
+      #pragma for id in range(0, NUM_SHADOW_LIGHTS)
+        shadow *= computeShadowESM(shadowMap_{{id}}, pos_lightspace_{{id}}, vDepth_{{id}}, depthScale_{{id}}, darkness_{{id}}, frustumEdgeFalloff_{{id}});
+      #pragma endFor
+    #endif
     gl_FragColor = composePhongShading(phongLighting, mtl) * shadow;
-  {{/useShadowMap}}
-  {{^useShadowMap}}
+  #else
     gl_FragColor = composePhongShading(phongLighting, mtl);
-  {{/useShadowMap}}
+  #endif
 }

@@ -14,8 +14,8 @@
   "useOpacityTexture": false,
   "useAlphaTest": false,
   "useShadowMap": true,
-  "directionalLightSlots": [],
-  "pointLightSlots": [],
-  "spotLightSlots": [],
-  "shadowLightSlots": []
+  "directionalLightNum": 0,
+  "pointLightNum": 0,
+  "spotLightNum": 0,
+  "shadowLightNum": 0
 }
