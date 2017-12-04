@@ -5,7 +5,6 @@ uniform mat4 lightViewProjMatrix;
 uniform float minDepth;
 uniform float maxDepth;
 uniform float bias;
-
 varying float vDepth;
 
 void main() {

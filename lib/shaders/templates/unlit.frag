@@ -1,22 +1,22 @@
-{{#useTexture}}
+#ifdef useTexture
   uniform sampler2D mainTexture;
   varying vec2 uv0;
-{{/useTexture}}
+#endif
 
-{{#useColor}}
+#ifdef useColor
   uniform vec4 color;
-{{/useColor}}
+#endif
 
 void main () {
   vec4 o = vec4(1, 1, 1, 1);
 
-  {{#useTexture}}
+  #ifdef useTexture
     o *= texture2D(mainTexture, uv0);
-  {{/useTexture}}
+  #endif
 
-  {{#useColor}}
+  #ifdef useColor
     o *= color;
-  {{/useColor}}
+  #endif
 
   gl_FragColor = o;
 }

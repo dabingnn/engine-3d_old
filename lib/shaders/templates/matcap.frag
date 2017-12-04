@@ -5,17 +5,21 @@ uniform float colorFactor;
 uniform vec4 color;
 varying vec2 matcapUV;
 
-{{#useMainTex}}
+//{{#useMainTex}}
+#ifdef useMainTex
   varying vec2 uv0;
   uniform sampler2D mainTex;
-{{/useMainTex}}
+#endif
+//{{/useMainTex}}
 
 void main(void){
   vec4 col = vec4(1, 1, 1, 1);
   col *= color;
-  {{#useMainTex}}
+  //{{#useMainTex}}
+  #ifdef useMainTex
     col *= texture2D(mainTex, uv0);
-  {{/useMainTex}}
+  #endif
+  //{{/useMainTex}}
   vec4 matcapColor = texture2D(matcapTex, matcapUV);
   gl_FragColor = col * colorFactor + matcapColor * (1.0 - colorFactor);
 }
