@@ -1,7 +1,7 @@
 varying vec2 uv0;
 varying vec4 pos_w;
 
-#ifdef USE_WORLDPOS
+#ifdef USE_WORLD_POS
   varying vec3 normal_w;
 #endif
 
@@ -29,7 +29,7 @@ void main () {
   vec2 uvSub = uv * subPatternTiling + subPatternOffset;
   vec2 uvSub2 = uv * subPattern2Tiling + subPattern2Offset;
 
-  #ifdef USE_WORLDPOS
+  #ifdef USE_WORLD_POS
     vec3 dnormal_w = normalize(normal_w);
 
     if (abs(dnormal_w.x)>0.5) { // side
