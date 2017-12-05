@@ -1,5 +1,5 @@
 {
-  "useTexture": {},
-  "useColor": {},
-  "useSkinning": {}
+  "USE_TEXTURE": false,
+  "USE_COLOR": false,
+  "USE_SKINNING": false
 }

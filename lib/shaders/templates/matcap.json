@@ -1,4 +1,4 @@
 {
-  "useMainTex": true,
-  "useSkinning":true
+  "USE_MAINTEX": true,
+  "USE_SKINNING":true
 }
