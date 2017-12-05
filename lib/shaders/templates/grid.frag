@@ -1,9 +1,9 @@
 varying vec2 uv0;
 varying vec4 pos_w;
 
-{{#useWorldPos}}
+#ifdef useWorldPos
   varying vec3 normal_w;
-{{/useWorldPos}}
+#endif
 
 uniform vec2 tiling;
 
@@ -23,15 +23,13 @@ uniform sampler2D subPattern2;
 uniform vec2 subPattern2Tiling;
 uniform vec2 subPattern2Offset;
 
-// {{> common.frag}}
-
 void main () {
   vec2 uv = uv0 * tiling;
   vec2 uvBase = uv * basePatternTiling + basePatternOffset;
   vec2 uvSub = uv * subPatternTiling + subPatternOffset;
   vec2 uvSub2 = uv * subPattern2Tiling + subPattern2Offset;
 
-  {{#useWorldPos}}
+  #ifdef useWorldPos
     vec3 dnormal_w = normalize(normal_w);
 
     if (abs(dnormal_w.x)>0.5) { // side
@@ -47,7 +45,7 @@ void main () {
       uvSub = (pos_w.xz * tiling * subPatternTiling) + subPatternOffset;
       uvSub2 = (pos_w.xz * tiling * subPattern2Tiling) + subPattern2Offset;
     }
-  {{/useWorldPos}}
+  #endif
 
   vec4 texColBase = texture2D(basePattern, uvBase);
   vec4 texColSub = texture2D(subPattern, uvSub);

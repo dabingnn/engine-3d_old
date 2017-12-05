@@ -1,85 +1,86 @@
-{{#useNormalTexture}}
+#ifdef useNormalTexture
 #extension GL_OES_standard_derivatives : enable
-{{/useNormalTexture}}
-{{#useTexLod}}
+#endif
+
+#ifdef useTexLod
 #extension GL_EXT_shader_texture_lod: enable
-{{/useTexLod}}
+#endif
 
-{{> common.frag}}
+#include <common.frag>
 
-{{#useShadowMap}}
-  {{> shadow_mapping.frag}}
-{{/useShadowMap}}
+#ifdef useShadowMap
+  #include <shadow-mapping.frag>
+#endif
 
 varying vec3 pos_w;
 uniform vec3 eye;
 
-{{#useNormal}}
+#ifdef useNormal
   varying vec3 normal_w;
-{{/useNormal}}
+#endif
 
-{{#useUV0}}
+#ifdef useUV0
   varying vec2 uv0;
-{{/useUV0}}
+#endif
 
-{{#useIBL}}
+#ifdef useIBL
   uniform samplerCube diffuseEnvTexture;
   uniform samplerCube specularEnvTexture;
   uniform sampler2D brdfLUT;
-  {{#useTexLod}}
+  #ifdef useTexLod
     uniform float maxReflectionLod;
-  {{/useTexLod}}
-{{/useIBL}}
+  #endif
+#endif
 
 // material parameters
 uniform vec3 albedo;
-{{#useAlbedoTexture}}
+#ifdef useAlbedoTexture
   uniform vec2 albedoTiling;
   uniform vec2 albedoOffset;
   uniform sampler2D albedoTexture;
-{{/useAlbedoTexture}}
+#endif
 
-{{#useMetalRoughnessTexture}}
+#ifdef useMetalRoughnessTexture
   uniform vec2 metalRoughnessTiling;
   uniform vec2 metalRoughnessOffset;
   uniform vec2 sampler2D metalRoughnessTexture;
-{{/useMetalRoughnessTexture}}
+#endif
 
 uniform float metallic;
-{{#useMetallicTexture}}
+#ifdef useMetallicTexture
   uniform vec2 metallicTiling;
   uniform vec2 metallicOffset;
   uniform sampler2D metallicTexture;
-{{/useMetallicTexture}}
+#endif
 
 uniform float roughness;
-{{#useRoughnessTexture}}
+#ifdef useRoughnessTexture
   uniform vec2 roughnessTiling;
   uniform vec2 roughnessOffset;
   uniform sampler2D roughnessTexture;
-{{/useRoughnessTexture}}
+#endif
 
 uniform float ao;
-{{#useAoTexture}}
+#ifdef useAoTexture
   uniform vec2 aoTiling;
   uniform vec2 aoOffset;
   uniform sampler2D aoTexture;
-{{/useAoTexture}}
+#endif
 
-{{#useOpacity}}
+#ifdef useOpacity
   uniform float opacity;
-  {{#useOpacityTexture}}
+  #ifdef useOpacityTexture
     uniform vec2 opacityTiling;
     uniform vec2 opacityOffset;
     uniform sampler2D opacityTexture;
-  {{/useOpacityTexture}}
-{{/useOpacity}}
+  #endif
+#endif
 
-{{#useAlphaTest}}
+#ifdef useAlphaTest
   uniform float alphaTestThreshold;
-{{/useAlphaTest}}
+#endif
 
-{{#useNormalTexture}}
+#ifdef useNormalTexture
   uniform vec2 normalMapTiling;
   uniform vec2 normalMapOffset;
   uniform sampler2D normalTexture;
@@ -98,9 +99,9 @@ uniform float ao;
 
     return normalize(TBN * tangentNormal);
   }
-{{/useNormalTexture}}
+#endif
 
-{{> pbr_lighting.frag}}
+#include <pbr-lighting.frag>
 
 // Cook-Torrance BRDF model
 // D() Normal distribution function (Trowbridge-Reitz GGX)
@@ -172,43 +173,42 @@ vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float metal
 
 
 void main() {
-  {{#useAlphaTest}}
+  #ifdef useAlphaTest
     if(opacity < alphaTestThreshold) discard;
-  {{/useAlphaTest}}
+  #endif
 
-  {{#useAlbedoTexture}}
+  #ifdef useAlbedoTexture
     vec2 albedoUV = uv0 * albedoTiling + albedoOffset;
     vec3 albedo   = gammaToLinearSpace(texture2D(albedoTexture, albedoUV).rgb);
-  {{/useAlbedoTexture}}
+  #endif
 
-  {{#useMetalRoughnessTexture}} // if using metalroughness texture
+  #ifdef useMetalRoughnessTexture
     // Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
     // This layout intentionally reserves the 'r' channel for (optional) occlusion map data
     vec2 metalRoughnessUV = uv0 * metalRoughnessTiling + metalRoughnessOffset;
     vec3 metalRoughness = texture2D(metalRoughnessTexture, metalRoughnessUV).rgb;
     float metallic = metalRoughness.b;
     float roughness = metalRoughness.g;
-  {{/useMetalRoughnessTexture}}
-  {{^useMetalRoughnessTexture}} // else using separate metallic and roughness texture
-    {{#useMetallicTexture}}
+  #else
+    #ifdef useMetallicTexture
       vec2 metallicUV = uv0 * metallicTiling + metallicOffset;
       float metallic  = texture2D(metallicTexture, metallicUV).r;
-    {{/useMetallicTexture}}
-    {{#useRoughnessTexture}}
+    #endif
+    #ifdef useRoughnessTexture
       vec2 roughnessUV = uv0 * roughnessTiling + roughnessOffset;
       float roughness  = texture2D(roughnessTexture, roughnessUV).r;
-    {{/useRoughnessTexture}}
-  {{/useMetalRoughnessTexture}}
+    #endif
+  #endif
 
-  {{#useAoTexture}}
+  #ifdef useAoTexture
     vec2 aoUV = uv0 * aoTiling + aoOffset;
     float ao  = texture2D(aoTexture, aoUV).r;
-  {{/useAoTexture}}
+  #endif
 
   vec3 N = normalize(normal_w);
-  {{#useNormalTexture}}
+  #ifdef useNormalTexture
     N = getNormalFromTexture();
-  {{/useNormalTexture}}
+  #endif
   vec3 V = normalize(eye - pos_w);
 
   // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0
@@ -220,30 +220,34 @@ void main() {
   vec3 Lo = vec3(0.0);
 
   // point light (a 'for' loop to accumulate all light sources)
-  {{#pointLightSlots}}
-    LightInfo pointLight{{id}};
-    pointLight{{id}} = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color, point_light{{id}}_range);
-    Lo += brdf(pointLight{{id}}, N, V, F0, albedo, metallic, roughness);
-  {{/pointLightSlots}}
+  #if NUM_POINT_LIGHTS > 0
+    #pragma for id in range(0, NUM_POINT_LIGHTS)
+      LightInfo pointLight{{id}};
+      pointLight{{id}} = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color, point_light{{id}}_range);
+      Lo += brdf(pointLight{{id}}, N, V, F0, albedo, metallic, roughness);
+    #pragma endFor
+  #endif
 
-  // directional light (a 'for' loop to accumulate all light sources)
-  {{#directionalLightSlots}}
-    LightInfo directionalLight{{id}};
-    directionalLight{{id}} = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
-    Lo += brdf(directionalLight{{id}}, N, V, F0, albedo, metallic, roughness);
-  {{/directionalLightSlots}}
+  #if NUM_DIR_LIGHTS > 0
+    #pragma for id in range(0, NUM_DIR_LIGHTS)
+      LightInfo directionalLight{{id}};
+      directionalLight{{id}} = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
+      Lo += brdf(directionalLight{{id}}, N, V, F0, albedo, metallic, roughness);
+    #pragma endFor
+  #endif
 
-  // spot light (a 'for' loop to accumulate all light sources)
-  {{#spotLightSlots}}
-    LightInfo spotLight{{id}};
-    spotLight{{id}} = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot, spot_light{{id}}_range);
-    Lo += brdf(spotLight{{id}}, N, V, F0, albedo, metallic, roughness);
-  {{/spotLightSlots}}
+  #if NUM_SPOT_LIGHTS > 0
+    #pragma for id in range(0, NUM_SPOT_LIGHTS)
+      LightInfo spotLight{{id}};
+      spotLight{{id}} = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot, spot_light{{id}}_range);
+      Lo += brdf(spotLight{{id}}, N, V, F0, albedo, metallic, roughness);
+    #pragma endFor
+  #endif
 
   // ambient lighting, will be replaced by IBL if IBL used.
   vec3 ambient = vec3(0.03) * albedo * ao;
 
-  {{#useIBL}}
+  #ifdef useIBL
     // generate ambient when using IBL.
     vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
     vec3 kS = F;
@@ -253,40 +257,40 @@ void main() {
     vec3 diffuse = diffuseEnv * albedo;
     // sample both the specularEnvTexture and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     vec3 R = reflect(-V, N);
-    {{#useTexLod}}
+    #ifdef useTexLod
       vec3 specularEnv = textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod).rgb;
-    {{/useTexLod}}
-    {{^useTexLod}}
+    #else
       vec3 specularEnv = textureCube(specularEnvTexture, R).rgb;
-    {{/useTexLod}}
+    #endif
     vec2 brdf  = texture2D(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = specularEnv * (F * brdf.x + brdf.y);
     ambient = (kD * diffuse + specular) * ao;
-  {{/useIBL}}
+  #endif
 
-  {{#useShadowMap}}
+  #ifdef useShadowMap
     float shadow = 1.0;
-    {{#shadowLightSlots}}
-      shadow *= computeShadowESM(shadowMap_{{id}}, pos_lightspace_{{id}}, vDepth_{{id}}, depthScale_{{id}}, darkness_{{id}}, frustumEdgeFalloff_{{id}});
-    {{/shadowLightSlots}}
+    #if NUM_SHADOW_LIGHTS > 0
+      #pragma for id in range(0, NUM_SHADOW_LIGHTS)
+        shadow *= computeShadowESM(shadowMap_{{id}}, pos_lightspace_{{id}}, vDepth_{{id}}, depthScale_{{id}}, darkness_{{id}}, frustumEdgeFalloff_{{id}});
+      #pragma endFor
+    #endif
     vec3 color = (ambient + Lo) * shadow;
-  {{/useShadowMap}}
-  {{^useShadowMap}}
+  #else
     vec3 color = ambient + Lo;
-  {{/useShadowMap}}
+  #endif
+
   // HDR tone mapping.
   color = color / (color + vec3(1.0));
   // gamma correction.
   color = linearToGammaSpace(color);
 
-  {{#useOpacity}}
-    {{#useOpacityTexture}}
+  #ifdef useOpacity
+    #ifdef useOpacityTexture
       vec2 opacityUV = uv0 * opacityTiling + opacityOffset;
       float opacity  = texture2D(opacityTexture, opacityUV).r;
-    {{/useOpacityTexture}}
+    #endif
     gl_FragColor = vec4(color, opacity);
-  {{/useOpacity}}
-  {{^useOpacity}}
+  #else
     gl_FragColor = vec4(color, 1.0);
-  {{/useOpacity}}
+  #endif
 }
