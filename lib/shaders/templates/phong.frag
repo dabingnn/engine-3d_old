@@ -1,18 +1,18 @@
-#ifdef useNormalTexture
+#ifdef USE_NORMALTEXTURE
 #extension GL_OES_standard_derivatives : enable
 #endif
 
 #include <common.frag>
 
-#ifdef useUV0
+#if defined(USE_NORMALTEXTURE) || defined(USE_DIFFUSETEXTURE) || defined(USE_EMISSIVETEXTURE) || defined(USE_OPACITYTEXTURE)
   varying vec2 uv0;
 #endif
 
-#ifdef useNormal
+#ifdef USE_NORMAL
   varying vec3 normal_w;
 #endif
 
-#ifdef useShadowMap
+#ifdef USE_SHADOWMAP
   #include <shadow-mapping.frag>
 #endif
 
@@ -28,9 +28,9 @@ struct phongMaterial
   float opacity;
 };
 
-#ifdef useDiffuse
+#ifdef USE_DIFFUSE
   uniform vec3 diffuseColor;
-  #ifdef useDiffuseTexture
+  #ifdef USE_DIFFUSETEXTURE
     uniform vec2 diffuseTiling;
     uniform vec2 diffuseOffset;
     uniform sampler2D diffuseTexture;
@@ -39,35 +39,35 @@ struct phongMaterial
 
 uniform vec3 sceneAmbient;
 
-#ifdef useEmissive
+#ifdef USE_EMISSIVE
   uniform vec3 emissiveColor;
-  #ifdef useEmissiveTexture
+  #ifdef USE_EMISSIVETEXTURE
     uniform vec2 emissiveTiling;
     uniform vec2 emissiveOffset;
     uniform sampler2D emissiveTexture;
   #endif
 #endif
 
-#ifdef useSpecular
+#ifdef USE_SPECULAR
   uniform vec3 specularColor;
   uniform float glossiness;
-  #ifdef useSpecularTexture
+  #ifdef USE_SPECULARTEXTURE
     uniform vec2 specularTiling;
     uniform vec2 specularOffset;
     uniform sampler2D specularTexture;
   #endif
 #endif
 
-#ifdef useOpacity
+#ifdef USE_OPACITY
   uniform float opacity;
-  #ifdef useOpacityTexture
+  #ifdef USE_OPACITYTEXTURE
     uniform vec2 opacityTiling;
     uniform vec2 opacityOffset;
     uniform sampler2D opacityTexture;
   #endif
 #endif
 
-#ifdef useNormalTexture
+#ifdef USE_NORMALTEXTURE
   uniform vec2 normalMapTiling;
   uniform vec2 normalMapOffset;
   uniform sampler2D normalTexture;
@@ -88,7 +88,7 @@ uniform vec3 sceneAmbient;
   }
 #endif
 
-#ifdef useAlphaTest
+#ifdef USE_ALPHATEST
   uniform float alphaTestThreshold;
 #endif
 
@@ -100,34 +100,34 @@ phongMaterial getPhongMaterial() {
   result.glossiness = 10.0;
   result.opacity = 1.0;
   vec2 uv;
-  #ifdef useDiffuse
+  #ifdef USE_DIFFUSE
     result.diffuse = diffuseColor;
-    #ifdef useDiffuseTexture
+    #ifdef USE_DIFFUSETEXTURE
       uv = uv0 * diffuseTiling + diffuseOffset;
       result.diffuse = result.diffuse * texture2D(diffuseTexture, uv).rgb;
     #endif
   #endif
 
-  #ifdef useEmissive
+  #ifdef USE_EMISSIVE
     result.emissive = emissiveColor;
-    #ifdef useEmissiveTexture
+    #ifdef USE_EMISSIVETEXTURE
       uv = uv0 * emissiveTiling + emissiveOffset;
       result.emissive = result.emissive * texture2D(emissiveTexture, uv).rgb;
     #endif
   #endif
 
-  #ifdef useSpecular
+  #ifdef USE_SPECULAR
     result.specular = specularColor;
     result.glossiness = glossiness;
-    #ifdef useSpecularTexture
+    #ifdef USE_SPECULARTEXTURE
       uv = uv0 * specularTiling + specularOffset;
       result.specular = result.specular * texture2D(specularTexture, uv).rgb;
     #endif
   #endif
 
-  #ifdef useOpacity
+  #ifdef USE_OPACITY
     result.opacity = opacity;
-    #ifdef useOpacityTexture
+    #ifdef USE_OPACITYTEXTURE
       uv = uv0 * opacityTiling + opacityOffset;
       result.opacity = result.opacity * texture2D(opacityTexture, uv).a;
     #endif
@@ -145,15 +145,15 @@ vec4 composePhongShading(LightInfo lighting, phongMaterial mtl)
   //diffuse is always calculated
   o.xyz = lighting.diffuse * mtl.diffuse;
 
-  #ifdef useEmissive
+  #ifdef USE_EMISSIVE
     o.xyz += mtl.emissive;
   #endif
 
-  #ifdef useSpecular
+  #ifdef USE_SPECULAR
     o.xyz += lighting.specular * mtl.specular;
   #endif
 
-  #ifdef useOpacity
+  #ifdef USE_OPACITY
     o.a = mtl.opacity;
   #endif
   return o;
@@ -164,17 +164,17 @@ void main () {
   vec3 viewDirection = normalize(eye - pos_w);
 
   phongMaterial mtl = getPhongMaterial();
-  #ifdef useAlphaTest
+  #ifdef USE_ALPHATEST
     if(mtl.opacity < alphaTestThreshold) discard;
   #endif
   vec3 normal = normal_w;
-  #ifdef useNormalTexture
+  #ifdef USE_NORMALTEXTURE
     normal = getNormal(pos_w, normal);
   #endif
   phongLighting = getPhongLighting(normal, pos_w, viewDirection, mtl.glossiness);
   phongLighting.diffuse += sceneAmbient;
 
-  #ifdef useShadowMap
+  #ifdef USE_SHADOWMAP
     float shadow = 1.0;
     #if NUM_SHADOW_LIGHTS > 0
       #pragma for id in range(0, NUM_SHADOW_LIGHTS)
