@@ -5,7 +5,7 @@ uniform   mat4 viewProj;
 uniform   mat3 normalMatrix;
 varying   vec2 matcapUV;
 
-#ifdef USE_MAINTEX
+#ifdef USE_MAIN_TEX
   attribute vec2 a_uv0;
   varying   vec2 uv0;
 #endif
@@ -15,7 +15,7 @@ varying   vec2 matcapUV;
 #endif
 
 void main(void){
-  #ifdef USE_MAINTEX
+  #ifdef USE_MAIN_TEX
     uv0 = a_uv0;
   #endif
 

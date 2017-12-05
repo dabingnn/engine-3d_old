@@ -1,14 +1,14 @@
-#ifdef USE_NORMALTEXTURE
+#ifdef USE_NORMAL_TEXTURE
 #extension GL_OES_standard_derivatives : enable
 #endif
 
-#ifdef USE_TEXLOD
+#ifdef USE_TEX_LOD
 #extension GL_EXT_shader_texture_lod: enable
 #endif
 
 #include <common.frag>
 
-#ifdef USE_SHADOWMAP
+#ifdef USE_SHADOW_MAP
   #include <shadow-mapping.frag>
 #endif
 
@@ -19,7 +19,7 @@ uniform vec3 eye;
   varying vec3 normal_w;
 #endif
 
-#if defined(USE_NORMALTEXTURE) || defined(USE_ALBEDOTEXTURE) || defined(USE_METALROUGHNESSTEXTURE) || defined(USE_METALLICTEXTURE) || defined(USE_ROUGHNESSTEXTURE) || defined(USE_AOTEXTURE) || defined(USE_OPACITYTEXTURE)
+#if defined(USE_NORMAL_TEXTURE) || defined(USE_ALBEDO_TEXTURE) || defined(USE_METALLIC_ROUGHNESS_TEXTURE) || defined(USE_METALLIC_TEXTURE) || defined(USE_ROUGHNESS_TEXTURE) || defined(USE_AO_TEXTURE) || defined(USE_OPACITY_TEXTURE)
   varying vec2 uv0;
 #endif
 
@@ -27,41 +27,41 @@ uniform vec3 eye;
   uniform samplerCube diffuseEnvTexture;
   uniform samplerCube specularEnvTexture;
   uniform sampler2D brdfLUT;
-  #ifdef USE_TEXLOD
+  #ifdef USE_TEX_LOD
     uniform float maxReflectionLod;
   #endif
 #endif
 
 // material parameters
 uniform vec3 albedo;
-#ifdef USE_ALBEDOTEXTURE
+#ifdef USE_ALBEDO_TEXTURE
   uniform vec2 albedoTiling;
   uniform vec2 albedoOffset;
   uniform sampler2D albedoTexture;
 #endif
 
-#ifdef USE_METALROUGHNESSTEXTURE
+#ifdef USE_METALLIC_ROUGHNESS_TEXTURE
   uniform vec2 metalRoughnessTiling;
   uniform vec2 metalRoughnessOffset;
   uniform vec2 sampler2D metalRoughnessTexture;
 #endif
 
 uniform float metallic;
-#ifdef USE_METALLICTEXTURE
+#ifdef USE_METALLIC_TEXTURE
   uniform vec2 metallicTiling;
   uniform vec2 metallicOffset;
   uniform sampler2D metallicTexture;
 #endif
 
 uniform float roughness;
-#ifdef USE_ROUGHNESSTEXTURE
+#ifdef USE_ROUGHNESS_TEXTURE
   uniform vec2 roughnessTiling;
   uniform vec2 roughnessOffset;
   uniform sampler2D roughnessTexture;
 #endif
 
 uniform float ao;
-#ifdef USE_AOTEXTURE
+#ifdef USE_AO_TEXTURE
   uniform vec2 aoTiling;
   uniform vec2 aoOffset;
   uniform sampler2D aoTexture;
@@ -69,18 +69,18 @@ uniform float ao;
 
 #ifdef USE_OPACITY
   uniform float opacity;
-  #ifdef USE_OPACITYTEXTURE
+  #ifdef USE_OPACITY_TEXTURE
     uniform vec2 opacityTiling;
     uniform vec2 opacityOffset;
     uniform sampler2D opacityTexture;
   #endif
 #endif
 
-#ifdef USE_ALPHATEST
+#ifdef USE_ALPHA_TEST
   uniform float alphaTestThreshold;
 #endif
 
-#ifdef USE_NORMALTEXTURE
+#ifdef USE_NORMAL_TEXTURE
   uniform vec2 normalMapTiling;
   uniform vec2 normalMapOffset;
   uniform sampler2D normalTexture;
@@ -173,16 +173,16 @@ vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float metal
 
 
 void main() {
-  #ifdef USE_ALPHATEST
+  #ifdef USE_ALPHA_TEST
     if(opacity < alphaTestThreshold) discard;
   #endif
 
-  #ifdef USE_ALBEDOTEXTURE
+  #ifdef USE_ALBEDO_TEXTURE
     vec2 albedoUV = uv0 * albedoTiling + albedoOffset;
     vec3 albedo   = gammaToLinearSpace(texture2D(albedoTexture, albedoUV).rgb);
   #endif
 
-  #ifdef USE_METALROUGHNESSTEXTURE
+  #ifdef USE_METALLIC_ROUGHNESS_TEXTURE
     // Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
     // This layout intentionally reserves the 'r' channel for (optional) occlusion map data
     vec2 metalRoughnessUV = uv0 * metalRoughnessTiling + metalRoughnessOffset;
@@ -190,23 +190,23 @@ void main() {
     float metallic = metalRoughness.b;
     float roughness = metalRoughness.g;
   #else
-    #ifdef USE_METALLICTEXTURE
+    #ifdef USE_METALLIC_TEXTURE
       vec2 metallicUV = uv0 * metallicTiling + metallicOffset;
       float metallic  = texture2D(metallicTexture, metallicUV).r;
     #endif
-    #ifdef USE_ROUGHNESSTEXTURE
+    #ifdef USE_ROUGHNESS_TEXTURE
       vec2 roughnessUV = uv0 * roughnessTiling + roughnessOffset;
       float roughness  = texture2D(roughnessTexture, roughnessUV).r;
     #endif
   #endif
 
-  #ifdef USE_AOTEXTURE
+  #ifdef USE_AO_TEXTURE
     vec2 aoUV = uv0 * aoTiling + aoOffset;
     float ao  = texture2D(aoTexture, aoUV).r;
   #endif
 
   vec3 N = normalize(normal_w);
-  #ifdef USE_NORMALTEXTURE
+  #ifdef USE_NORMAL_TEXTURE
     N = getNormalFromTexture();
   #endif
   vec3 V = normalize(eye - pos_w);
@@ -257,7 +257,7 @@ void main() {
     vec3 diffuse = diffuseEnv * albedo;
     // sample both the specularEnvTexture and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     vec3 R = reflect(-V, N);
-    #ifdef USE_TEXLOD
+    #ifdef USE_TEX_LOD
       vec3 specularEnv = textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod).rgb;
     #else
       vec3 specularEnv = textureCube(specularEnvTexture, R).rgb;
@@ -267,7 +267,7 @@ void main() {
     ambient = (kD * diffuse + specular) * ao;
   #endif
 
-  #ifdef USE_SHADOWMAP
+  #ifdef USE_SHADOW_MAP
     float shadow = 1.0;
     #if NUM_SHADOW_LIGHTS > 0
       #pragma for id in range(0, NUM_SHADOW_LIGHTS)
@@ -285,7 +285,7 @@ void main() {
   color = linearToGammaSpace(color);
 
   #ifdef USE_OPACITY
-    #ifdef USE_OPACITYTEXTURE
+    #ifdef USE_OPACITY_TEXTURE
       vec2 opacityUV = uv0 * opacityTiling + opacityOffset;
       float opacity  = texture2D(opacityTexture, opacityUV).r;
     #endif

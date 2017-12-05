@@ -11,7 +11,7 @@ uniform mat3 normalMatrix;
   varying vec3 normal_w;
 #endif
 
-#if defined(USE_NORMALTEXTURE) || defined(USE_ALBEDOTEXTURE) || defined(USE_METALROUGHNESSTEXTURE) || defined(USE_METALLICTEXTURE) || defined(USE_ROUGHNESSTEXTURE) || defined(USE_AOTEXTURE) || defined(USE_OPACITYTEXTURE)
+#if defined(USE_NORMAL_TEXTURE) || defined(USE_ALBEDO_TEXTURE) || defined(USE_METALLIC_ROUGHNESS_TEXTURE) || defined(USE_METALLIC_TEXTURE) || defined(USE_ROUGHNESS_TEXTURE) || defined(USE_AO_TEXTURE) || defined(USE_OPACITY_TEXTURE)
   attribute vec2 a_uv0;
   varying vec2 uv0;
 #endif
@@ -20,7 +20,7 @@ uniform mat3 normalMatrix;
   #include <skinning.vert>
 #endif
 
-#ifdef USE_SHADOWMAP
+#ifdef USE_SHADOW_MAP
   #if NUM_SHADOW_LIGHTS > 0
     #pragma for id in range(0, NUM_SHADOW_LIGHTS)
       uniform mat4 lightViewProjMatrix_{{id}};
@@ -43,7 +43,7 @@ void main () {
   pos_w = (model * pos).xyz;
   pos = viewProj * model * pos;
 
-  #if defined(USE_NORMALTEXTURE) || defined(USE_ALBEDOTEXTURE) || defined(USE_METALROUGHNESSTEXTURE) || defined(USE_METALLICTEXTURE) || defined(USE_ROUGHNESSTEXTURE) || defined(USE_AOTEXTURE) || defined(USE_OPACITYTEXTURE)
+  #if defined(USE_NORMAL_TEXTURE) || defined(USE_ALBEDO_TEXTURE) || defined(USE_METALLIC_ROUGHNESS_TEXTURE) || defined(USE_METALLIC_TEXTURE) || defined(USE_ROUGHNESS_TEXTURE) || defined(USE_AO_TEXTURE) || defined(USE_OPACITY_TEXTURE)
     uv0 = a_uv0;
   #endif
 
@@ -55,7 +55,7 @@ void main () {
     normal_w = normalMatrix * normal.xyz;
   #endif
 
-  #ifdef USE_SHADOWMAP
+  #ifdef USE_SHADOW_MAP
     #if NUM_SHADOW_LIGHTS > 0
       #pragma for id in range(0, NUM_SHADOW_LIGHTS)
         pos_lightspace_{{id}} = lightViewProjMatrix_{{id}} * vec4(pos_w, 1.0);

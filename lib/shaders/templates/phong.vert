@@ -4,7 +4,7 @@ uniform mat4 model;
 uniform mat4 viewProj;
 uniform mat3 normalMatrix;
 
-#if defined(USE_NORMALTEXTURE) || defined(USE_DIFFUSETEXTURE) || defined(USE_EMISSIVETEXTURE) || defined(USE_OPACITYTEXTURE)
+#if defined(USE_NORMAL_TEXTURE) || defined(USE_DIFFUSE_TEXTURE) || defined(USE_EMISSIVE_TEXTURE) || defined(USE_OPACITY_TEXTURE)
   attribute vec2 a_uv0;
   varying vec2 uv0;
 #endif
@@ -20,7 +20,7 @@ varying vec3 pos_w;
   #include <skinning.vert>
 #endif
 
-#ifdef USE_SHADOWMAP
+#ifdef USE_SHADOW_MAP
   #if NUM_SHADOW_LIGHTS > 0
     #pragma for id in range(0, NUM_SHADOW_LIGHTS)
       uniform mat4 lightViewProjMatrix_{{id}};
@@ -43,7 +43,7 @@ void main () {
   pos_w = (model * pos).xyz;
   pos = viewProj * model * pos;
 
-  #if defined(USE_NORMALTEXTURE) || defined(USE_DIFFUSETEXTURE) || defined(USE_EMISSIVETEXTURE) || defined(USE_OPACITYTEXTURE)
+  #if defined(USE_NORMAL_TEXTURE) || defined(USE_DIFFUSE_TEXTURE) || defined(USE_EMISSIVE_TEXTURE) || defined(USE_OPACITY_TEXTURE)
     uv0 = a_uv0;
   #endif
 
@@ -56,7 +56,7 @@ void main () {
     normal_w = normalize(normal_w);
   #endif
 
-  #ifdef USE_SHADOWMAP
+  #ifdef USE_SHADOW_MAP
     #if NUM_SHADOW_LIGHTS > 0
       #pragma for id in range(0, NUM_SHADOW_LIGHTS)
         pos_lightspace_{{id}} = lightViewProjMatrix_{{id}} * vec4(pos_w, 1.0);
