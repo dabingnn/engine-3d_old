@@ -1,6 +1,6 @@
 struct LightInfo {
   vec3 diffuse;
-  #ifdef useSpecular
+  #ifdef USE_SPECULAR
     vec3 specular;
   #endif
 };
@@ -19,7 +19,7 @@ LightInfo computeDirectionalLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl;
 
-  #ifdef useSpecular
+  #ifdef USE_SPECULAR
     vec3 dirH = normalize(viewDirection + lightDir);
     ndh = max(0.0, dot(normal, dirH));
     ndh = (ndl == 0.0) ? 0.0: ndh;
@@ -50,7 +50,7 @@ LightInfo computePointLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl * attenuation;
 
-  #ifdef useSpecular
+  #ifdef USE_SPECULAR
     vec3 dirH = normalize(viewDirection + lightDir);
     ndh = max(0.0, dot(normal, dirH));
     ndh = (ndl == 0.0) ? 0.0: ndh;
@@ -88,7 +88,7 @@ LightInfo computeSpotLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl * attenuation * cosConeAngle;
 
-  #ifdef useSpecular
+  #ifdef USE_SPECULAR
     vec3 dirH = normalize(viewDirection + lightDir);
     ndh = max(0.0, dot(normal, dirH));
     ndh = (ndl == 0.0) ? 0.0: ndh;
