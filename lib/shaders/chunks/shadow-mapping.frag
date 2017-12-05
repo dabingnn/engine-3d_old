@@ -1,13 +1,15 @@
-{{#shadowLightSlots}}
-  uniform sampler2D shadowMap_{{id}};
-  uniform float darkness_{{id}};
-  uniform float depthScale_{{id}};
-  uniform float frustumEdgeFalloff_{{id}};
-  uniform float bias_{{id}};
-  uniform vec2 texelSize_{{id}};
-  varying vec4 pos_lightspace_{{id}};
-  varying float vDepth_{{id}};
-{{/shadowLightSlots}}
+#if NUM_SHADOW_LIGHTS > 0
+  #pragma for id in range(0, NUM_SHADOW_LIGHTS)
+    uniform sampler2D shadowMap_{{id}};
+    uniform float darkness_{{id}};
+    uniform float depthScale_{{id}};
+    uniform float frustumEdgeFalloff_{{id}};
+    uniform float bias_{{id}};
+    uniform vec2 texelSize_{{id}};
+    varying vec4 pos_lightspace_{{id}};
+    varying float vDepth_{{id}};
+  #pragma endFor
+#endif
 
 float computeShadow(sampler2D shadowMap, vec4 pos_lightspace, float bias) {
   vec3 projCoords = pos_lightspace.xyz / pos_lightspace.w;

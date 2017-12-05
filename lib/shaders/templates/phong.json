@@ -1,9 +1,6 @@
 {
   "useSkinning": false,
   "useNormal": true,
-  "directionalLightSlots": [],
-  "pointLightSlots": [],
-  "spotLightSlots": [],
   "useUV0": true,
   "useDiffuse": true,
   "useDiffuseTexture": false,
@@ -16,5 +13,9 @@
   "useOpacity": false,
   "useOpacityTexture": false,
   "useAlphaTest": false,
-  "useShadowMap": true
+  "useShadowMap": true,
+  "NUM_DIR_LIGHTS": 0,
+  "NUM_POINT_LIGHTS": 0,
+  "NUM_SPOT_LIGHTS": 0,
+  "NUM_SHADOW_LIGHTS": 0
 }

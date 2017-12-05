@@ -10,18 +10,18 @@ uniform mat4 viewProj;
 varying vec2 uv0;
 varying vec4 pos_w;
 
-{{#useWorldPos}}
+#ifdef useWorldPos
   uniform mat3 normalMatrix;
   varying vec3 normal_w;
-{{/useWorldPos}}
+#endif
 
 void main () {
   uv0 = a_uv0;
   pos_w = model * vec4(a_position, 1);
 
-  {{#useWorldPos}}
+  #ifdef useWorldPos
     normal_w = normalMatrix * a_normal;
-  {{/useWorldPos}}
+  #endif
 
   gl_Position = viewProj * pos_w;
 }

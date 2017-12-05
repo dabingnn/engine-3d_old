@@ -1,8 +1,8 @@
 struct LightInfo {
   vec3 diffuse;
-  {{#useSpecular}}
+  #ifdef useSpecular
     vec3 specular;
-  {{/useSpecular}}
+  #endif
 };
 
 LightInfo computeDirectionalLighting(
@@ -19,13 +19,13 @@ LightInfo computeDirectionalLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl;
 
-  {{#useSpecular}}
+  #ifdef useSpecular
     vec3 dirH = normalize(viewDirection + lightDir);
     ndh = max(0.0, dot(normal, dirH));
     ndh = (ndl == 0.0) ? 0.0: ndh;
     ndh = pow(ndh, max(1.0, glossiness));
     lightingResult.specular = lightColor * ndh;
-  {{/useSpecular}}
+  #endif
 
   return lightingResult;
 }
@@ -50,13 +50,13 @@ LightInfo computePointLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl * attenuation;
 
-  {{#useSpecular}}
+  #ifdef useSpecular
     vec3 dirH = normalize(viewDirection + lightDir);
     ndh = max(0.0, dot(normal, dirH));
     ndh = (ndl == 0.0) ? 0.0: ndh;
     ndh = pow(ndh, max(1.0, glossiness));
     lightingResult.specular = lightColor * ndh * attenuation;
-  {{/useSpecular}}
+  #endif
 
   return lightingResult;
 }
@@ -88,35 +88,41 @@ LightInfo computeSpotLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl * attenuation * cosConeAngle;
 
-  {{#useSpecular}}
+  #ifdef useSpecular
     vec3 dirH = normalize(viewDirection + lightDir);
     ndh = max(0.0, dot(normal, dirH));
     ndh = (ndl == 0.0) ? 0.0: ndh;
     ndh = pow(ndh, max(1.0, glossiness));
     lightingResult.specular = lightColor * ndh * attenuation * cosConeAngle;
-  {{/useSpecular}}
+  #endif
 
   return lightingResult;
 }
 
-{{#directionalLightSlots}}
-  uniform vec3 dir_light{{id}}_direction;
-  uniform vec3 dir_light{{id}}_color;
-{{/directionalLightSlots}}
+#if NUM_DIR_LIGHTS > 0
+  #pragma for id in range(0, NUM_DIR_LIGHTS)
+    uniform vec3 dir_light{{id}}_direction;
+    uniform vec3 dir_light{{id}}_color;
+  #pragma endFor
+#endif
 
-{{#pointLightSlots}}
-  uniform vec3 point_light{{id}}_position;
-  uniform vec3 point_light{{id}}_color;
-  uniform float point_light{{id}}_range;
-{{/pointLightSlots}}
+#if NUM_POINT_LIGHTS > 0
+  #pragma for id in range(0, NUM_POINT_LIGHTS)
+    uniform vec3 point_light{{id}}_position;
+    uniform vec3 point_light{{id}}_color;
+    uniform float point_light{{id}}_range;
+  #pragma endFor
+#endif
 
-{{#spotLightSlots}}
-  uniform vec3 spot_light{{id}}_position;
-  uniform vec3 spot_light{{id}}_direction;
-  uniform vec3 spot_light{{id}}_color;
-  uniform float spot_light{{id}}_range;
-  uniform vec2 spot_light{{id}}_spot;
-{{/spotLightSlots}}
+#if NUM_SPOT_LIGHTS > 0
+  #pragma for id in range(0, NUM_SPOT_LIGHTS)
+    uniform vec3 spot_light{{id}}_position;
+    uniform vec3 spot_light{{id}}_direction;
+    uniform vec3 spot_light{{id}}_color;
+    uniform float spot_light{{id}}_range;
+    uniform vec2 spot_light{{id}}_spot;
+  #pragma endFor
+#endif
 
 LightInfo getPhongLighting(
   vec3 normal,
@@ -126,36 +132,42 @@ LightInfo getPhongLighting(
 ) {
   LightInfo result;
   result.diffuse = vec3(0, 0, 0);
-  {{#useSpecular}}
+  #ifdef useSpecular
     result.specular = vec3(0, 0, 0);
-  {{/useSpecular}}
+  #endif
   LightInfo dirLighting;
-  {{#directionalLightSlots}}
-    dirLighting = computeDirectionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,normal, viewDirection, glossiness);
-    result.diffuse += dirLighting.diffuse;
-    {{#useSpecular}}
-      result.specular += dirLighting.specular;
-    {{/useSpecular}}
-  {{/directionalLightSlots}}
+  #if NUM_DIR_LIGHTS > 0
+    #pragma for id in range(0, NUM_DIR_LIGHTS)
+      dirLighting = computeDirectionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,normal, viewDirection, glossiness);
+      result.diffuse += dirLighting.diffuse;
+      #ifdef useSpecular
+        result.specular += dirLighting.specular;
+      #endif
+    #pragma endFor
+  #endif
 
   LightInfo pointLighting;
-  {{#pointLightSlots}}
-    pointLighting = computePointLighting(point_light{{id}}_position, point_light{{id}}_color, point_light{{id}}_range,
-                                         normal, positionW, viewDirection, glossiness);
-    result.diffuse += pointLighting.diffuse;
-    {{#useSpecular}}
-      result.specular += pointLighting.specular;
-    {{/useSpecular}}
-  {{/pointLightSlots}}
+  #if NUM_POINT_LIGHTS > 0
+    #pragma for id in range(0, NUM_POINT_LIGHTS)
+      pointLighting = computePointLighting(point_light{{id}}_position, point_light{{id}}_color, point_light{{id}}_range,
+                                          normal, positionW, viewDirection, glossiness);
+      result.diffuse += pointLighting.diffuse;
+      #ifdef useSpecular
+        result.specular += pointLighting.specular;
+      #endif
+    #pragma endFor
+  #endif
 
   LightInfo spotLighting;
-  {{#spotLightSlots}}
-    spotLighting = computeSpotLighting(spot_light{{id}}_position, spot_light{{id}}_direction, spot_light{{id}}_color,
-                    spot_light{{id}}_range, spot_light{{id}}_spot,normal, positionW, viewDirection, glossiness);
-    result.diffuse += spotLighting.diffuse;
-    {{#useSpecular}}
-      result.specular += spotLighting.specular;
-    {{/useSpecular}}
-  {{/spotLightSlots}}
+  #if NUM_SPOT_LIGHTS > 0
+    #pragma for id in range(0, NUM_SPOT_LIGHTS)
+      spotLighting = computeSpotLighting(spot_light{{id}}_position, spot_light{{id}}_direction, spot_light{{id}}_color,
+                      spot_light{{id}}_range, spot_light{{id}}_spot,normal, positionW, viewDirection, glossiness);
+      result.diffuse += spotLighting.diffuse;
+      #ifdef useSpecular
+        result.specular += spotLighting.specular;
+      #endif
+    #pragma endFor
+  #endif
   return result;
 }
