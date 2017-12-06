@@ -5,26 +5,26 @@ struct LightInfo {
 
 #if NUM_DIR_LIGHTS > 0
   #pragma for id in range(0, NUM_DIR_LIGHTS)
-    uniform vec3 dir_light{{id}}_direction;
-    uniform vec3 dir_light{{id}}_color;
+    uniform vec3 dir_light{id}_direction;
+    uniform vec3 dir_light{id}_color;
   #pragma endFor
 #endif
 
 #if NUM_POINT_LIGHTS > 0
   #pragma for id in range(0, NUM_POINT_LIGHTS)
-    uniform vec3 point_light{{id}}_position;
-    uniform vec3 point_light{{id}}_color;
-    uniform float point_light{{id}}_range;
+    uniform vec3 point_light{id}_position;
+    uniform vec3 point_light{id}_color;
+    uniform float point_light{id}_range;
   #pragma endFor
 #endif
 
 #if NUM_SPOT_LIGHTS > 0
   #pragma for id in range(0, NUM_SPOT_LIGHTS)
-    uniform vec3 spot_light{{id}}_position;
-    uniform vec3 spot_light{{id}}_direction;
-    uniform vec3 spot_light{{id}}_color;
-    uniform vec2 spot_light{{id}}_spot;
-    uniform float spot_light{{id}}_range;
+    uniform vec3 spot_light{id}_position;
+    uniform vec3 spot_light{id}_direction;
+    uniform vec3 spot_light{id}_color;
+    uniform vec2 spot_light{id}_spot;
+    uniform float spot_light{id}_range;
   #pragma endFor
 #endif
 
