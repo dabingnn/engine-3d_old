@@ -23,11 +23,11 @@ varying vec3 pos_w;
 #ifdef USE_SHADOW_MAP
   #if NUM_SHADOW_LIGHTS > 0
     #pragma for id in range(0, NUM_SHADOW_LIGHTS)
-      uniform mat4 lightViewProjMatrix_{{id}};
-      uniform float minDepth_{{id}};
-      uniform float maxDepth_{{id}};
-      varying vec4 pos_lightspace_{{id}};
-      varying float vDepth_{{id}};
+      uniform mat4 lightViewProjMatrix_{id};
+      uniform float minDepth_{id};
+      uniform float maxDepth_{id};
+      varying vec4 pos_lightspace_{id};
+      varying float vDepth_{id};
     #pragma endFor
   #endif
 #endif
@@ -59,8 +59,8 @@ void main () {
   #ifdef USE_SHADOW_MAP
     #if NUM_SHADOW_LIGHTS > 0
       #pragma for id in range(0, NUM_SHADOW_LIGHTS)
-        pos_lightspace_{{id}} = lightViewProjMatrix_{{id}} * vec4(pos_w, 1.0);
-        vDepth_{{id}} = (pos_lightspace_{{id}}.z + minDepth_{{id}}) / (minDepth_{{id}} + maxDepth_{{id}});
+        pos_lightspace_{id} = lightViewProjMatrix_{id} * vec4(pos_w, 1.0);
+        vDepth_{id} = (pos_lightspace_{id}.z + minDepth_{id}) / (minDepth_{id} + maxDepth_{id});
       #pragma endFor
     #endif
   #endif
