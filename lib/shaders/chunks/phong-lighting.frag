@@ -101,26 +101,26 @@ LightInfo computeSpotLighting(
 
 #if NUM_DIR_LIGHTS > 0
   #pragma for id in range(0, NUM_DIR_LIGHTS)
-    uniform vec3 dir_light{{id}}_direction;
-    uniform vec3 dir_light{{id}}_color;
+    uniform vec3 dir_light{id}_direction;
+    uniform vec3 dir_light{id}_color;
   #pragma endFor
 #endif
 
 #if NUM_POINT_LIGHTS > 0
   #pragma for id in range(0, NUM_POINT_LIGHTS)
-    uniform vec3 point_light{{id}}_position;
-    uniform vec3 point_light{{id}}_color;
-    uniform float point_light{{id}}_range;
+    uniform vec3 point_light{id}_position;
+    uniform vec3 point_light{id}_color;
+    uniform float point_light{id}_range;
   #pragma endFor
 #endif
 
 #if NUM_SPOT_LIGHTS > 0
   #pragma for id in range(0, NUM_SPOT_LIGHTS)
-    uniform vec3 spot_light{{id}}_position;
-    uniform vec3 spot_light{{id}}_direction;
-    uniform vec3 spot_light{{id}}_color;
-    uniform float spot_light{{id}}_range;
-    uniform vec2 spot_light{{id}}_spot;
+    uniform vec3 spot_light{id}_position;
+    uniform vec3 spot_light{id}_direction;
+    uniform vec3 spot_light{id}_color;
+    uniform float spot_light{id}_range;
+    uniform vec2 spot_light{id}_spot;
   #pragma endFor
 #endif
 
@@ -138,7 +138,7 @@ LightInfo getPhongLighting(
   LightInfo dirLighting;
   #if NUM_DIR_LIGHTS > 0
     #pragma for id in range(0, NUM_DIR_LIGHTS)
-      dirLighting = computeDirectionalLighting(dir_light{{id}}_direction,dir_light{{id}}_color,normal, viewDirection, glossiness);
+      dirLighting = computeDirectionalLighting(dir_light{id}_direction,dir_light{id}_color,normal, viewDirection, glossiness);
       result.diffuse += dirLighting.diffuse;
       #ifdef useSpecular
         result.specular += dirLighting.specular;
@@ -149,7 +149,7 @@ LightInfo getPhongLighting(
   LightInfo pointLighting;
   #if NUM_POINT_LIGHTS > 0
     #pragma for id in range(0, NUM_POINT_LIGHTS)
-      pointLighting = computePointLighting(point_light{{id}}_position, point_light{{id}}_color, point_light{{id}}_range,
+      pointLighting = computePointLighting(point_light{id}_position, point_light{id}_color, point_light{id}_range,
                                           normal, positionW, viewDirection, glossiness);
       result.diffuse += pointLighting.diffuse;
       #ifdef useSpecular
@@ -161,8 +161,8 @@ LightInfo getPhongLighting(
   LightInfo spotLighting;
   #if NUM_SPOT_LIGHTS > 0
     #pragma for id in range(0, NUM_SPOT_LIGHTS)
-      spotLighting = computeSpotLighting(spot_light{{id}}_position, spot_light{{id}}_direction, spot_light{{id}}_color,
-                      spot_light{{id}}_range, spot_light{{id}}_spot,normal, positionW, viewDirection, glossiness);
+      spotLighting = computeSpotLighting(spot_light{id}_position, spot_light{id}_direction, spot_light{id}_color,
+                      spot_light{id}_range, spot_light{id}_spot,normal, positionW, viewDirection, glossiness);
       result.diffuse += spotLighting.diffuse;
       #ifdef useSpecular
         result.specular += spotLighting.specular;

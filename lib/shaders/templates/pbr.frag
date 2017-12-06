@@ -222,25 +222,25 @@ void main() {
   // point light (a 'for' loop to accumulate all light sources)
   #if NUM_POINT_LIGHTS > 0
     #pragma for id in range(0, NUM_POINT_LIGHTS)
-      LightInfo pointLight{{id}};
-      pointLight{{id}} = computePointLighting(point_light{{id}}_position, pos_w, point_light{{id}}_color, point_light{{id}}_range);
-      Lo += brdf(pointLight{{id}}, N, V, F0, albedo, metallic, roughness);
+      LightInfo pointLight{id};
+      pointLight{id} = computePointLighting(point_light{id}_position, pos_w, point_light{id}_color, point_light{id}_range);
+      Lo += brdf(pointLight{id}, N, V, F0, albedo, metallic, roughness);
     #pragma endFor
   #endif
 
   #if NUM_DIR_LIGHTS > 0
     #pragma for id in range(0, NUM_DIR_LIGHTS)
-      LightInfo directionalLight{{id}};
-      directionalLight{{id}} = computeDirectionalLighting(dir_light{{id}}_direction, dir_light{{id}}_color);
-      Lo += brdf(directionalLight{{id}}, N, V, F0, albedo, metallic, roughness);
+      LightInfo directionalLight{id};
+      directionalLight{id} = computeDirectionalLighting(dir_light{id}_direction, dir_light{id}_color);
+      Lo += brdf(directionalLight{id}, N, V, F0, albedo, metallic, roughness);
     #pragma endFor
   #endif
 
   #if NUM_SPOT_LIGHTS > 0
     #pragma for id in range(0, NUM_SPOT_LIGHTS)
-      LightInfo spotLight{{id}};
-      spotLight{{id}} = computeSpotLighting(spot_light{{id}}_position, pos_w, spot_light{{id}}_direction, spot_light{{id}}_color, spot_light{{id}}_spot, spot_light{{id}}_range);
-      Lo += brdf(spotLight{{id}}, N, V, F0, albedo, metallic, roughness);
+      LightInfo spotLight{id};
+      spotLight{id} = computeSpotLighting(spot_light{id}_position, pos_w, spot_light{id}_direction, spot_light{id}_color, spot_light{id}_spot, spot_light{id}_range);
+      Lo += brdf(spotLight{id}, N, V, F0, albedo, metallic, roughness);
     #pragma endFor
   #endif
 
@@ -271,7 +271,7 @@ void main() {
     float shadow = 1.0;
     #if NUM_SHADOW_LIGHTS > 0
       #pragma for id in range(0, NUM_SHADOW_LIGHTS)
-        shadow *= computeShadowESM(shadowMap_{{id}}, pos_lightspace_{{id}}, vDepth_{{id}}, depthScale_{{id}}, darkness_{{id}}, frustumEdgeFalloff_{{id}});
+        shadow *= computeShadowESM(shadowMap_{id}, pos_lightspace_{id}, vDepth_{id}, depthScale_{id}, darkness_{id}, frustumEdgeFalloff_{id});
       #pragma endFor
     #endif
     vec3 color = (ambient + Lo) * shadow;
