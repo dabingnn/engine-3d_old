@@ -34,7 +34,7 @@
     spriteCmps.push(spriteCmp);
   }
 
-  let spriteDir = '../node_modules/assets-3d/sprites';
+  let spriteDir = './assets/sprites';
   app.assets.registerAsset("test_sprite_texture", {
     type: 'texture-2d',
     urls: {
@@ -44,7 +44,7 @@
   });
 
   let urls = {
-    json: `${spriteDir}/testSprite.json`,
+    json: `${spriteDir}/test-sprite.json`,
   };
   app.assets.loadUrls('sprite', urls, (err, sprite) => {
     sprite._left = sprite._right = 100;
@@ -53,6 +53,6 @@
     sprite.commit();
     spriteCmps.forEach(spriteCmp => {
       spriteCmp.sprite = sprite;
-    })
+    });
   });
 })();
