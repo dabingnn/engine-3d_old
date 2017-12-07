@@ -150,7 +150,7 @@
       imagePosZ: `${envSrc}/environment_front_0.jpg`,
       imageNegZ: `${envSrc}/environment_back_0.jpg`,
     };
-    app.assets.loadUrls('texture-cube', envUrls, (err, cubeMap) => {
+    app.assets.loadUrls('texture', envUrls, (err, cubeMap) => {
       skyboxEnt.getComp('Skybox').cubeMap = cubeMap;
     });
 
@@ -165,7 +165,7 @@
       imagePosZ: `${diffuseSrc}/diffuse_front_0.jpg`,
       imageNegZ: `${diffuseSrc}/diffuse_back_0.jpg`,
     };
-    app.assets.loadUrls('texture-cube', difUrls, (err, cubeMap) => {
+    app.assets.loadUrls('texture', difUrls, (err, cubeMap) => {
       pbrMaterial.diffuseEnvTexture = cubeMap;
     });
 
@@ -182,7 +182,7 @@
       specUrls[`imagePosZ${suffix}`] = `${specularSrc}/specular_front_${i}.jpg`;
       specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_back_${i}.jpg`;
     }
-    app.assets.loadUrls('texture-cube', specUrls, (err, cubeMap) => {
+    app.assets.loadUrls('texture', specUrls, (err, cubeMap) => {
       pbrMaterial.specularEnvTexture = cubeMap;
     });
   }
@@ -222,7 +222,7 @@
   const lutUrls = {
     image: './assets/textures/brdfLUT.png',
   };
-  app.assets.loadUrls('texture-2d', lutUrls, (err, lutMap) => {
+  app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
     pbrMaterial.brdfLUT = lutMap;
   });
   loadTexture(dobj.albedo, texture => {
