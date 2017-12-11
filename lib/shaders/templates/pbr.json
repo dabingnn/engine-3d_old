@@ -1,5 +1,4 @@
 {
-  "USE_NORMAL": true,
   "USE_SKINNING": false,
   "USE_NORMAL_TEXTURE": false,
   "USE_ALBEDO_TEXTURE": false,
@@ -9,8 +8,6 @@
   "USE_AO_TEXTURE": false,
   "USE_IBL": false,
   "USE_TEX_LOD": false,
-  "USE_OPACITY": false,
-  "USE_OPACITY_TEXTURE": false,
   "USE_ALPHA_TEST": false,
   "USE_SHADOW_MAP": true,
   "NUM_DIR_LIGHTS": 0,
