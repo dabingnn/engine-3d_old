@@ -3,21 +3,23 @@
 #endif
 
 #include <common.frag>
+#include <gamma-correction.frag>
+#include <phong-lighting.frag>
+
+#ifdef USE_SHADOW_MAP
+  #include <packing.frag>
+  #include <shadow-mapping.frag>
+#endif
+
+uniform vec3 eye;
+uniform vec3 sceneAmbient;
+
+varying vec3 normal_w;
+varying vec3 pos_w;
 
 #if defined(USE_NORMAL_TEXTURE) || defined(USE_DIFFUSE_TEXTURE) || defined(USE_EMISSIVE_TEXTURE) || defined(USE_OPACITY_TEXTURE)
   varying vec2 uv0;
 #endif
-
-#ifdef USE_NORMAL
-  varying vec3 normal_w;
-#endif
-
-#ifdef USE_SHADOW_MAP
-  #include <shadow-mapping.frag>
-#endif
-
-varying vec3 pos_w;
-uniform vec3 eye;
 
 struct phongMaterial
 {
@@ -28,43 +30,26 @@ struct phongMaterial
   float opacity;
 };
 
-#ifdef USE_DIFFUSE
-  uniform vec3 diffuseColor;
-  #ifdef USE_DIFFUSE_TEXTURE
-    uniform vec2 diffuseTiling;
-    uniform vec2 diffuseOffset;
-    uniform sampler2D diffuseTexture;
-  #endif
+uniform vec4 diffuseColor;
+#ifdef USE_DIFFUSE_TEXTURE
+  uniform vec2 diffuseTiling;
+  uniform vec2 diffuseOffset;
+  uniform sampler2D diffuseTexture;
 #endif
 
-uniform vec3 sceneAmbient;
-
-#ifdef USE_EMISSIVE
-  uniform vec3 emissiveColor;
-  #ifdef USE_EMISSIVE_TEXTURE
-    uniform vec2 emissiveTiling;
-    uniform vec2 emissiveOffset;
-    uniform sampler2D emissiveTexture;
-  #endif
+uniform vec3 emissiveColor;
+#ifdef USE_EMISSIVE_TEXTURE
+  uniform vec2 emissiveTiling;
+  uniform vec2 emissiveOffset;
+  uniform sampler2D emissiveTexture;
 #endif
 
-#ifdef USE_SPECULAR
-  uniform vec3 specularColor;
-  uniform float glossiness;
-  #ifdef USE_SPECULAR_TEXTURE
-    uniform vec2 specularTiling;
-    uniform vec2 specularOffset;
-    uniform sampler2D specularTexture;
-  #endif
-#endif
-
-#ifdef USE_OPACITY
-  uniform float opacity;
-  #ifdef USE_OPACITY_TEXTURE
-    uniform vec2 opacityTiling;
-    uniform vec2 opacityOffset;
-    uniform sampler2D opacityTexture;
-  #endif
+uniform vec3 specularColor;
+uniform float glossiness;
+#ifdef USE_SPECULAR_TEXTURE
+  uniform vec2 specularTiling;
+  uniform vec2 specularOffset;
+  uniform sampler2D specularTexture;
 #endif
 
 #ifdef USE_NORMAL_TEXTURE
@@ -94,68 +79,47 @@ uniform vec3 sceneAmbient;
 
 phongMaterial getPhongMaterial() {
   phongMaterial result;
-  result.diffuse = vec3(0.8, 0.8, 0.8);
-  result.emissive = vec3(0.0, 0.0, 0.0);
-  result.specular = vec3(0.0, 0.0, 0.0);
-  result.glossiness = 10.0;
-  result.opacity = 1.0;
   vec2 uv;
-  #ifdef USE_DIFFUSE
-    result.diffuse = diffuseColor;
-    #ifdef USE_DIFFUSE_TEXTURE
-      uv = uv0 * diffuseTiling + diffuseOffset;
-      result.diffuse = result.diffuse * texture2D(diffuseTexture, uv).rgb;
-    #endif
+
+  #ifdef USE_DIFFUSE_TEXTURE
+    uv = uv0 * diffuseTiling + diffuseOffset;
+    vec4 baseColor = gammaToLinearSpaceRGBA(texture2D(diffuseTexture, uv).rgba);
+    result.diffuse = baseColor.rgb;
+    result.opacity = baseColor.a;
+  #else
+    vec4 baseColor = gammaToLinearSpaceRGBA(diffuseColor);
+    result.diffuse = baseColor.rgb;
+    result.opacity = baseColor.a;
   #endif
 
-  #ifdef USE_EMISSIVE
-    result.emissive = emissiveColor;
-    #ifdef USE_EMISSIVE_TEXTURE
-      uv = uv0 * emissiveTiling + emissiveOffset;
-      result.emissive = result.emissive * texture2D(emissiveTexture, uv).rgb;
-    #endif
+  result.emissive = emissiveColor;
+  #ifdef USE_EMISSIVE_TEXTURE
+    uv = uv0 * emissiveTiling + emissiveOffset;
+    result.emissive = gammaToLinearSpaceRGB(texture2D(emissiveTexture, uv).rgb);
   #endif
 
-  #ifdef USE_SPECULAR
-    result.specular = specularColor;
-    result.glossiness = glossiness;
-    #ifdef USE_SPECULAR_TEXTURE
-      uv = uv0 * specularTiling + specularOffset;
-      result.specular = result.specular * texture2D(specularTexture, uv).rgb;
-    #endif
+  result.specular = specularColor;
+  #ifdef USE_SPECULAR_TEXTURE
+    uv = uv0 * specularTiling + specularOffset;
+    result.specular = gammaToLinearSpaceRGB(texture2D(specularTexture, uv).rgb);
   #endif
 
-  #ifdef USE_OPACITY
-    result.opacity = opacity;
-    #ifdef USE_OPACITY_TEXTURE
-      uv = uv0 * opacityTiling + opacityOffset;
-      result.opacity = result.opacity * texture2D(opacityTexture, uv).a;
-    #endif
-  #endif
+  result.glossiness = glossiness;
 
   return result;
 }
 
-#include <phong-lighting.frag>
-
-vec4 composePhongShading(LightInfo lighting, phongMaterial mtl)
+vec4 composePhongShading(LightInfo lighting, phongMaterial mtl, float shadow)
 {
   vec4 o = vec4(0.0, 0.0, 0.0, 1.0);
 
   //diffuse is always calculated
   o.xyz = lighting.diffuse * mtl.diffuse;
+  o.xyz += mtl.emissive;
+  o.xyz += lighting.specular * mtl.specular;
+  o.xyz *= shadow;
+  o.w = mtl.opacity;
 
-  #ifdef USE_EMISSIVE
-    o.xyz += mtl.emissive;
-  #endif
-
-  #ifdef USE_SPECULAR
-    o.xyz += lighting.specular * mtl.specular;
-  #endif
-
-  #ifdef USE_OPACITY
-    o.a = mtl.opacity;
-  #endif
   return o;
 }
 
@@ -181,8 +145,10 @@ void main () {
         shadow *= computeShadowESM(shadowMap_{id}, pos_lightspace_{id}, vDepth_{id}, depthScale_{id}, darkness_{id}, frustumEdgeFalloff_{id});
       #pragma endFor
     #endif
-    gl_FragColor = composePhongShading(phongLighting, mtl) * shadow;
+    vec4 finalColor = composePhongShading(phongLighting, mtl, shadow);
   #else
-    gl_FragColor = composePhongShading(phongLighting, mtl);
+    vec4 finalColor = composePhongShading(phongLighting, mtl, 1.0);
   #endif
+
+  gl_FragColor = linearToGammaSpaceRGBA(finalColor);
 }

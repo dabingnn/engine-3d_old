@@ -1,7 +1,7 @@
 uniform float depthScale;
 varying float vDepth;
 
-#include <common.frag>
+#include <packing.frag>
 
 void main() {
   // doing exp() here will cause float precision issue.

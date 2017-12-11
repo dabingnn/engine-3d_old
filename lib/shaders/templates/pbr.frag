@@ -7,17 +7,18 @@
 #endif
 
 #include <common.frag>
+#include <gamma-correction.frag>
+#include <pbr-lighting.frag>
 
 #ifdef USE_SHADOW_MAP
+  #include <packing.frag>
   #include <shadow-mapping.frag>
 #endif
 
-varying vec3 pos_w;
 uniform vec3 eye;
 
-#ifdef USE_NORMAL
-  varying vec3 normal_w;
-#endif
+varying vec3 pos_w;
+varying vec3 normal_w;
 
 #if defined(USE_NORMAL_TEXTURE) || defined(USE_ALBEDO_TEXTURE) || defined(USE_METALLIC_ROUGHNESS_TEXTURE) || defined(USE_METALLIC_TEXTURE) || defined(USE_ROUGHNESS_TEXTURE) || defined(USE_AO_TEXTURE) || defined(USE_OPACITY_TEXTURE)
   varying vec2 uv0;
@@ -33,7 +34,7 @@ uniform vec3 eye;
 #endif
 
 // material parameters
-uniform vec3 albedo;
+uniform vec4 albedo;
 #ifdef USE_ALBEDO_TEXTURE
   uniform vec2 albedoTiling;
   uniform vec2 albedoOffset;
@@ -67,15 +68,6 @@ uniform float ao;
   uniform sampler2D aoTexture;
 #endif
 
-#ifdef USE_OPACITY
-  uniform float opacity;
-  #ifdef USE_OPACITY_TEXTURE
-    uniform vec2 opacityTiling;
-    uniform vec2 opacityOffset;
-    uniform sampler2D opacityTexture;
-  #endif
-#endif
-
 #ifdef USE_ALPHA_TEST
   uniform float alphaTestThreshold;
 #endif
@@ -100,8 +92,6 @@ uniform float ao;
     return normalize(TBN * tangentNormal);
   }
 #endif
-
-#include <pbr-lighting.frag>
 
 // Cook-Torrance BRDF model
 // D() Normal distribution function (Trowbridge-Reitz GGX)
@@ -173,13 +163,21 @@ vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float metal
 
 
 void main() {
-  #ifdef USE_ALPHA_TEST
-    if(opacity < alphaTestThreshold) discard;
-  #endif
+  float opacity = 1.0;
 
   #ifdef USE_ALBEDO_TEXTURE
-    vec2 albedoUV = uv0 * albedoTiling + albedoOffset;
-    vec3 albedo   = gammaToLinearSpace(texture2D(albedoTexture, albedoUV).rgb);
+    vec2 albedoUV  = uv0 * albedoTiling + albedoOffset;
+    vec4 baseColor = gammaToLinearSpaceRGBA(texture2D(albedoTexture, albedoUV).rgba);
+    vec3 albedo    = baseColor.rgb;
+    opacity = baseColor.a;
+  #else
+    vec4 baseColor = gammaToLinearSpaceRGBA(albedo);
+    vec3 albedo    = baseColor.rgb;
+    opacity = baseColor.a;
+  #endif
+
+  #ifdef USE_ALPHA_TEST
+    if(opacity < alphaTestThreshold) discard;
   #endif
 
   #ifdef USE_METALLIC_ROUGHNESS_TEXTURE
@@ -282,15 +280,7 @@ void main() {
   // HDR tone mapping.
   color = color / (color + vec3(1.0));
   // gamma correction.
-  color = linearToGammaSpace(color);
+  vec4 finalColor = vec4(color, opacity);
 
-  #ifdef USE_OPACITY
-    #ifdef USE_OPACITY_TEXTURE
-      vec2 opacityUV = uv0 * opacityTiling + opacityOffset;
-      float opacity  = texture2D(opacityTexture, opacityUV).r;
-    #endif
-    gl_FragColor = vec4(color, opacity);
-  #else
-    gl_FragColor = vec4(color, 1.0);
-  #endif
+  gl_FragColor = linearToGammaSpaceRGBA(finalColor);
 }
