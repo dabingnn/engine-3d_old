@@ -36,7 +36,7 @@
 
   let spriteDir = './assets/sprites';
   app.assets.registerAsset("test_sprite_texture", {
-    type: 'texture-2d',
+    type: 'texture',
     urls: {
       json: `${spriteDir}/menu.json`,
       image: `${spriteDir}/menu.png`

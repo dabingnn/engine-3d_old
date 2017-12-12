@@ -60,7 +60,7 @@
   material.blendType = cc.BLEND_NORMAL;
   material.color = color4.new(1, 1, 1, 0.6);
 
-  app.assets.loadUrls('texture-2d', {
+  app.assets.loadUrls('texture', {
     image: './assets/textures/checker_uv.jpg'
   }, (err, texture) => {
     material.mainTexture = texture;
