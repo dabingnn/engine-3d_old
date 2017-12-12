@@ -6,7 +6,7 @@ varying vec2 uv;
 uniform sampler2D texture;
 uniform vec2 pixelSize;
 
-#include <common.frag>
+#include <packing.frag>
 
 float kGaussianBlur[10];
 

@@ -1,20 +1,17 @@
 attribute vec3 a_position;
+attribute vec3 a_normal;
 
 uniform mat4 model;
 uniform mat4 viewProj;
 uniform mat3 normalMatrix;
 
+varying vec3 normal_w;
+varying vec3 pos_w;
+
 #if defined(USE_NORMAL_TEXTURE) || defined(USE_DIFFUSE_TEXTURE) || defined(USE_EMISSIVE_TEXTURE) || defined(USE_OPACITY_TEXTURE)
   attribute vec2 a_uv0;
   varying vec2 uv0;
 #endif
-
-#ifdef USE_NORMAL
-  attribute vec3 a_normal;
-  varying vec3 normal_w;
-#endif
-
-varying vec3 pos_w;
 
 #ifdef USE_SKINNING
   #include <skinning.vert>
@@ -47,14 +44,12 @@ void main () {
     uv0 = a_uv0;
   #endif
 
-  #ifdef USE_NORMAL
-    vec4 normal = vec4(a_normal, 0);
-    #ifdef USE_SKINNING
-      normal = skinMat * normal;
-    #endif
-    normal_w = normalMatrix * normal.xyz;
-    normal_w = normalize(normal_w);
+  vec4 normal = vec4(a_normal, 0);
+  #ifdef USE_SKINNING
+    normal = skinMat * normal;
   #endif
+  normal_w = normalMatrix * normal.xyz;
+  normal_w = normalize(normal_w);
 
   #ifdef USE_SHADOW_MAP
     #if NUM_SHADOW_LIGHTS > 0
