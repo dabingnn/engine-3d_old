@@ -1,15 +1,12 @@
 attribute vec3 a_position;
+attribute vec3 a_normal;
 
 varying vec3 pos_w;
+varying vec3 normal_w;
 
 uniform mat4 model;
 uniform mat4 viewProj;
 uniform mat3 normalMatrix;
-
-#ifdef USE_NORMAL
-  attribute vec3 a_normal;
-  varying vec3 normal_w;
-#endif
 
 #if defined(USE_NORMAL_TEXTURE) || defined(USE_ALBEDO_TEXTURE) || defined(USE_METALLIC_ROUGHNESS_TEXTURE) || defined(USE_METALLIC_TEXTURE) || defined(USE_ROUGHNESS_TEXTURE) || defined(USE_AO_TEXTURE) || defined(USE_OPACITY_TEXTURE)
   attribute vec2 a_uv0;
@@ -47,13 +44,11 @@ void main () {
     uv0 = a_uv0;
   #endif
 
-  #ifdef USE_NORMAL
-    vec4 normal = vec4(a_normal, 0);
-    #ifdef USE_SKINNING
-      normal = skinMat * normal;
-    #endif
-    normal_w = normalMatrix * normal.xyz;
+  vec4 normal = vec4(a_normal, 0);
+  #ifdef USE_SKINNING
+    normal = skinMat * normal;
   #endif
+  normal_w = normalMatrix * normal.xyz;
 
   #ifdef USE_SHADOW_MAP
     #if NUM_SHADOW_LIGHTS > 0

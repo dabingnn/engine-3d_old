@@ -1,8 +1,6 @@
 struct LightInfo {
   vec3 diffuse;
-  #ifdef USE_SPECULAR
-    vec3 specular;
-  #endif
+  vec3 specular;
 };
 
 LightInfo computeDirectionalLighting(
@@ -19,13 +17,11 @@ LightInfo computeDirectionalLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl;
 
-  #ifdef USE_SPECULAR
-    vec3 dirH = normalize(viewDirection + lightDir);
-    ndh = max(0.0, dot(normal, dirH));
-    ndh = (ndl == 0.0) ? 0.0: ndh;
-    ndh = pow(ndh, max(1.0, glossiness));
-    lightingResult.specular = lightColor * ndh;
-  #endif
+  vec3 dirH = normalize(viewDirection + lightDir);
+  ndh = max(0.0, dot(normal, dirH));
+  ndh = (ndl == 0.0) ? 0.0: ndh;
+  ndh = pow(ndh, max(1.0, glossiness));
+  lightingResult.specular = lightColor * ndh;
 
   return lightingResult;
 }
@@ -50,13 +46,11 @@ LightInfo computePointLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl * attenuation;
 
-  #ifdef USE_SPECULAR
-    vec3 dirH = normalize(viewDirection + lightDir);
-    ndh = max(0.0, dot(normal, dirH));
-    ndh = (ndl == 0.0) ? 0.0: ndh;
-    ndh = pow(ndh, max(1.0, glossiness));
-    lightingResult.specular = lightColor * ndh * attenuation;
-  #endif
+  vec3 dirH = normalize(viewDirection + lightDir);
+  ndh = max(0.0, dot(normal, dirH));
+  ndh = (ndl == 0.0) ? 0.0: ndh;
+  ndh = pow(ndh, max(1.0, glossiness));
+  lightingResult.specular = lightColor * ndh * attenuation;
 
   return lightingResult;
 }
@@ -88,13 +82,11 @@ LightInfo computeSpotLighting(
   ndl = max(0.0, dot(normal, lightDir));
   lightingResult.diffuse = lightColor * ndl * attenuation * cosConeAngle;
 
-  #ifdef USE_SPECULAR
-    vec3 dirH = normalize(viewDirection + lightDir);
-    ndh = max(0.0, dot(normal, dirH));
-    ndh = (ndl == 0.0) ? 0.0: ndh;
-    ndh = pow(ndh, max(1.0, glossiness));
-    lightingResult.specular = lightColor * ndh * attenuation * cosConeAngle;
-  #endif
+  vec3 dirH = normalize(viewDirection + lightDir);
+  ndh = max(0.0, dot(normal, dirH));
+  ndh = (ndl == 0.0) ? 0.0: ndh;
+  ndh = pow(ndh, max(1.0, glossiness));
+  lightingResult.specular = lightColor * ndh * attenuation * cosConeAngle;
 
   return lightingResult;
 }
@@ -132,17 +124,13 @@ LightInfo getPhongLighting(
 ) {
   LightInfo result;
   result.diffuse = vec3(0, 0, 0);
-  #ifdef useSpecular
-    result.specular = vec3(0, 0, 0);
-  #endif
+  result.specular = vec3(0, 0, 0);
   LightInfo dirLighting;
   #if NUM_DIR_LIGHTS > 0
     #pragma for id in range(0, NUM_DIR_LIGHTS)
       dirLighting = computeDirectionalLighting(dir_light{id}_direction,dir_light{id}_color,normal, viewDirection, glossiness);
       result.diffuse += dirLighting.diffuse;
-      #ifdef useSpecular
-        result.specular += dirLighting.specular;
-      #endif
+      result.specular += dirLighting.specular;
     #pragma endFor
   #endif
 
@@ -152,9 +140,7 @@ LightInfo getPhongLighting(
       pointLighting = computePointLighting(point_light{id}_position, point_light{id}_color, point_light{id}_range,
                                           normal, positionW, viewDirection, glossiness);
       result.diffuse += pointLighting.diffuse;
-      #ifdef useSpecular
-        result.specular += pointLighting.specular;
-      #endif
+      result.specular += pointLighting.specular;
     #pragma endFor
   #endif
 
@@ -164,9 +150,7 @@ LightInfo getPhongLighting(
       spotLighting = computeSpotLighting(spot_light{id}_position, spot_light{id}_direction, spot_light{id}_color,
                       spot_light{id}_range, spot_light{id}_spot,normal, positionW, viewDirection, glossiness);
       result.diffuse += spotLighting.diffuse;
-      #ifdef useSpecular
-        result.specular += spotLighting.specular;
-      #endif
+      result.specular += spotLighting.specular;
     #pragma endFor
   #endif
   return result;
