@@ -68,7 +68,7 @@
   }
 
   function play() {
-    let ent = cc.utils.find(app.activeLevel, dobj.entityPath);
+    let ent = app.find(dobj.entityPath);
     let anim = ent.getComp('Animation');
     anim.play(dobj.animName);
   }
