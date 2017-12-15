@@ -1,6 +1,6 @@
 (() => {
   const { cc, app, dgui } = window;
-  const { resl, gfx, PbrMaterial, Texture2D } = cc;
+  const { resl, gfx, PbrMaterial, Texture2D, Material } = cc;
   const { vec3, color3 } = cc.math;
   const { sphere } = cc.primitives;
 
@@ -92,7 +92,14 @@
   let meshSphere = cc.utils.createMesh(app, sphere(3, {
     segments: 64,
   }));
-  let pbrMaterial = new PbrMaterial({});
+  //let pbrMaterial = new PbrMaterial({});
+  let pbrMaterial = new Material();
+  const effectUrl = {
+    json: 'assets/pbr-effect.json',
+  };
+  // app.assets.loadUrls('effect', effectUrl, (err, asset) => {
+  //   pbrMaterial._effect = asset._effect;
+  // });
   pbrMaterial.useIBL = dobj.useIBL;
   pbrMaterial.useTexLod = dobj.useTexLod;
   pbrMaterial.maxReflectionLod = dobj.maxRefLod;
@@ -118,10 +125,17 @@
   // lightComp1.setIntensity(5);
 
   // create sphere entity
-  let ent = app.createEntity('sphere');
-  let modelComp = ent.addComp('Model');
-  modelComp.mesh = meshSphere;
-  modelComp.material = pbrMaterial;
+  // let ent = app.createEntity('sphere');
+  // let modelComp = ent.addComp('Model');
+  // modelComp.mesh = meshSphere;
+  app.assets.loadUrls('effect', effectUrl, (err, asset) => {
+    pbrMaterial._effect = asset._effect;
+    let ent = app.createEntity('sphere');
+    let modelComp = ent.addComp('Model');
+    modelComp.mesh = meshSphere;
+    modelComp.material = pbrMaterial;
+  });
+  //modelComp.material = pbrMaterial;
 
   // camera
   let camEnt = app.createEntity('camera');
