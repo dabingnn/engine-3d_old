@@ -21,6 +21,7 @@ const _typeMap = {
 const _passMap = {
   back: gfx.CULL_BACK,
   front: gfx.CULL_FRONT,
+  none: gfx.CULL_NONE,
   add: gfx.BLEND_FUNC_ADD,
   subtract: gfx.BLEND_FUNC_SUBTRACT,
   reverseSubtract: gfx.BLEND_FUNC_REVERSE_SUBTRACT,

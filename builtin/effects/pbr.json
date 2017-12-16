@@ -131,7 +131,8 @@
          "depthTest": true,
          "depthWrite": true
        }
-      ]
+      ],
+      "layer": 0
     },
     {
       "stages": ["shadowCast"],
@@ -140,10 +141,12 @@
         {
           "program": "shadow-depth",
           "cullMode": "back",
+          "blendMode": "none",
           "depthTest": true,
           "depthWrite": true
         }
-      ]
+      ],
+      "layer": 0
     }
   ],
 

@@ -1,6 +1,6 @@
 (() => {
   const { cc, app, dgui } = window;
-  const { resl, gfx, PbrMaterial, Texture2D, Material } = cc;
+  const { resl, gfx, Texture2D, Material } = cc;
   const { vec3, color3 } = cc.math;
   const { sphere } = cc.primitives;
 
@@ -40,50 +40,50 @@
   dgui.add(dobj, 'albedo').onFinishChange(() => {
     loadTexture(dobj.albedo, texture => {
       if (texture) {
-        pbrMaterial.useAlbedoTexture = true;
-        pbrMaterial.albedoTexture = texture;
+        pbrMaterial.setOption('USE_ALBEDO_TEXTURE', true);
+        pbrMaterial.setProperty('albedoTexture', texture);
       } else {
-        pbrMaterial.useAlbedoTexture = false;
+        pbrMaterial.setOption('USE_ALBEDO_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'normal').onFinishChange(() => {
     loadTexture(dobj.normal, texture => {
       if (texture) {
-        pbrMaterial.useNormalTexture = true;
-        pbrMaterial.normalTexture = texture;
+        pbrMaterial.setOption('USE_NORMAL_TEXTURE', true);
+        pbrMaterial.setProperty('normalTexture', texture);
       } else {
-        pbrMaterial.useNormalTexture = false;
+        pbrMaterial.setOption('USE_NORMAL_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'metallic').onFinishChange(() => {
     loadTexture(dobj.metallic, texture => {
       if (texture) {
-        pbrMaterial.useMetallicTexture = true;
-        pbrMaterial.metallicTexture = texture;
+        pbrMaterial.setOption('USE_METALLIC_TEXTURE', true);
+        pbrMaterial.setProperty('metallicTexture', texture);
       } else {
-        pbrMaterial.useMetallicTexture = false;
+        pbrMaterial.setOption('USE_METALLIC_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'roughness').onFinishChange(() => {
     loadTexture(dobj.roughness, texture => {
       if (texture) {
-        pbrMaterial.useRoughnessTexture = true;
-        pbrMaterial.roughnessTexture = texture;
+        pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', true);
+        pbrMaterial.setProperty('roughnessTexture', texture);
       } else {
-        pbrMaterial.useRoughnessTexture = false;
+        pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'ao').onFinishChange(() => {
     loadTexture(dobj.ao, texture => {
       if (texture) {
-        pbrMaterial.useAoTexture = true;
-        pbrMaterial.aoTexture = texture;
+        pbrMaterial.setOption('USE_AO_TEXTURE', true);
+        pbrMaterial.setProperty('aoTexture', texture);
       } else {
-        pbrMaterial.useAoTexture = false;
+        pbrMaterial.setOption('USE_AO_TEXTURE', false);
       }
     });
   });
@@ -92,19 +92,6 @@
   let meshSphere = cc.utils.createMesh(app, sphere(3, {
     segments: 64,
   }));
-  //let pbrMaterial = new PbrMaterial({});
-  let pbrMaterial = new Material();
-  const effectUrl = {
-    json: 'assets/pbr-effect.json',
-  };
-  // app.assets.loadUrls('effect', effectUrl, (err, asset) => {
-  //   pbrMaterial._effect = asset._effect;
-  // });
-  pbrMaterial.useIBL = dobj.useIBL;
-  pbrMaterial.useTexLod = dobj.useTexLod;
-  pbrMaterial.maxReflectionLod = dobj.maxRefLod;
-  pbrMaterial.ao = 1.0;
-  pbrMaterial.useAoTexture = false;
 
   // create skybox
   let skyboxEnt = null;
@@ -118,24 +105,67 @@
   light.intensity = 5.0;
   light.range = 1000.0;
 
-  // let light1 = app.createEntity('light1');
-  // quat.fromEuler(light1.lrot, -45, 135, 0);
-  // let lightComp1 = light1.addComp('Light');
-  // lightComp1.setColor(1, 1, 1);
-  // lightComp1.setIntensity(5);
+  let pbrMaterial = new Material();
+  pbrMaterial.effectAsset = app.assets.get('builtin-pbr');
 
-  // create sphere entity
-  // let ent = app.createEntity('sphere');
-  // let modelComp = ent.addComp('Model');
-  // modelComp.mesh = meshSphere;
-  app.assets.loadUrls('effect', effectUrl, (err, asset) => {
-    pbrMaterial._effect = asset._effect;
+  pbrMaterial.setOption('USE_IBL', dobj.useIBL);
+  pbrMaterial.setOption('USE_TEX_LOD', dobj.useTexLod);
+  pbrMaterial.setProperty('maxReflectionLod', dobj.maxRefLod);
+  pbrMaterial.setProperty('ao', 1.0);
+  pbrMaterial.setOption('USE_AO_TEXTURE', false);
+    // start loading
+  loadIBL();
+  const lutUrls = {
+    image: './assets/textures/brdfLUT.png',
+  };
+  app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
+    pbrMaterial.setProperty('brdfLUT', lutMap._texture);
+  });
+  loadTexture(dobj.albedo, texture => {
+    if (texture) {
+      pbrMaterial.setOption('USE_ALBEDO_TEXTURE', true);
+      pbrMaterial.setProperty('albedoTexture', texture._texture);
+    } else {
+      pbrMaterial.setOption('USE_ALBEDO_TEXTURE', false);
+    }
+  });
+  loadTexture(dobj.normal, texture => {
+    if (texture) {
+      pbrMaterial.setOption('USE_NORMAL_TEXTURE', true);
+      pbrMaterial.setProperty('normalTexture', texture._texture);
+    } else {
+      pbrMaterial.setOption('USE_NORMAL_TEXTURE', false);
+    }
+  });
+  loadTexture(dobj.metallic, texture => {
+    if (texture) {
+      pbrMaterial.setOption('USE_METALLIC_TEXTURE', true);
+      pbrMaterial.setProperty('metallicTexture', texture._texture);
+    } else {
+      pbrMaterial.setOption('USE_METALLIC_TEXTURE', false);
+    }
+  });
+  loadTexture(dobj.roughness, texture => {
+    if (texture) {
+      pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', true);
+      pbrMaterial.setProperty('roughnessTexture', texture._texture);
+    } else {
+      pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', false);
+    }
+  });
+  loadTexture(dobj.ao, texture => {
+    if (texture) {
+      pbrMaterial.setOption('USE_AO_TEXTURE', true);
+      pbrMaterial.setProperty('aoTexture', texture._texture);
+    } else {
+      pbrMaterial.setOption('USE_AO_TEXTURE', false);
+    }
+  });
+
     let ent = app.createEntity('sphere');
     let modelComp = ent.addComp('Model');
     modelComp.mesh = meshSphere;
     modelComp.material = pbrMaterial;
-  });
-  //modelComp.material = pbrMaterial;
 
   // camera
   let camEnt = app.createEntity('camera');
@@ -146,11 +176,6 @@
   function loadIBL () {
     if (!dobj.useIBL) {
       return;
-    }
-
-    if (!skyboxEnt) {
-      skyboxEnt = app.createEntity('skybox');
-      skyboxEnt.addComp('Skybox');
     }
 
     // load environment box.
@@ -165,7 +190,12 @@
       imageNegZ: `${envSrc}/environment_back_0.jpg`,
     };
     app.assets.loadUrls('texture', envUrls, (err, cubeMap) => {
-      skyboxEnt.getComp('Skybox').cubeMap = cubeMap;
+      skyboxEnt = app.createEntity('skybox');
+      let skyboxComp = skyboxEnt.addComp('Skybox');
+      let skyboxMaterial = new Material();
+      skyboxMaterial.effectAsset = app.assets.get('builtin-skybox');
+      skyboxMaterial.setProperty('cubeMap', cubeMap._texture);
+      skyboxComp.material = skyboxMaterial;
     });
 
     // load indirect lighting resource
@@ -180,7 +210,7 @@
       imageNegZ: `${diffuseSrc}/diffuse_back_0.jpg`,
     };
     app.assets.loadUrls('texture', difUrls, (err, cubeMap) => {
-      pbrMaterial.diffuseEnvTexture = cubeMap;
+      pbrMaterial.setProperty('diffuseEnvTexture', cubeMap._texture);
     });
 
     let specularSrc = `${dobj.envURL}/specular`;
@@ -197,7 +227,7 @@
       specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_back_${i}.jpg`;
     }
     app.assets.loadUrls('texture', specUrls, (err, cubeMap) => {
-      pbrMaterial.specularEnvTexture = cubeMap;
+      pbrMaterial.setProperty('specularEnvTexture', cubeMap._texture);
     });
   }
 
@@ -230,68 +260,5 @@
       }
     });
   }
-
-  // start loading
-  loadIBL();
-  const lutUrls = {
-    image: './assets/textures/brdfLUT.png',
-  };
-  app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
-    pbrMaterial.brdfLUT = lutMap;
-  });
-  loadTexture(dobj.albedo, texture => {
-    if (texture) {
-      pbrMaterial.useAlbedoTexture = true;
-      pbrMaterial.albedoTexture = texture;
-    } else {
-      pbrMaterial.useAlbedoTexture = false;
-    }
-  });
-  loadTexture(dobj.normal, texture => {
-    if (texture) {
-      pbrMaterial.useNormalTexture = true;
-      pbrMaterial.normalTexture = texture;
-    } else {
-      pbrMaterial.useNormalTexture = false;
-    }
-  });
-  loadTexture(dobj.metallic, texture => {
-    if (texture) {
-      pbrMaterial.useMetallicTexture = true;
-      pbrMaterial.metallicTexture = texture;
-    } else {
-      pbrMaterial.useMetallicTexture = false;
-    }
-  });
-  loadTexture(dobj.roughness, texture => {
-    if (texture) {
-      pbrMaterial.useRoughnessTexture = true;
-      pbrMaterial.roughnessTexture = texture;
-    } else {
-      pbrMaterial.useRoughnessTexture = false;
-    }
-  });
-  loadTexture(dobj.ao, texture => {
-    if (texture) {
-      pbrMaterial.useAoTexture = true;
-      pbrMaterial.aoTexture = texture;
-    } else {
-      pbrMaterial.useAoTexture = false;
-    }
-  });
-
-  // let Cerberus = {
-  //   gltf: '../node_modules/assets-3d/textures/pbr/cerberus/a5c37fd97fce24fea81d95160e2f1caf.gltf',
-  //   bin: '../node_modules/assets-3d/textures/pbr/cerberus/a5c37fd97fce24fea81d95160e2f1caf.bin'
-  // }
-  // app.assets.loadUrls('mesh', Cerberus, (err, mesh) =>{
-  //   let ent = app.createEntity('model');
-  //   quat.fromEuler(ent.lrot, 90, 0, 0);
-  //   vec3.set(ent.lscale, 10, 10, 10);
-  //   vec3.set(ent.lpos,8,8,0);
-  //   let modelComp = ent.addComp('Model');
-  //   modelComp.mesh = mesh;
-  //   modelComp.material = cerberusMaterial;
-  // });
 
 })();

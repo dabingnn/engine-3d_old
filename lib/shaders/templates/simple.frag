@@ -1,7 +1,7 @@
+// precision highp float;
+
 #ifdef USE_TEXTURE
-  uniform sampler2D mainTexture;
-  uniform vec2 mainTiling;
-  uniform vec2 mainOffset;
+  uniform sampler2D texture;
   varying vec2 uv0;
 #endif
 
@@ -13,13 +13,16 @@ void main () {
   vec4 o = vec4(1, 1, 1, 1);
 
   #ifdef USE_TEXTURE
-    vec2 uv = uv0 * mainTiling + mainOffset;
-    o *= texture2D(mainTexture, uv);
+    o *= texture2D(texture, uv0);
   #endif
 
   #ifdef USE_COLOR
     o *= color;
   #endif
+
+  if (!gl_FrontFacing) {
+    o.rgb *= 0.5;
+  }
 
   gl_FragColor = o;
 }

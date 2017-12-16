@@ -22,7 +22,8 @@
          "blendSrcAlpha": "one",
          "blendDstAlpha": "one"
        }
-      ]
+      ],
+      "layer": 0
     }
   ],
 

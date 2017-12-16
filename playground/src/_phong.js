@@ -9,7 +9,7 @@
 
   const resl = cc.resl;
   const gfx = cc.gfx;
-  const { Node, PhongMaterial } = cc;
+  const { Node, Material } = cc;
   const { vec2, vec3, color3, color4, quat, randomRange } = cc.math;
   const { Scene, Model, Light } = cc.renderer;
   const { box } = cc.primitives;
@@ -22,9 +22,8 @@
   }));
 
   // create groundmaterial
-  let groundmaterial = new PhongMaterial({
-  });
-  groundmaterial.blendType = cc.BLEND_NONE;
+  let groundmaterial = new Material();
+  groundmaterial.effectAsset = app.assets.get('builtin-phong');
   let assetsSrc = '../node_modules/assets-3d';
 
   resl({
@@ -140,16 +139,15 @@
         images: [assets.normalMap]
       });
 
-      let mtl = new PhongMaterial({});
-      mtl.blendType = cc.BLEND_NONE;
-      mtl.useDiffuseTexture = true;
-      mtl.useSpecular = true;
-      mtl.useSpecularTexture = true;
-      mtl.useNormalTexture = true;
-      mtl.diffuseTexture = diffuseMap;
-      mtl.specularTexture = specularMap;
-      mtl.glossiness = 30;
-      mtl.normalTexture = normalMap;
+      let mtl = new Material();
+      mtl.effectAsset = app.assets.get('builtin-phong');
+      mtl.setOption('USE_DIFFUSE_TEXTURE', true);
+      mtl.setOption('USE_SPECULAR_TEXTURE', true);
+      mtl.setOption('USE_NORMAL_TEXTURE', true);
+      mtl.setProperty('diffuseTexture', diffuseMap);
+      mtl.setProperty('specularTexture', specularMap);
+      mtl.setProperty('glossiness', 30);
+      mtl.mtl.setProperty('normalTexture', normalMap);
 
       // create mesh
       cc.utils.parseSkin(app, assets.gltf, assets.bin, (err, root) => {
