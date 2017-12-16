@@ -96,7 +96,8 @@
          "depthTest": true,
          "depthWrite": true
        }
-      ]
+      ],
+      "layer": 0
     },
     {
       "stages": ["shadowCast"],
@@ -108,7 +109,8 @@
           "depthTest": true,
           "depthWrite": true
         }
-      ]
+      ],
+      "layer": 0
     }
   ],
 

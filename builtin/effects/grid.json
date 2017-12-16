@@ -78,7 +78,8 @@
        {
          "program": "grid"
        }
-      ]
+      ],
+      "layer": 0
     }
   ],
 

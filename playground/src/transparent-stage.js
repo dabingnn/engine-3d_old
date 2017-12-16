@@ -54,16 +54,17 @@
   }));
 
   // create material
-  let material = new cc.UnlitMaterial();
-  material.useColor = true;
-  material.useTexture = true;
+  let material = new cc.Material();
+  material.effectAsset = app.assets.get('builtin-unlit');
+  material.setOption('USE_COLOR', true);
+  material.setOption('USE_TEXTURE', true);
+  material.setProperty('color', color4.new(1, 1, 1, 0.6));
   material.blendType = cc.BLEND_NORMAL;
-  material.color = color4.new(1, 1, 1, 0.6);
 
   app.assets.loadUrls('texture', {
     image: './assets/textures/checker_uv.jpg'
   }, (err, texture) => {
-    material.mainTexture = texture;
+    material.setProperty('mainTexture', texture._texture);
   });
 
   // create camera

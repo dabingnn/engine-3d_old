@@ -14,9 +14,10 @@
   //let meshSphere = cc.utils.createMesh()
 
   // create material
-  let material = new cc.PbrMaterial();
-  material.roughness = 0.5;
-  material.metallic = 1.0;
+  let material = new cc.Material();
+  material.effectAsset = app.assets.get('builtin-pbr');
+  material.setProperty('roughness', 0.5);
+  material.setProperty('metallic', 1);
 
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, -10, 30, 0);

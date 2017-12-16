@@ -11,9 +11,11 @@
       ],
       "passes": [
        {
-         "program": "skybox"
+         "program": "skybox",
+         "cullMode": "none"
        }
-      ]
+      ],
+      "layer": -1
     }
   ],
 

@@ -5,13 +5,13 @@
       "params": [
         {
           "name": "color",
-          "type": "color3",
-          "value": [1, 1, 1]
+          "type": "color4",
+          "value": [0.4, 0.4, 0.4, 1]
         }
       ],
       "passes": [
        {
-         "program": "wireframe",
+         "program": "simple",
          "depthTest": true,
          "depthWrite": true
        }
@@ -19,6 +19,17 @@
       "layer": 0
     }
   ],
+
   "values": [],
-  "options": []
+
+  "options": [
+    {
+      "name": "USE_TEXTURE",
+      "value": false
+    },
+    {
+      "name": "USE_COLOR",
+      "value": false
+    }
+  ]
 }
