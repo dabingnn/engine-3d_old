@@ -14,7 +14,7 @@ function loadBuiltinEffects(data) {
     effectAssets[i]._loaded = true;
     let techNum = effect.techniques.length;
     let techniques = new Array(techNum);
-    let values = {};
+    let props = {};
 
     for (let j = 0; j < techNum; ++j) {
       let tech = effect.techniques[j];
@@ -23,26 +23,26 @@ function loadBuiltinEffects(data) {
         let param = tech.params[k];
         switch(param.type) {
           case renderer.PARAM_FLOAT:
-            values[param.name] = param.value;
+            props[param.name] = param.value;
             break;
           case renderer.PARAM_FLOAT2:
-            values[param.name] = vec2.new(param.value[0], param.value[1]);
+            props[param.name] = vec2.new(param.value[0], param.value[1]);
             break;
           case renderer.PARAM_FLOAT3:
-            values[param.name] = vec3.new(param.value[0], param.value[1], param.value[2]);
+            props[param.name] = vec3.new(param.value[0], param.value[1], param.value[2]);
             break;
           case renderer.PARAM_FLOAT4:
-            values[param.name] = vec4.new(param.value[0], param.value[1], param.value[2], param.value[3]);
+            props[param.name] = vec4.new(param.value[0], param.value[1], param.value[2], param.value[3]);
             break;
           case renderer.PARAM_COLOR3:
-            values[param.name] = color3.new(param.value[0], param.value[1], param.value[2]);
+            props[param.name] = color3.new(param.value[0], param.value[1], param.value[2]);
             break;
           case renderer.PARAM_COLOR4:
-            values[param.name] = color4.new(param.value[0], param.value[1], param.value[2], param.value[3]);
+            props[param.name] = color4.new(param.value[0], param.value[1], param.value[2], param.value[3]);
             break;
           case renderer.PARAM_TEXTURE_2D:
           case renderer.PARAM_TEXTURE_CUBE:
-            values[param.name] = undefined;
+            props[param.name] = undefined;
             break;
           default:
             console.warn('unsupport param type in effect json.');
@@ -68,7 +68,7 @@ function loadBuiltinEffects(data) {
       techniques[j] = new renderer.Technique(tech.stages, tech.params, passes, tech.layer);
     }
 
-    effectAssets[i]._effect = new renderer.Effect(techniques, values, effect.options);
+    effectAssets[i]._effect = new renderer.Effect(techniques, props, effect.defines);
   }
 
   return effectAssets;

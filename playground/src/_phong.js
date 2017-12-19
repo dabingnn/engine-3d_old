@@ -141,9 +141,9 @@
 
       let mtl = new Material();
       mtl.effectAsset = app.assets.get('builtin-phong');
-      mtl.setOption('USE_DIFFUSE_TEXTURE', true);
-      mtl.setOption('USE_SPECULAR_TEXTURE', true);
-      mtl.setOption('USE_NORMAL_TEXTURE', true);
+      mtl.define('USE_DIFFUSE_TEXTURE', true);
+      mtl.define('USE_SPECULAR_TEXTURE', true);
+      mtl.define('USE_NORMAL_TEXTURE', true);
       mtl.setProperty('diffuseTexture', diffuseMap);
       mtl.setProperty('specularTexture', specularMap);
       mtl.setProperty('glossiness', 30);

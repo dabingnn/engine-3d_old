@@ -56,8 +56,8 @@
   // create material
   let material = new cc.Material();
   material.effectAsset = app.assets.get('builtin-unlit');
-  material.setOption('USE_COLOR', true);
-  material.setOption('USE_TEXTURE', true);
+  material.define('USE_COLOR', true);
+  material.define('USE_TEXTURE', true);
   material.setProperty('color', color4.new(1, 1, 1, 0.6));
   material.blendType = cc.BLEND_NORMAL;
 

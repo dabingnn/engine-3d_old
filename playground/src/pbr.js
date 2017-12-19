@@ -40,50 +40,50 @@
   dgui.add(dobj, 'albedo').onFinishChange(() => {
     loadTexture(dobj.albedo, texture => {
       if (texture) {
-        pbrMaterial.setOption('USE_ALBEDO_TEXTURE', true);
+        pbrMaterial.define('USE_ALBEDO_TEXTURE', true);
         pbrMaterial.setProperty('albedoTexture', texture);
       } else {
-        pbrMaterial.setOption('USE_ALBEDO_TEXTURE', false);
+        pbrMaterial.define('USE_ALBEDO_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'normal').onFinishChange(() => {
     loadTexture(dobj.normal, texture => {
       if (texture) {
-        pbrMaterial.setOption('USE_NORMAL_TEXTURE', true);
+        pbrMaterial.define('USE_NORMAL_TEXTURE', true);
         pbrMaterial.setProperty('normalTexture', texture);
       } else {
-        pbrMaterial.setOption('USE_NORMAL_TEXTURE', false);
+        pbrMaterial.define('USE_NORMAL_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'metallic').onFinishChange(() => {
     loadTexture(dobj.metallic, texture => {
       if (texture) {
-        pbrMaterial.setOption('USE_METALLIC_TEXTURE', true);
+        pbrMaterial.define('USE_METALLIC_TEXTURE', true);
         pbrMaterial.setProperty('metallicTexture', texture);
       } else {
-        pbrMaterial.setOption('USE_METALLIC_TEXTURE', false);
+        pbrMaterial.define('USE_METALLIC_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'roughness').onFinishChange(() => {
     loadTexture(dobj.roughness, texture => {
       if (texture) {
-        pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', true);
+        pbrMaterial.define('USE_ROUGHNESS_TEXTURE', true);
         pbrMaterial.setProperty('roughnessTexture', texture);
       } else {
-        pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', false);
+        pbrMaterial.define('USE_ROUGHNESS_TEXTURE', false);
       }
     });
   });
   dgui.add(dobj, 'ao').onFinishChange(() => {
     loadTexture(dobj.ao, texture => {
       if (texture) {
-        pbrMaterial.setOption('USE_AO_TEXTURE', true);
+        pbrMaterial.define('USE_AO_TEXTURE', true);
         pbrMaterial.setProperty('aoTexture', texture);
       } else {
-        pbrMaterial.setOption('USE_AO_TEXTURE', false);
+        pbrMaterial.define('USE_AO_TEXTURE', false);
       }
     });
   });
@@ -108,11 +108,11 @@
   let pbrMaterial = new Material();
   pbrMaterial.effectAsset = app.assets.get('builtin-pbr');
 
-  pbrMaterial.setOption('USE_IBL', dobj.useIBL);
-  pbrMaterial.setOption('USE_TEX_LOD', dobj.useTexLod);
+  pbrMaterial.define('USE_IBL', dobj.useIBL);
+  pbrMaterial.define('USE_TEX_LOD', dobj.useTexLod);
   pbrMaterial.setProperty('maxReflectionLod', dobj.maxRefLod);
   pbrMaterial.setProperty('ao', 1.0);
-  pbrMaterial.setOption('USE_AO_TEXTURE', false);
+  pbrMaterial.define('USE_AO_TEXTURE', false);
     // start loading
   loadIBL();
   const lutUrls = {
@@ -123,42 +123,42 @@
   });
   loadTexture(dobj.albedo, texture => {
     if (texture) {
-      pbrMaterial.setOption('USE_ALBEDO_TEXTURE', true);
+      pbrMaterial.define('USE_ALBEDO_TEXTURE', true);
       pbrMaterial.setProperty('albedoTexture', texture._texture);
     } else {
-      pbrMaterial.setOption('USE_ALBEDO_TEXTURE', false);
+      pbrMaterial.define('USE_ALBEDO_TEXTURE', false);
     }
   });
   loadTexture(dobj.normal, texture => {
     if (texture) {
-      pbrMaterial.setOption('USE_NORMAL_TEXTURE', true);
+      pbrMaterial.define('USE_NORMAL_TEXTURE', true);
       pbrMaterial.setProperty('normalTexture', texture._texture);
     } else {
-      pbrMaterial.setOption('USE_NORMAL_TEXTURE', false);
+      pbrMaterial.define('USE_NORMAL_TEXTURE', false);
     }
   });
   loadTexture(dobj.metallic, texture => {
     if (texture) {
-      pbrMaterial.setOption('USE_METALLIC_TEXTURE', true);
+      pbrMaterial.define('USE_METALLIC_TEXTURE', true);
       pbrMaterial.setProperty('metallicTexture', texture._texture);
     } else {
-      pbrMaterial.setOption('USE_METALLIC_TEXTURE', false);
+      pbrMaterial.define('USE_METALLIC_TEXTURE', false);
     }
   });
   loadTexture(dobj.roughness, texture => {
     if (texture) {
-      pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', true);
+      pbrMaterial.define('USE_ROUGHNESS_TEXTURE', true);
       pbrMaterial.setProperty('roughnessTexture', texture._texture);
     } else {
-      pbrMaterial.setOption('USE_ROUGHNESS_TEXTURE', false);
+      pbrMaterial.define('USE_ROUGHNESS_TEXTURE', false);
     }
   });
   loadTexture(dobj.ao, texture => {
     if (texture) {
-      pbrMaterial.setOption('USE_AO_TEXTURE', true);
+      pbrMaterial.define('USE_AO_TEXTURE', true);
       pbrMaterial.setProperty('aoTexture', texture._texture);
     } else {
-      pbrMaterial.setOption('USE_AO_TEXTURE', false);
+      pbrMaterial.define('USE_AO_TEXTURE', false);
     }
   });
 

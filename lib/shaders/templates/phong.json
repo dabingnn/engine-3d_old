@@ -112,9 +112,9 @@
     }
   ],
 
-  "values": [],
+  "properties": {},
 
-  "options": [
+  "defines": [
     {
       "name": "USE_NORMAL_TEXTURE",
       "value": false
