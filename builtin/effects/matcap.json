@@ -35,9 +35,9 @@
     }
   ],
 
-  "values": [],
+  "properties": {},
 
-  "options": [
+  "defines": [
     {
       "name": "USE_MAIN_TEX",
       "value": false

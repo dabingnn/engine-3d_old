@@ -82,9 +82,9 @@
     }
   ],
 
-  "values": [],
+  "properties": {},
 
-  "options": [
+  "defines": [
     {
       "name": "USE_WORLD_POS",
       "value": false

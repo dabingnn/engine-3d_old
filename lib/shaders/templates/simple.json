@@ -19,9 +19,9 @@
     }
   ],
 
-  "values": [],
+  "properties": {},
 
-  "options": [
+  "defines": [
     {
       "name": "USE_TEXTURE",
       "value": false
