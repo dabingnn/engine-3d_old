@@ -15,7 +15,7 @@
 
   // create material
   let material = new cc.Material();
-  material.effectAsset = app.assets.get('builtin-pbr');
+  material.effect = app.assets.get('builtin-pbr');
   material.setProperty('roughness', 0.5);
   material.setProperty('metallic', 1);
 
