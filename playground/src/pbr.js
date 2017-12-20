@@ -106,7 +106,7 @@
   light.range = 1000.0;
 
   let pbrMaterial = new Material();
-  pbrMaterial.effectAsset = app.assets.get('builtin-pbr');
+  pbrMaterial.effect = app.assets.get('builtin-pbr');
 
   pbrMaterial.define('USE_IBL', dobj.useIBL);
   pbrMaterial.define('USE_TEX_LOD', dobj.useTexLod);
@@ -193,7 +193,7 @@
       skyboxEnt = app.createEntity('skybox');
       let skyboxComp = skyboxEnt.addComp('Skybox');
       let skyboxMaterial = new Material();
-      skyboxMaterial.effectAsset = app.assets.get('builtin-skybox');
+      skyboxMaterial.effect = app.assets.get('builtin-skybox');
       skyboxMaterial.setProperty('cubeMap', cubeMap._texture);
       skyboxComp.material = skyboxMaterial;
     });

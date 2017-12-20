@@ -23,7 +23,7 @@
 
   // create groundmaterial
   let groundmaterial = new Material();
-  groundmaterial.effectAsset = app.assets.get('builtin-phong');
+  groundmaterial.effect = app.assets.get('builtin-phong');
   let assetsSrc = '../node_modules/assets-3d';
 
   resl({
@@ -140,7 +140,7 @@
       });
 
       let mtl = new Material();
-      mtl.effectAsset = app.assets.get('builtin-phong');
+      mtl.effect = app.assets.get('builtin-phong');
       mtl.define('USE_DIFFUSE_TEXTURE', true);
       mtl.define('USE_SPECULAR_TEXTURE', true);
       mtl.define('USE_NORMAL_TEXTURE', true);
