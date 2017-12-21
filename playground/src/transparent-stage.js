@@ -64,7 +64,7 @@
   app.assets.loadUrls('texture', {
     image: './assets/textures/checker_uv.jpg'
   }, (err, texture) => {
-    material.setProperty('mainTexture', texture._texture);
+    material.setProperty('mainTexture', texture);
   });
 
   // create camera
