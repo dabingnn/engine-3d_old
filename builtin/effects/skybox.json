@@ -4,20 +4,22 @@
       "stages": ["opaque"],
       "params": [
         {
-          "name": "color",
-          "type": "color3",
-          "value": [1, 1, 1]
+          "name": "cubeMap",
+          "type": "textureCube",
+          "value": null
         }
       ],
       "passes": [
        {
-         "program": "wireframe",
-         "depthTest": true,
-         "depthWrite": true
+         "program": "skybox",
+         "cullMode": "none"
        }
-      ]
+      ],
+      "layer": -1
     }
   ],
+
   "properties": {},
+
   "defines": []
 }

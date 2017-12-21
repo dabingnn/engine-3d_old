@@ -30,7 +30,8 @@
          "depthTest": true,
          "depthWrite": true
        }
-      ]
+      ],
+      "layer": 0
     }
   ],
 

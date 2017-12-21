@@ -1,7 +1,7 @@
 {
   "techniques": [
     {
-      "stages": ["opaque"],
+      "stages": ["transparent"],
       "params": [
         {
           "name": "diffuseColor",
@@ -94,9 +94,17 @@
          "program": "phong",
          "cullMode": "back",
          "depthTest": true,
-         "depthWrite": true
+         "depthWrite": false,
+         "blend": true,
+         "blendEq": "add",
+         "blendSrc": "srcAlpha",
+         "blendDst": "oneMinusSrcAlpha",
+         "blendAlphaEq": "add",
+         "blendSrcAlpha": "one",
+         "blendDstAlpha": "zero"
        }
-      ]
+      ],
+      "layer": 0
     },
     {
       "stages": ["shadowCast"],
@@ -108,7 +116,8 @@
           "depthTest": true,
           "depthWrite": true
         }
-      ]
+      ],
+      "layer": 0
     }
   ],
 

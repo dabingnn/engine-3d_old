@@ -21,16 +21,6 @@ import LabelComponent from './lib/framework/label-component';
 import ScreenComponent from './lib/framework/screen-component';
 import WidgetComponent from './lib/framework/widget-component';
 
-// materials
-import PhongMaterial from './lib/materials/phong-material';
-import SkyboxMaterial from './lib/materials/skybox-material';
-import ShaderMaterial from './lib/materials/shader-material';
-import UnlitMaterial from './lib/materials/unlit-material';
-import SpriteMaterial from './lib/materials/sprite-material';
-import MatcapMaterial from './lib/materials/matcap-material';
-import PbrMaterial from './lib/materials/pbr-material';
-import GridMaterial from './lib/materials/grid-material';
-
 // assets
 import Asset from './lib/assets/asset';
 import Mesh from './lib/assets/mesh';
@@ -73,16 +63,6 @@ export default Object.assign({
   Texture,
   Texture2D,
   TextureCube,
-
-  // materials
-  PhongMaterial,
-  SkyboxMaterial,
-  ShaderMaterial,
-  UnlitMaterial,
-  SpriteMaterial,
-  MatcapMaterial,
-  PbrMaterial,
-  GridMaterial,
 
   // framework
   App,
