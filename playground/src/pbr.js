@@ -119,12 +119,12 @@
     image: './assets/textures/brdfLUT.png',
   };
   app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
-    pbrMaterial.setProperty('brdfLUT', lutMap._texture);
+    pbrMaterial.setProperty('brdfLUT', lutMap);
   });
   loadTexture(dobj.albedo, texture => {
     if (texture) {
       pbrMaterial.define('USE_ALBEDO_TEXTURE', true);
-      pbrMaterial.setProperty('albedoTexture', texture._texture);
+      pbrMaterial.setProperty('albedoTexture', texture);
     } else {
       pbrMaterial.define('USE_ALBEDO_TEXTURE', false);
     }
@@ -132,7 +132,7 @@
   loadTexture(dobj.normal, texture => {
     if (texture) {
       pbrMaterial.define('USE_NORMAL_TEXTURE', true);
-      pbrMaterial.setProperty('normalTexture', texture._texture);
+      pbrMaterial.setProperty('normalTexture', texture);
     } else {
       pbrMaterial.define('USE_NORMAL_TEXTURE', false);
     }
@@ -140,7 +140,7 @@
   loadTexture(dobj.metallic, texture => {
     if (texture) {
       pbrMaterial.define('USE_METALLIC_TEXTURE', true);
-      pbrMaterial.setProperty('metallicTexture', texture._texture);
+      pbrMaterial.setProperty('metallicTexture', texture);
     } else {
       pbrMaterial.define('USE_METALLIC_TEXTURE', false);
     }
@@ -148,7 +148,7 @@
   loadTexture(dobj.roughness, texture => {
     if (texture) {
       pbrMaterial.define('USE_ROUGHNESS_TEXTURE', true);
-      pbrMaterial.setProperty('roughnessTexture', texture._texture);
+      pbrMaterial.setProperty('roughnessTexture', texture);
     } else {
       pbrMaterial.define('USE_ROUGHNESS_TEXTURE', false);
     }
@@ -156,7 +156,7 @@
   loadTexture(dobj.ao, texture => {
     if (texture) {
       pbrMaterial.define('USE_AO_TEXTURE', true);
-      pbrMaterial.setProperty('aoTexture', texture._texture);
+      pbrMaterial.setProperty('aoTexture', texture);
     } else {
       pbrMaterial.define('USE_AO_TEXTURE', false);
     }
@@ -194,7 +194,7 @@
       let skyboxComp = skyboxEnt.addComp('Skybox');
       let skyboxMaterial = new Material();
       skyboxMaterial.effect = app.assets.get('builtin-skybox');
-      skyboxMaterial.setProperty('cubeMap', cubeMap._texture);
+      skyboxMaterial.setProperty('cubeMap', cubeMap);
       skyboxComp.material = skyboxMaterial;
     });
 
@@ -210,7 +210,7 @@
       imageNegZ: `${diffuseSrc}/diffuse_back_0.jpg`,
     };
     app.assets.loadUrls('texture', difUrls, (err, cubeMap) => {
-      pbrMaterial.setProperty('diffuseEnvTexture', cubeMap._texture);
+      pbrMaterial.setProperty('diffuseEnvTexture', cubeMap);
     });
 
     let specularSrc = `${dobj.envURL}/specular`;
@@ -227,7 +227,7 @@
       specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_back_${i}.jpg`;
     }
     app.assets.loadUrls('texture', specUrls, (err, cubeMap) => {
-      pbrMaterial.setProperty('specularEnvTexture', cubeMap._texture);
+      pbrMaterial.setProperty('specularEnvTexture', cubeMap);
     });
   }
 
