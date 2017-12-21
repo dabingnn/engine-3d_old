@@ -1,7 +1,7 @@
 {
   "techniques": [
     {
-      "stages": ["opaque"],
+      "stages": ["transparent"],
       "params": [
         {
           "name": "color",
@@ -29,9 +29,17 @@
          "program": "unlit",
          "cullMode": "back",
          "depthTest": true,
-         "depthWrite": true
+         "depthWrite": true,
+         "blend": true,
+         "blendEq": "add",
+         "blendSrc": "srcAlpha",
+         "blendDst": "oneMinusSrcAlpha",
+         "blendAlphaEq": "add",
+         "blendSrcAlpha": "one",
+         "blendDstAlpha": "zero"
        }
-      ]
+      ],
+      "layer": 0
     }
   ],
 

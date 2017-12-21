@@ -2,20 +2,15 @@
   "techniques": [
     {
       "stages": ["opaque"],
-      "params": [
-        {
-          "name": "color",
-          "type": "color3",
-          "value": [1, 1, 1]
-        }
-      ],
+      "params": [],
       "passes": [
        {
-         "program": "wireframe",
+         "program": "line",
          "depthTest": true,
          "depthWrite": true
        }
-      ]
+      ],
+      "layer": 0
     }
   ],
   "properties": {},
