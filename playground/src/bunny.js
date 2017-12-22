@@ -1,7 +1,7 @@
 (() => {
   const app = window.app;
   const cc = window.cc;
-  const { color4, quat } = cc.math;
+  const { quat } = cc.math;
 
   class BunnyComponent extends cc.ScriptComponent {
     constructor() {
@@ -46,7 +46,7 @@
     }
   }
   app.registerClass('Bunny', BunnyComponent);
-  
+
   function createBunny () {
     let entity = app.createEntity(`bunny-${bunnyCounts}`);
     quat.fromEuler(entity.lrot, 0, 0, Math.random() * 90 - 45);
@@ -54,13 +54,13 @@
 
     let bunny = entity.addComp('Bunny');
     bunny.speedX = Math.random() * 10;
-    bunny.speedY = (Math.random() * 10) - 5;;
+    bunny.speedY = (Math.random() * 10) - 5;
 
     let widget = entity.addComp('Widget');
     widget.width = Math.random() * 15 + 15;
     widget.height = widget.width;
     widget.setAnchors(0, 0, 0, 0);
-    widget.offsetX = minX + 10;;
+    widget.offsetX = minX + 10;
     widget.offsetY = screenY * 0.7;
 
     app.assets.loadUrls('texture', {
@@ -76,13 +76,11 @@
 
   let screen = app.createEntity('screen');
   screen.addComp('Screen');
-  let spriteCmps = [];
   let screenX = app._canvas.width;
   let minX = 0;
   let screenY = app._canvas.height;
   let minY = 0;
   let gravity = 0.5;
-  let isAdding = false;
   let bunnys_no = [
     'bunnys_0',
     'bunnys_1',
