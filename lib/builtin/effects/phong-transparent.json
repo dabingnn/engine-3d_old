@@ -107,7 +107,7 @@
       "layer": 0
     },
     {
-      "stages": ["shadowCast"],
+      "stages": ["shadowcast"],
       "params": [],
       "passes": [
         {
