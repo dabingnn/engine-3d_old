@@ -365,9 +365,9 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
-ecs.js@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/ecs.js/-/ecs.js-1.2.1.tgz#86d375d5940cdef963b1f14a5c5caee8b0223058"
+ecs.js@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/ecs.js/-/ecs.js-1.2.2.tgz#8e64812cbab99aa070161484978848957436982b"
 
 ecstatic@^1.4.0:
   version "1.4.1"
@@ -1469,9 +1469,9 @@ remove-trailing-separator@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.0.2.tgz#69b062d978727ad14dc6b56ba4ab772fd8d70511"
 
-renderer.js@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/renderer.js/-/renderer.js-1.6.0.tgz#ad0d2e563e2a1f6656c29a7d1ef01b8182a46783"
+renderer.js@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/renderer.js/-/renderer.js-1.8.0.tgz#c9f1fe56d83acdc5a19435ff70ec5536a6f9e018"
   dependencies:
     fs-jetpack "^1.2.0"
     glsl-tokenizer "^2.1.2"
