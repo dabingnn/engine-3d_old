@@ -88,7 +88,8 @@ function buildEffects(dest, path) {
 // ============================================================
 // build
 // ============================================================
-let effectsPath = './builtin/effects';
+
+let effectsPath = './lib/builtin/effects';
 let effectsFile = path_.join(effectsPath, 'index.js');
 console.log(`generate ${effectsFile}`);
 buildEffects(effectsFile, effectsPath);
