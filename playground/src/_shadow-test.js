@@ -18,6 +18,7 @@
   material.effect = app.assets.get('builtin-pbr');
   material.setProperty('roughness', 0.5);
   material.setProperty('metallic', 1);
+  material.define('USE_SHADOW_MAP', true);
 
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, -10, 30, 0);

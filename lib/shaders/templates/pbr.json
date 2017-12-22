@@ -134,7 +134,7 @@
       ]
     },
     {
-      "stages": ["shadowCast"],
+      "stages": ["shadowcast"],
       "params": [],
       "passes": [
         {
