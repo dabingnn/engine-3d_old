@@ -33,9 +33,6 @@ import Texture from './lib/assets/texture';
 import Texture2D from './lib/assets/texture-2d';
 import TextureCube from './lib/assets/texture-cube';
 
-// renderer
-import SkinningModel from './lib/renderer/skinning-model';
-
 // deps
 import { Node } from 'scene-graph';
 import { Component, System, Level } from 'ecs.js';
@@ -48,9 +45,6 @@ import * as memop from 'memop';
 export default Object.assign({
   // misc
   Node,
-
-  // rendering
-  SkinningModel,
 
   // assets
   Asset,
