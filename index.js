@@ -6,7 +6,7 @@ import resl from './lib/misc/resl';
 import path from './lib/misc/path';
 import async from './lib/misc/async';
 import utils from './lib/misc/utils';
-import extensions from './lib/misc/extensions';
+import registry from './lib/misc/registry';
 
 // components
 import ScriptComponent from './lib/framework/script-component';
@@ -43,7 +43,12 @@ import gfx from 'gfx.js';
 import * as memop from 'memop';
 
 export default Object.assign({
-  // misc
+  // registry
+  registerLoader: registry.registerLoader,
+  registerComponent: registry.registerComponent,
+  registerSystem: registry.registerSystem,
+
+  // ecs.js
   Node,
 
   // assets
@@ -85,7 +90,6 @@ export default Object.assign({
   gfx,
 
   // misc
-  extensions,
   utils,
   resl,
   path,
