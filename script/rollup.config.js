@@ -14,7 +14,7 @@ let banner = `
 `;
 
 let dest = './dist';
-let file = 'engine-3d';
+let file = 'engine';
 let moduleName = 'cc';
 
 // clear directory
