@@ -1,0 +1,9 @@
+{
+  "type": "2d",
+  "ext": "png",
+  "anisotropy": 1,
+  "minFilter": "linear",
+  "magFilter": "linear",
+  "wrapS": "clamp",
+  "wrapT": "clamp"
+}
