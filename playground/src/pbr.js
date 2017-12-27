@@ -116,6 +116,7 @@
     // start loading
   loadIBL();
   const lutUrls = {
+    json: './assets/textures/brdfLUT.json',
     image: './assets/textures/brdfLUT.png',
   };
   app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
