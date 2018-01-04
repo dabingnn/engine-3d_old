@@ -245,16 +245,11 @@
         },
       },
       onDone(assets) {
-        let texture = new Texture2D();
-        let gpuTexture = new gfx.Texture2D(app.device, {
-          width: assets.image.width,
-          height: assets.image.height,
-          wrapS: gfx.WRAP_CLAMP,
-          wrapT: gfx.WRAP_CLAMP,
-          mipmap: true,
-          images: [assets.image]
-        });
-        texture._texture = gpuTexture;
+        let texture = new Texture2D(app.device);
+        texture.setImage(0, assets.image);
+        texture.wrapS = 'clamp';
+        texture.wrapT = 'clamp';
+        texture.mipmap = true;
 
         cb(texture);
       }
