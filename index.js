@@ -16,10 +16,13 @@ import ModelComponent from './lib/framework/model-component';
 import SkinningModelComponent from './lib/framework/skinning-model-component';
 import AnimationComponent from './lib/framework/animation-component';
 import SkyboxComponent from './lib/framework/skybox-component';
-import SpriteComponent from './lib/framework/sprite-component';
-import LabelComponent from './lib/framework/label-component';
-import ScreenComponent from './lib/framework/screen-component';
-import WidgetComponent from './lib/framework/widget-component';
+
+// ui-widget components
+import ScreenComponent from './lib/framework/ui/screen-component';
+import WidgetComponent from './lib/framework/ui/widget-component';
+import ImageComponent from './lib/framework/ui/image-component';
+import TextComponent from './lib/framework/ui/text-component';
+import MaskComponent from './lib/framework/ui/mask-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -77,10 +80,13 @@ export default Object.assign({
   SkinningModelComponent,
   AnimationComponent,
   SkyboxComponent,
-  SpriteComponent,
-  LabelComponent,
+
+  // ui-widget components
   ScreenComponent,
   WidgetComponent,
+  ImageComponent,
+  TextComponent,
+  MaskComponent,
 
   // modules
   math,
