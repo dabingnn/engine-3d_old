@@ -15,7 +15,7 @@
 
   // create material
   let material = new cc.Material();
-  material.effect = app.assets.get('builtin-pbr');
+  material.effect = app.assets.get('builtin-effect-pbr');
   material.setProperty('roughness', 0.5);
   material.setProperty('metallic', 1);
   material.define('USE_SHADOW_MAP', true);

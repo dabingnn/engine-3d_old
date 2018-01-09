@@ -62,6 +62,7 @@
     }
   },
   "type": "sprite",
+  "mipmap": false,
   "anisotropy": 1,
   "minFilter": "linear",
   "magFilter": "linear",
