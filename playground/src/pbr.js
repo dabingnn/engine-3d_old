@@ -1,6 +1,6 @@
 (() => {
   const { cc, app, dgui } = window;
-  const { resl, gfx, Texture2D, Material } = cc;
+  const { resl, Texture2D, Material } = cc;
   const { vec3, color3 } = cc.math;
   const { sphere } = cc.primitives;
 
@@ -106,7 +106,7 @@
   light.range = 1000.0;
 
   let pbrMaterial = new Material();
-  pbrMaterial.effect = app.assets.get('builtin-pbr');
+  pbrMaterial.effect = app.assets.get('builtin-effect-pbr');
 
   pbrMaterial.define('USE_IBL', dobj.useIBL);
   pbrMaterial.define('USE_TEX_LOD', dobj.useTexLod);
@@ -162,10 +162,10 @@
     }
   });
 
-    let ent = app.createEntity('sphere');
-    let modelComp = ent.addComp('Model');
-    modelComp.mesh = meshSphere;
-    modelComp.material = pbrMaterial;
+  let ent = app.createEntity('sphere');
+  let modelComp = ent.addComp('Model');
+  modelComp.mesh = meshSphere;
+  modelComp.material = pbrMaterial;
 
   // camera
   let camEnt = app.createEntity('camera');
@@ -193,7 +193,7 @@
       skyboxEnt = app.createEntity('skybox');
       let skyboxComp = skyboxEnt.addComp('Skybox');
       let skyboxMaterial = new Material();
-      skyboxMaterial.effect = app.assets.get('builtin-skybox');
+      skyboxMaterial.effect = app.assets.get('builtin-effect-skybox');
       skyboxMaterial.setProperty('cubeMap', cubeMap);
       skyboxComp.material = skyboxMaterial;
     });
@@ -250,6 +250,7 @@
         texture.wrapS = 'clamp';
         texture.wrapT = 'clamp';
         texture.mipmap = true;
+        texture.commit();
 
         cb(texture);
       }

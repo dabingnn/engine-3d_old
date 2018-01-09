@@ -55,7 +55,7 @@
 
   // create material
   let material = new cc.Material();
-  material.effect = app.assets.get('builtin-unlit-transparent');
+  material.effect = app.assets.get('builtin-effect-unlit-transparent');
   material.define('USE_COLOR', true);
   material.define('USE_TEXTURE', true);
   material.setProperty('color', color4.new(1, 1, 1, 0.6));

@@ -63,25 +63,22 @@
     widget.offsetX = minX + 10;
     widget.offsetY = screenY * 0.7;
 
-    app.assets.loadUrls('texture', {
-      json: './assets/sprites/bunny.json',
-      image: './assets/sprites/bunny.png'
-    }, (err, texture) => {
-      let spriteCmp = entity.addComp('Sprite');
-      spriteCmp.sprite = texture._sprites[bunnys_no[count % 5]];
-      spriteCmp.scale = 0.5 + Math.random() * 0.5;
-      spriteCmp.rotation = 360 * (Math.random() * 0.2 - 0.1);
-    });
+    let imageCmp = entity.addComp('Image');
+    imageCmp.sprite = bunnyTexture._sprites[bunnyIDs[count % 5]];
+    imageCmp.scale = 0.5 + Math.random() * 0.5;
+    imageCmp.rotation = 360 * (Math.random() * 0.2 - 0.1);
   }
 
   let screen = app.createEntity('screen');
   screen.addComp('Screen');
+
+  let bunnyTexture = null;
   let screenX = app._canvas.width;
   let minX = 0;
   let screenY = app._canvas.height;
   let minY = 0;
   let gravity = 0.5;
-  let bunnys_no = [
+  let bunnyIDs = [
     'bunnys_0',
     'bunnys_1',
     'bunnys_2',
@@ -91,10 +88,17 @@
   let count = 0;
   let bunnyCounts = 0;
 
-  for (let i = 0; i < 2; ++i) {
-    createBunny();
-    bunnyCounts += 1;
-  }
+  app.assets.loadUrls('texture', {
+    json: './assets/sprites/bunny.json',
+    image: './assets/sprites/bunny.png'
+  }, (err, texture) => {
+    bunnyTexture = texture;
+
+    for (let i = 0; i < 2; ++i) {
+      createBunny();
+      bunnyCounts += 1;
+    }
+  });
 
   app.on('tick', () => {
     screenX = app._canvas.width;
@@ -105,9 +109,11 @@
     }
 
     if (app._input.mousepress('left')) {
-      for (let i = 0; i < 5; i++) {
-        createBunny();
-        bunnyCounts += 1;
+      if (bunnyTexture) {
+        for (let i = 0; i < 5; i++) {
+          createBunny();
+          bunnyCounts += 1;
+        }
       }
     }
   });
