@@ -4,6 +4,9 @@ const fsJetpack = require('fs-jetpack');
 const pjson = require('../package.json');
 const resolve = require('@gamedev-js/rollup-plugin-node-resolve');
 const buble = require('rollup-plugin-buble');
+const commonjs = require('rollup-plugin-commonjs');
+
+console.log('rollup the code...');
 
 let banner = `
 /*
@@ -37,6 +40,7 @@ module.exports = {
       main: true,
       root: process.cwd()
     }),
+    commonjs(),
     buble()
   ],
 };
