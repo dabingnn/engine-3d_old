@@ -39,6 +39,10 @@ acorn@^5.1.2:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.2.1.tgz#317ac7821826c22c702d66189ab8359675f135d7"
 
+acorn@^5.2.1:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.3.0.tgz#7446d39459c54fb49a80e6ee6478149b940ec822"
+
 ajv@^4.9.1:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.11.8.tgz#82ffb02b29e662ae53bdc20af15947706739c536"
@@ -418,6 +422,10 @@ estree-walker@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.3.1.tgz#e6b1a51cf7292524e7237c312e5fe6660c1ce1aa"
 
+estree-walker@^0.5.0:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.5.1.tgz#64fc375053abc6f57d73e9bd2f004644ad3c5854"
+
 event-sys@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/event-sys/-/event-sys-1.1.0.tgz#eaf64361acf885a7e6a8eae3e7cc3acfc9aed23a"
@@ -613,9 +621,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-gfx.js@^1.2.12:
-  version "1.2.12"
-  resolved "https://registry.yarnpkg.com/gfx.js/-/gfx.js-1.2.12.tgz#3e5d6debad8b28e60d3a03642e39ec6e3b47de50"
+gfx.js@^1.2.13:
+  version "1.2.13"
+  resolved "https://registry.yarnpkg.com/gfx.js/-/gfx.js-1.2.13.tgz#8f521ef5cc062577a5a460a7a579ce533424fb85"
 
 glob-base@^0.3.0:
   version "0.3.0"
@@ -1469,9 +1477,9 @@ remove-trailing-separator@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.0.2.tgz#69b062d978727ad14dc6b56ba4ab772fd8d70511"
 
-renderer.js@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/renderer.js/-/renderer.js-1.8.0.tgz#c9f1fe56d83acdc5a19435ff70ec5536a6f9e018"
+renderer.js@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/renderer.js/-/renderer.js-1.9.0.tgz#8353f7bfc75c772a0f9f3b15112eea5352b60626"
   dependencies:
     fs-jetpack "^1.2.0"
     glsl-tokenizer "^2.1.2"
@@ -1544,6 +1552,12 @@ resolve@^1.1.6:
   dependencies:
     path-parse "^1.0.5"
 
+resolve@^1.4.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
+  dependencies:
+    path-parse "^1.0.5"
+
 rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
@@ -1555,6 +1569,16 @@ rollup-plugin-buble@^0.18.0:
   resolved "https://registry.yarnpkg.com/rollup-plugin-buble/-/rollup-plugin-buble-0.18.0.tgz#6e20d1b2840c59eb496b9f954f75243e51786ac1"
   dependencies:
     buble "^0.18.0"
+    rollup-pluginutils "^2.0.1"
+
+rollup-plugin-commonjs@^8.2.6:
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-commonjs/-/rollup-plugin-commonjs-8.2.6.tgz#27e5b9069ff94005bb01e01bb46a1e4873784677"
+  dependencies:
+    acorn "^5.2.1"
+    estree-walker "^0.5.0"
+    magic-string "^0.22.4"
+    resolve "^1.4.0"
     rollup-pluginutils "^2.0.1"
 
 rollup-pluginutils@^2.0.1:
