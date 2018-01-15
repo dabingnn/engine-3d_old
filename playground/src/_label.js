@@ -80,7 +80,7 @@
     sprite.commit();
     spriteCmps.forEach(spriteCmp => {
       spriteCmp.sprite = sprite;
-    })
+    });
   });
 
   let fontDir = '../node_modules/assets-3d/fonts';

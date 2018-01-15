@@ -1,8 +1,20 @@
-
 (() => {
-  const app = window.app;
-  const cc = window.cc;
+
+  const { cc, app, dgui } = window;
   const { color4, vec3 } = cc.math;
+
+  let dobj = {
+    text: '输入要更新的文本',
+  };
+  dgui.remember(dobj);
+  dgui.add(dobj, 'text').onFinishChange(() => {
+    updateText();
+  });
+
+  let camEnt = app.createEntity('camera');
+  vec3.set(camEnt.lpos, 10, 10, 10);
+  camEnt.lookAt(vec3.new(0, 0, 0));
+  camEnt.addComp('Camera');
 
   let screenEnt = app.createEntity('screen');
   screenEnt.addComp('Screen');
@@ -24,11 +36,12 @@
   textWidgetComp.setOffset(60, 60);
   let imageComp = textEnt.addComp('Image');
   imageComp.color = color4.new(1, 1, 1, 1);
-  let fontUrls = {
-    bin: `./assets/fireflysung.ttf`
-  };
 
-  let debugEnt = app.createEntity('debugSprite');
+  function updateText() {
+    textComp.text = dobj.text;
+  }
+
+  let debugEnt = app.createEntity('debugEntity');
   debugEnt.setParent(screenEnt);
   let debugWidgetComp = debugEnt.addComp('Widget');
   debugWidgetComp.width = 512;
@@ -41,33 +54,19 @@
   fontAltasSprite.width = 512;
   fontAltasSprite.height = 512;
   let debugImageComp = debugEnt.addComp('Image');
-  debugImageComp.type = 'simple';
+  debugImageComp.enabled = false;
+  debugImageComp.color = color4.new(1, 1, 1, 1);
 
+  let fontUrls = {
+    bin: `./assets/fonts/fireflysung.ttf`
+  };
   app.assets.loadUrls('otfont', fontUrls, (err, font) => {
     textComp.font = font;
-    // fontAltasSprite._texture = textComp.font.texture;
-    // fontAltasSprite.commit();
-    // debugImageComp.sprite = fontAltasSprite;
-    // fontAltasSprite._loaded = true;
-  });
-
-  // app.assets.loadUrls('texture', {
-  //   image: './assets/textures/checker_uv.jpg'
-  // }, (err, texture) => {
-  //   fontAltasSprite._texture = texture;
-  //   fontAltasSprite.commit();
-  //   debugImageComp.sprite = fontAltasSprite;
-  //   fontAltasSprite._loaded = true;
-  // });
-
-  app.on('tick', () => {
-    if (textComp.font && textComp.font._fontAtlasReady) {
-      textComp.font._fontAtlasReady = false;
-      fontAltasSprite._texture = textComp.font.texture;
-      fontAltasSprite.commit();
-      fontAltasSprite._loaded = true;
-      debugImageComp.sprite = fontAltasSprite;
-    }
+    fontAltasSprite._texture = textComp.font.texture;
+    fontAltasSprite.commit();
+    fontAltasSprite._loaded = true;
+    debugImageComp.sprite = fontAltasSprite;
+    debugImageComp.enabled = true;
   });
 
 })();
