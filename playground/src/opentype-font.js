@@ -61,7 +61,8 @@
   debugImageComp.color = color4.new(1, 1, 1, 1);
 
   let fontUrls = {
-    bin: `./assets/fonts/fireflysung.ttf`
+    bin: `./assets/fonts/fireflysung.ttf`,
+    json: `./assets/fonts/fireflysung.json`
   };
   app.assets.loadUrls('otfont', fontUrls, (err, font) => {
     textComp.font = font;
