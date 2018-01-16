@@ -61,15 +61,14 @@
   debugImageComp.color = color4.new(1, 1, 1, 1);
 
   let fontUrls = {
-    bin: `./assets/fonts/fireflysung.ttf`,
-    json: `./assets/fonts/fireflysung.json`
+    bin: `./assets/fonts/Roboto-Black.ttf`,
+    json: `./assets/fonts/Roboto-Black.json`
   };
   app.assets.loadUrls('otfont', fontUrls, (err, font) => {
     textComp.font = font;
     textComp.text = 'Hello, Engine3D!\n this is the second line. \n this is the third line. \n this is the four line.\n' +
     'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.\n' +
-    'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.' +
-    '\n 字体渲染 フォントレンダリング面白い(ノ∀｀)';
+    'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.';
     fontAltasSprite._texture = textComp.font.texture;
     fontAltasSprite.commit();
     debugImageComp.sprite = fontAltasSprite;
