@@ -104,11 +104,20 @@
     screenX = app._canvas.width;
     screenY = app._canvas.height;
 
-    if (app._input.mousedown('left')) {
+    // update keyboard states
+    let cnt = 0;
+    for (let name in app.input._keyboard) {
+      let state = app.input._keyboard[name];
+      if (state === 1) {
+        cnt += 1;
+      }
+    }
+
+    if (app.input.mousedown('left')) {
       count++;
     }
 
-    if (app._input.mousepress('left')) {
+    if (app.input.mousepress('left')) {
       if (bunnyTexture) {
         for (let i = 0; i < 5; i++) {
           createBunny();
