@@ -30,6 +30,7 @@
 
   let screenEnt = app.createEntity('screen');
   screenEnt.addComp('Screen');
+  screenEnt.addComp('Widget');
 
   let textEnt = app.createEntity('TextEntity');
   textEnt.setParent(screenEnt);
