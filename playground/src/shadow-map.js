@@ -2,7 +2,7 @@
   const app = window.app;
   const cc = window.cc;
 
-  const { vec3, color3, quat, randomRange } = cc.math;
+  const { vec3, color3, quat } = cc.math;
 
   // create mesh
   let meshBox = cc.utils.createMesh(app, cc.primitives.box(1, 1, 1, {
