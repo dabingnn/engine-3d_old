@@ -1,7 +1,7 @@
 (() => {
   const app = window.app;
   const cc = window.cc;
-  const { quat } = cc.math;
+  const { quat, vec3 } = cc.math;
 
   class BunnyComponent extends cc.ScriptComponent {
     constructor() {
@@ -69,8 +69,15 @@
     imageCmp.rotation = 360 * (Math.random() * 0.2 - 0.1);
   }
 
+  // create camera
+  let camEnt = app.createEntity('camera');
+  vec3.set(camEnt.lpos, 10, 10, 10);
+  camEnt.lookAt(vec3.new(0, 0, 0));
+  camEnt.addComp('Camera');
+
   let screen = app.createEntity('screen');
   screen.addComp('Screen');
+  screen.addComp('Widget');
 
   let bunnyTexture = null;
   let screenX = app._canvas.width;

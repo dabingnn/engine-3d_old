@@ -1,0 +1,23 @@
+{
+  "sprites": {
+    "orange-box-64x64": {
+      "texture": "quad.png",
+      "rotated": false,
+      "x": 0.0,
+      "y": 0.0,
+      "width": 64.0,
+      "height": 64.0,
+      "left": 0.0,
+      "right": 0.0,
+      "bottom": 0.0,
+      "top": 0.0
+    }
+  },
+  "type": "sprite",
+  "anisotropy": 1,
+  "minFilter": "nearest",
+  "magFilter": "nearest",
+  "mipFilter": "nearest",
+  "wrapS": "clamp",
+  "wrapT": "clamp"
+}
