@@ -1,5 +1,4 @@
 import App from './lib/app';
-import enums from './lib/enums';
 
 // misc
 import resl from './lib/misc/resl';
@@ -46,7 +45,7 @@ import renderer from 'renderer.js';
 import gfx from 'gfx.js';
 import * as memop from 'memop';
 
-export default Object.assign({
+export default {
   // registry
   registerLoader: registry.registerLoader,
   registerComponent: registry.registerComponent,
@@ -102,4 +101,4 @@ export default Object.assign({
   resl,
   path,
   async,
-}, enums);
+};
