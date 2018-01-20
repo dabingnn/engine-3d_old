@@ -33,3 +33,5 @@ examples/test-assets
 node_modules
 bower_components
 dist
+yarn.lock
+package-lock.json
