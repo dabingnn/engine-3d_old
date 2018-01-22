@@ -37,26 +37,28 @@
   let textComp = textEnt.addComp('Text');
   textComp.color = color4.new(1, 0, 0, 1);
   let style = {
-    fontFamily: 'Arial',
+    fontFamily: 'Arial, Microsoft Yahei UI, Meiryo',
     fontSize: 26,
-    fillStyle: 'black',
+    fillStyle: 'red',
     fontStyle: 'italic', // normal, italic or oblique
     fontVariant: 'normal', // normal or small-caps
     fontWeight: 'bold', // normal, bold, bolder, lighter or 100
-    align: 'center',
+    align: 'left',
     lineHeight: 30,
-    wrap: false,
-    wrapWidth: 100,
+    wrap: true,
+    wrapWidth: 1000,
     breakWord: false,
     leftPadding: 10,
     rightPadding: 10,
-    topPadding: 30,
+    topPadding: 10,
     bottomPadding: 10
   };
   textComp.font = new cc.SystemFont(app.device, style);
-  textComp.text = 'Hello, Engine3D!\n this is the second line. \n this is the third line. \n this is the four line.\n' +
+  textComp.text = '你好，こんにちは\n'+
+  'Hello, Engine3D!\nthis is the second line. \nthis is the third line. \nthis is the four line.\n' +
   'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.\n' +
-  'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.';
+  'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool. \n' +
+  '你好 こんにちは';
   let textWidgetComp = textEnt.addComp('Widget');
   textWidgetComp.width = textComp.font.texture.width;
   textWidgetComp.height = textComp.font.texture.height;
