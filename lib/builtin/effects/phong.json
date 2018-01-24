@@ -26,7 +26,7 @@
         {
           "name": "specularColor",
           "type": "color3",
-          "value": [1, 1, 1]
+          "value": [0, 0, 0]
         },
         {
           "name": "specularTiling",
@@ -126,7 +126,15 @@
       "value": false
     },
     {
+      "name": "USE_SPECULAR",
+      "value": false
+    },
+    {
       "name": "USE_SPECULAR_TEXTURE",
+      "value": false
+    },
+    {
+      "name": "USE_EMISSIVE",
       "value": false
     },
     {
