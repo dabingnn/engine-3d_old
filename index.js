@@ -35,7 +35,6 @@ import Texture from './lib/assets/texture';
 import Texture2D from './lib/assets/texture-2d';
 import TextureCube from './lib/assets/texture-cube';
 import Sprite from './lib/assets/sprite';
-import SystemFont from './lib/assets/sysfont';
 
 // deps
 import { Node } from 'scene-graph';
@@ -67,7 +66,6 @@ export default {
   Texture2D,
   TextureCube,
   Sprite,
-  SystemFont,
 
   // framework
   App,
