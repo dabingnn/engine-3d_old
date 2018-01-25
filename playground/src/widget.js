@@ -1,7 +1,7 @@
 (() => {
   const { cc, app, dgui } = window;
   const { resl, path } = cc;
-  const { vec3, quat, color3 } = cc.math;
+  const { vec3, quat, color3, color4 } = cc.math;
 
   let dobj = {
     baseUrl: '/Users/johnny/gamedev-js/u3d-exporter/out',
@@ -60,10 +60,22 @@
 
         if (ent === curMousedown) {
           color3.set(curLineColor, 0, 1, 0);
+
+          if (widget.color) {
+            widget.color = color4.new(0, 1, 0, 1);
+          }
         } else if (ent === curHover) {
           color3.set(curLineColor, 1, 0, 0);
+
+          if (widget) {
+            widget.color = color4.new(1, 0, 0, 1);
+          }
         } else {
           color3.copy(curLineColor, color);
+
+          if (widget) {
+            widget.color = color4.new(1, 1, 1, 1);
+          }
         }
 
         // rect
@@ -151,7 +163,6 @@
     // create screen
     let screen = app.createEntity('screen');
     screen.addComp('Screen');
-    screen.addComp('Widget');
 
     // create widget
     let div = app.createEntity('div');

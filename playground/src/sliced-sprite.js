@@ -9,14 +9,12 @@
 
   let screen = app.createEntity('screen');
   screen.addComp('Screen');
-  screen.addComp('Widget');
 
   let entity = app.createEntity('sliced-sprite');
   entity.setParent(screen);
-  let widget = entity.addComp('Widget');
-  widget.setSize(200, 50);
-  widget.setAnchors(0.2, 0.2, 0.8, 0.8);
   let image = entity.addComp('Image');
+  image.setSize(200, 50);
+  image.setAnchors(0.2, 0.2, 0.8, 0.8);
   image.type = 'sliced';
 
   app.assets.loadUrls('texture', {
