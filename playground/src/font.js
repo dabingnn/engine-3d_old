@@ -93,13 +93,12 @@
   let sysTextEnt = app.createEntity('SystemFontText');
   sysTextEnt.setParent(screenEnt);
   let sysTextComp = sysTextEnt.addComp('Text');
-  sysTextComp.color = color4.new(1, 0, 0, 1);
   sysTextComp.text = 'SYSTEM FONT\n\nHello, Engine3D!\n' +
   'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool. \n' +
   '你好 こんにちは';
   sysTextComp.align = 'middle-center';
   sysTextComp.wrap = true;
-  sysTextComp.color = color4.new(0, 1, 0, 1);
+  sysTextComp.color = color4.new(1, 1, 1, 1);
   sysTextComp.width = 600;
   sysTextComp.height = 300;
   sysTextComp.setOffset(-100, 200);
