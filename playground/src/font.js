@@ -4,8 +4,8 @@
   const { color4, vec3 } = cc.math;
 
   let dobj = {
-    addText: '输入要更新的文本',
-    removeText: '输入要删除的文本',
+    addText: 'add text',
+    removeText: 'remove text',
     italic: false,
     bold: false,
     align: 'middle-center'
@@ -47,7 +47,8 @@
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, 10, 10, 10);
   camEnt.lookAt(vec3.new(0, 0, 0));
-  camEnt.addComp('Camera');
+  let camComp = camEnt.addComp('Camera');
+  camComp.color = color4.new(1,1,0,1);
 
   let screenEnt = app.createEntity('screen');
   screenEnt.addComp('Screen');
@@ -57,32 +58,22 @@
   let otTextEnt = app.createEntity('OpenTypeFontText');
   otTextEnt.setParent(screenEnt);
   let otTextComp = otTextEnt.addComp('Text');
-  otTextComp.color = color4.new(1, 0, 0, 1);
-  let otTextWidgetComp = otTextEnt.addComp('Widget');
+  otTextComp.color = color4.new(1, 1, 0, 1);
   otTextComp.align = 'middle-center';
-  otTextWidgetComp.width = 512;
-  otTextWidgetComp.height = 258;
-  otTextWidgetComp.setAnchors(0, 0, 0, 0);
-  otTextWidgetComp.pivotX = 0;
-  otTextWidgetComp.pivotY = 0;
-  otTextWidgetComp.setOffset(20, 20);
-  let otImageComp = otTextEnt.addComp('Image');
-  otImageComp.color = color4.new(1, 1, 1, 1);
+  otTextComp.width = 512;
+  otTextComp.height = 256;
+  otTextComp.setOffset(-100, -100);
 
   let debugEnt = app.createEntity('debugEntity');
   debugEnt.setParent(screenEnt);
-  let debugWidgetComp = debugEnt.addComp('Widget');
-  debugWidgetComp.width = 512;
-  debugWidgetComp.height = 258;
-  debugWidgetComp.setAnchors(0, 0, 0, 0);
-  debugWidgetComp.pivotX = 0;
-  debugWidgetComp.pivotY = 0;
-  debugWidgetComp.setOffset(580, 20);
   let fontAltasSprite = new cc.Sprite();
   fontAltasSprite.width = 512;
-  fontAltasSprite.height = 258;
+  fontAltasSprite.height = 512;
   let debugImageComp = debugEnt.addComp('Image');
   debugImageComp.color = color4.new(1, 1, 1, 1);
+  debugImageComp.width = 512;
+  debugImageComp.height = 512;
+  debugImageComp.setOffset(500, -100);
 
   let fontUrls = {
     bin: `./assets/fonts/Roboto-Black.ttf`,
@@ -108,13 +99,8 @@
   '你好 こんにちは';
   sysTextComp.align = 'middle-center';
   sysTextComp.wrap = true;
-  let sysTextWidgetComp = sysTextEnt.addComp('Widget');
-  sysTextWidgetComp.width = 600;
-  sysTextWidgetComp.height = 300;
-  sysTextWidgetComp.setAnchors(0, 0, 0, 0);
-  sysTextWidgetComp.pivotX = 0;
-  sysTextWidgetComp.pivotY = 0;
-  sysTextWidgetComp.setOffset(20, 300);
-  let imageComp = sysTextEnt.addComp('Image');
-  imageComp.color = color4.new(1, 1, 1, 1);
+  sysTextComp.color = color4.new(0, 1, 0, 1);
+  sysTextComp.width = 600;
+  sysTextComp.height = 300;
+  sysTextComp.setOffset(-100, 200);
 })();
