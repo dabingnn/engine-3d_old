@@ -56,17 +56,16 @@
     bunny.speedX = Math.random() * 10;
     bunny.speedY = (Math.random() * 10) - 5;
 
-    let widget = entity.addComp('Widget');
-    widget.width = Math.random() * 15 + 15;
-    widget.height = widget.width;
-    widget.setAnchors(0, 0, 0, 0);
-    widget.offsetX = minX + 10;
-    widget.offsetY = screenY * 0.7;
+    let image = entity.addComp('Image');
+    image.width = Math.random() * 15 + 15;
+    image.height = image.width;
+    image.setAnchors(0, 0, 0, 0);
+    image.offsetX = minX + 10;
+    image.offsetY = screenY * 0.7;
 
-    let imageCmp = entity.addComp('Image');
-    imageCmp.sprite = bunnyTexture._sprites[bunnyIDs[count % 5]];
-    imageCmp.scale = 0.5 + Math.random() * 0.5;
-    imageCmp.rotation = 360 * (Math.random() * 0.2 - 0.1);
+    image.sprite = bunnyTexture._sprites[bunnyIDs[count % 5]];
+    image.scale = 0.5 + Math.random() * 0.5;
+    image.rotation = 360 * (Math.random() * 0.2 - 0.1);
   }
 
   // create camera
@@ -77,7 +76,6 @@
 
   let screen = app.createEntity('screen');
   screen.addComp('Screen');
-  screen.addComp('Widget');
 
   let bunnyTexture = null;
   let screenX = app._canvas.width;

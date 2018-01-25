@@ -51,7 +51,6 @@
 
   let screenEnt = app.createEntity('screen');
   screenEnt.addComp('Screen');
-  screenEnt.addComp('Widget');
 
 
   // OpenType Font Text
