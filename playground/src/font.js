@@ -73,13 +73,13 @@
   debugImageComp.color = color4.new(1, 1, 1, 1);
   debugImageComp.width = 512;
   debugImageComp.height = 512;
-  debugImageComp.setOffset(500, -100);
+  debugImageComp.setOffset(500, -300);
 
-  let fontUrls = {
+  let otfontUrls = {
     bin: `./assets/fonts/Roboto-Black.ttf`,
     json: `./assets/fonts/Roboto-Black.json`
   };
-  app.assets.loadUrls('otfont', fontUrls, (err, font) => {
+  app.assets.loadUrls('otfont', otfontUrls, (err, font) => {
     otTextComp.font = font;
     otTextComp.text = 'OPENTYPE FONT\n\nHello, Engine3D!\n' +
     'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.';
@@ -88,18 +88,43 @@
     debugImageComp.sprite = fontAltasSprite;
   });
 
+  // Bitmap Font Text
+  let bmTextEnt = app.createEntity('BitmapFontText');
+  bmTextEnt.setParent(screenEnt);
+  let bmTextComp = bmTextEnt.addComp('Text');
+  bmTextComp.align = 'middle-center';
+  bmTextComp.wrap = true;
+  bmTextComp.color = color4.new(0, 1, 0, 1);
+  bmTextComp.width = 512;
+  bmTextComp.height = 256;
+  bmTextComp.setOffset(500, 200);
+  let bmfontUrls = {
+    json: `./assets/fonts/bmfontdata.json`,
+  };
+  let bmfontTextureInfo = {
+    "type": "texture",
+    "urls": {
+      "json": "./assets/fonts/bmfontTexture.json",
+      "image": "./assets/fonts/bmfontTexture.png"
+    }
+  };
+  app.assets.registerAsset('bmfont', bmfontTextureInfo);
+  app.assets.loadUrls('bmfont', bmfontUrls, (err, font) => {
+    bmTextComp.font = font;
+    bmTextComp.text = 'BITMAP FONT\n\nHello, Engine3D!\n' +
+    'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool.';
+  });
 
   // System Font Text
   let sysTextEnt = app.createEntity('SystemFontText');
   sysTextEnt.setParent(screenEnt);
   let sysTextComp = sysTextEnt.addComp('Text');
-  sysTextComp.color = color4.new(1, 0, 0, 1);
   sysTextComp.text = 'SYSTEM FONT\n\nHello, Engine3D!\n' +
   'a long paragraph is presented here. it is used to demonstrate long labels which need more than one pool. \n' +
   '你好 こんにちは';
   sysTextComp.align = 'middle-center';
   sysTextComp.wrap = true;
-  sysTextComp.color = color4.new(0, 1, 0, 1);
+  sysTextComp.color = color4.new(1, 1, 1, 1);
   sysTextComp.width = 600;
   sysTextComp.height = 300;
   sysTextComp.setOffset(-100, 200);
