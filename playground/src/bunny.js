@@ -16,7 +16,7 @@
       this.widget = this._entity.getComp('Widget');
     }
 
-    update() {
+    tick() {
       let widget = this.widget;
 
       widget.offsetX = widget.offsetX + this.speedX;
