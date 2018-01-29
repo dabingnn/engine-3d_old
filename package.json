@@ -42,7 +42,7 @@
     "memop": "^1.6.0",
     "opentype.js": "^0.7.3",
     "primitives.js": "^1.1.2",
-    "renderer.js": "^2.0.1",
+    "renderer.js": "git+ssh://git@github.com:cocos-creator/renderer.js.git#2.0.1",
     "scene-graph": "^1.4.0",
     "vmath": "^1.4.8"
   },
