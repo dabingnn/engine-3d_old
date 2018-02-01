@@ -11,7 +11,7 @@ console.log('rollup the code...');
 let banner = `
 /*
  * ${pjson.name} v${pjson.version}
- * (c) ${new Date().getFullYear()} @Johnny Wu
+ * (c) ${new Date().getFullYear()} @cocos
  * Released under the MIT License.
  */
 `;
