@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/cocos-creator/engine-3d/issues",
   "dependencies": {
-    "ecs.js": "^1.4.0",
+    "ecs.js": "^1.4.1",
     "event-sys": "^1.1.0",
     "geom-utils": "^1.2.0",
     "gfx.js": "^1.2.14",
