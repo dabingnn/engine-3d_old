@@ -9,12 +9,12 @@
           "value": [1, 1, 1, 1]
         },
         {
-          "name": "albedoTiling",
+          "name": "mainTiling",
           "type": "float2",
           "value": [1, 1]
         },
         {
-          "name": "albedoOffset",
+          "name": "mainOffset",
           "type": "float2",
           "value": [0, 0]
         },
@@ -29,16 +29,6 @@
           "value": 1
         },
         {
-          "name": "metallicTiling",
-          "type": "float2",
-          "value": [1, 1]
-        },
-        {
-          "name": "metallicOffset",
-          "type": "float2",
-          "value": [0, 0]
-        },
-        {
           "name": "metallicTexture",
           "type": "texture2d",
           "value": null
@@ -47,16 +37,6 @@
           "name": "roughness",
           "type": "float",
           "value": 0.5
-        },
-        {
-          "name": "roughnessTiling",
-          "type": "float2",
-          "value": [1, 1]
-        },
-        {
-          "name": "roughnessOffset",
-          "type": "float2",
-          "value": [0, 0]
         },
         {
           "name": "roughnessTexture",
@@ -69,29 +49,9 @@
           "value": 0.2
         },
         {
-          "name": "aoTiling",
-          "type": "float2",
-          "value": [1, 1]
-        },
-        {
-          "name": "aoOffset",
-          "type": "float2",
-          "value": [0, 0]
-        },
-        {
           "name": "aoTexture",
           "type": "texture2d",
           "value": null
-        },
-        {
-          "name": "normalTiling",
-          "type": "float2",
-          "value": [1, 1]
-        },
-        {
-          "name": "normalOffset",
-          "type": "float2",
-          "value": [0, 0]
         },
         {
           "name": "normalTexture",

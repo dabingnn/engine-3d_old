@@ -9,12 +9,12 @@
           "value": [0.8, 0.8, 0.8, 1]
         },
         {
-          "name": "diffuseTiling",
+          "name": "mainTiling",
           "type": "float2",
           "value": [1, 1]
         },
         {
-          "name": "diffuseOffset",
+          "name": "mainOffset",
           "type": "float2",
           "value": [0, 0]
         },
@@ -29,16 +29,6 @@
           "value": [0, 0, 0]
         },
         {
-          "name": "specularTiling",
-          "type": "float2",
-          "value": [1, 1]
-        },
-        {
-          "name": "specularOffset",
-          "type": "float2",
-          "value": [0, 0]
-        },
-        {
           "name": "specularTexture",
           "type": "texture2d",
           "value": null
@@ -49,16 +39,6 @@
           "value": [0, 0, 0]
         },
         {
-          "name": "emissiveTiling",
-          "type": "float2",
-          "value": [1, 1]
-        },
-        {
-          "name": "emissiveOffset",
-          "type": "float2",
-          "value": [0, 0]
-        },
-        {
           "name": "emissiveTexture",
           "type": "texture2d",
           "value": null
@@ -67,16 +47,6 @@
           "name": "glossiness",
           "type": "float",
           "value": 10
-        },
-        {
-          "name": "normalTiling",
-          "type": "float2",
-          "value": [1, 1]
-        },
-        {
-          "name": "normalOffset",
-          "type": "float2",
-          "value": [0, 0]
         },
         {
           "name": "normalTexture",
