@@ -1,6 +1,6 @@
 {
   "name": "engine-3d",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Simple 3D Game Engine",
   "main": "dist/engine.js",
   "module": "index.js",
