@@ -48,7 +48,7 @@ import * as memop from 'memop';
 export default {
   // registry
   registerLoader: registry.registerLoader,
-  registerComponent: registry.registerComponent,
+  registerClass: registry.registerClass,
   registerSystem: registry.registerSystem,
 
   // ecs.js
