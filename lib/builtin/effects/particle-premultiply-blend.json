@@ -22,11 +22,12 @@
       "passes": [
        {
          "program": "particle-premultiply-blend",
+         "cullMode": "none",
          "depthTest": true,
          "depthWrite": false,
          "blend": true,
          "blendEq": "add",
-         "blendSrc": "one",
+         "blendSrc": "srcAlpha",
          "blendDst": "oneMinusSrcAlpha",
          "blendAlphaEq": "add",
          "blendSrcAlpha": "one",
