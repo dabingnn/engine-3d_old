@@ -20,7 +20,9 @@
   let psys = ent.addComp('ParticleSystem');
   psys.material = particleMaterial;
   psys.loop = false;
-  psys.duration = 15;
+  psys.duration = 4;
+  psys.rateOverTime = 5;
+  psys.startLifetime = 10;
   psys.play();
 
 
