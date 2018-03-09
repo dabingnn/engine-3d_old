@@ -40,5 +40,14 @@
 
   "properties": {},
 
-  "defines": []
+  "defines": [
+    {
+      "name": "USE_SOFT_PARTICLE",
+      "value": false
+    },
+    {
+      "name": "USE_BILLBOARD",
+      "value": false
+    }
+  ]
 }

@@ -9,6 +9,7 @@
 
   let particleMaterial = new cc.Material();
   particleMaterial.effect = app.assets.get('builtin-effect-particle-premultiply-blend');
+  particleMaterial.define('USE_BILLBOARD', true);
   const texUrls = {
     image: './assets/textures/particle.png',
   };
@@ -19,10 +20,11 @@
   let ent = app.createEntity('particle-node');
   let psys = ent.addComp('ParticleSystem');
   psys.material = particleMaterial;
-  psys.loop = false;
+  psys.loop = true;
   psys.duration = 4;
-  psys.rateOverTime = 5;
+  psys.rateOverTime = 155;
   psys.startLifetime = 10;
+  psys.startDelay = 1;
   psys.play();
 
 
