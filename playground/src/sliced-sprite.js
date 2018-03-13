@@ -1,5 +1,5 @@
 (() => {
-  const { app, cc, dgui } = window;
+  const { app, cc } = window;
   const { vec3 } = cc.math;
 
   let camEnt = app.createEntity('camera');
