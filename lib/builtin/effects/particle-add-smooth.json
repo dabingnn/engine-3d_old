@@ -21,17 +21,17 @@
       ],
       "passes": [
        {
-         "program": "particle-premultiply-blend",
+         "program": "particle-add-smooth",
          "cullMode": "none",
          "depthTest": true,
          "depthWrite": false,
          "blend": true,
          "blendEq": "add",
          "blendSrc": "one",
-         "blendDst": "oneMinusSrcAlpha",
+         "blendDst": "oneMinusSrcColor",
          "blendAlphaEq": "add",
          "blendSrcAlpha": "one",
-         "blendDstAlpha": "oneMinusSrcAlpha"
+         "blendDstAlpha": "oneMinusSrcColor"
        }
       ],
       "layer": 0
