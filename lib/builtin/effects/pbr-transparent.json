@@ -96,7 +96,7 @@
          "blendDst": "oneMinusSrcAlpha",
          "blendAlphaEq": "add",
          "blendSrcAlpha": "one",
-         "blendDstAlpha": "zero"
+         "blendDstAlpha": "oneMinusSrcAlpha"
        }
       ],
       "layer": 0
