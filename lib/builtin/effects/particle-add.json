@@ -61,6 +61,10 @@
     {
       "name": "USE_VERTICAL_BILLBOARD",
       "value": false
+    },
+    {
+      "name": "USE_WORLD_SPACE",
+      "value": false
     }
   ]
 }
