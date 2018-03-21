@@ -1,6 +1,6 @@
 (() => {
   const { app, cc, dgui } = window;
-  const { vec3 } = cc.math;
+  const { vec3, quat } = cc.math;
 
   let dobj = {
     emitShape: 'circle',
@@ -15,7 +15,9 @@
     startSizeMax: 2.5,
     startLifetime: 8,
     startRotation: 0,
-    billboard: 'camera'
+    billboard: 'camera',
+    simulationSpace: 'local',
+    simulationSpeed: 1
   };
   dgui.remember(dobj);
   dgui.add(dobj, 'emitShape').onFinishChange(() => {
@@ -79,6 +81,12 @@
       psys.material.define('USE_BILLBOARD', false);
     }
   });
+  dgui.add(dobj, 'simulationSpace').onFinishChange(() => {
+    psys.simulationSpace = dobj.simulationSpace;
+  });
+  dgui.add(dobj, 'simulationSpeed').onFinishChange(() => {
+    psys.simulationSpeed = dobj.simulationSpeed;
+  });
 
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, 0, 10, 80);
@@ -119,5 +127,6 @@
   app.on('tick', () => {
     // do something here...
     // quat.rotateY(ent.lrot, ent.lrot, app.deltaTime);
+    // vec3.set(ent.lpos, ent.lpos.x + app.deltaTime * 2.0, ent.lpos.y, ent.lpos.z);
   });
 })();
