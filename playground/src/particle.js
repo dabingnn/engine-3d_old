@@ -1,7 +1,6 @@
-
 (() => {
   const { app, cc, dgui } = window;
-  const { vec3, quat } = cc.math;
+  const { vec3 } = cc.math;
 
   let dobj = {
     emitShape: 'circle',
@@ -16,7 +15,7 @@
     startSizeMax: 2.5,
     startLifetime: 8,
     startRotation: 0,
-    billboard: true
+    billboard: 'camera'
   };
   dgui.remember(dobj);
   dgui.add(dobj, 'emitShape').onFinishChange(() => {
@@ -66,7 +65,19 @@
     psys.startRotationConst = dobj.startRotation;
   });
   dgui.add(dobj, 'billboard').onFinishChange(() => {
-    psys.material.define('USE_BILLBOARD', dobj.billboard);
+    if (dobj.billboard === 'camera') {
+      psys.material.define('USE_BILLBOARD', true);
+      psys.material.define('USE_HORIZONTAL_BILLBOARD', false);
+      psys.material.define('USE_VERTICAL_BILLBOARD', false);
+    } else if (dobj.billboard === 'horizontal') {
+      psys.material.define('USE_HORIZONTAL_BILLBOARD', true);
+      psys.material.define('USE_BILLBOARD', false);
+      psys.material.define('USE_VERTICAL_BILLBOARD', false);
+    } else if (dobj.billboard === 'vertical') {
+      psys.material.define('USE_VERTICAL_BILLBOARD', true);
+      psys.material.define('USE_HORIZONTAL_BILLBOARD', false);
+      psys.material.define('USE_BILLBOARD', false);
+    }
   });
 
   let camEnt = app.createEntity('camera');

@@ -100,7 +100,7 @@
   let lightEnt = app.createEntity('point-light');
   vec3.set(lightEnt.lpos, 10, 10, 0);
   let light = lightEnt.addComp('Light');
-  light.type = cc.renderer.LIGHT_POINT;
+  light.type = 'point';
   light.color = color3.new(1, 1, 1);
   light.intensity = 5.0;
   light.range = 1000.0;
