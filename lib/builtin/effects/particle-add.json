@@ -53,6 +53,14 @@
     {
       "name": "USE_BILLBOARD",
       "value": false
+    },
+    {
+      "name": "USE_HORIZONTAL_BILLBOARD",
+      "value": false
+    },
+    {
+      "name": "USE_VERTICAL_BILLBOARD",
+      "value": false
     }
   ]
 }

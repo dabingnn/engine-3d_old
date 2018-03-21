@@ -60,10 +60,10 @@
 
   let lightComp1 = light1.addComp('Light');
   //lightComp1.type = cc.renderer.LIGHT_SPOT;
-  lightComp1.type = cc.renderer.LIGHT_DIRECTIONAL;
+  lightComp1.type = 'directional';
   lightComp1.color = color3.new(1, 1, 1);
   lightComp1.intensity = 2;
   lightComp1.range = 1000.0;
-  lightComp1.shadowType = cc.renderer.SHADOW_SOFT;
+  lightComp1.shadowType = 'hard';
 
 })();

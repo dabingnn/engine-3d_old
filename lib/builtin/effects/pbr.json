@@ -138,6 +138,10 @@
       "value": false
     },
     {
+      "name": "USE_OPACITY_TEXTURE",
+      "value": false
+    },
+    {
       "name": "USE_IBL",
       "value": false
     },
