@@ -137,6 +137,14 @@
 
   let ent = app.createEntity('particle-node');
   let psys = ent.addComp('ParticleSystem');
+
+  // let burst = app.createObject('Burst');
+  // burst.particleSystem = psys;
+  // burst.time = 1.0;
+  // burst.repeatCount = 3;
+  // burst.repeatInterval = 3.0;
+  // psys.addBurst(burst);
+
   vec3.set(ent.lpos, 0, 0, 0);
   psys.material = particleMaterial;
   psys.loop = true;
