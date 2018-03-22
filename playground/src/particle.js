@@ -8,6 +8,7 @@
     loop: true,
     duration: 10,
     rateOverTime: 100,
+    rateOverDistance: 0,
     startDelay: 1,
     startSpeedMin: 2,
     startSpeedMax: 8,
@@ -44,6 +45,9 @@
   });
   dgui.add(dobj, 'rateOverTime').onFinishChange(() => {
     psys.rateOverTime = dobj.rateOverTime;
+  });
+  dgui.add(dobj, 'rateOverDistance').onFinishChange(() => {
+    psys.rateOverDistance = dobj.rateOverDistance;
   });
   dgui.add(dobj, 'startDelay').onFinishChange(() => {
     psys.startDelay = dobj.startDelay;
