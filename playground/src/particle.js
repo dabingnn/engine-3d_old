@@ -3,9 +3,13 @@
   const { vec3, quat } = cc.math;
 
   let dobj = {
+    play: true,
+    pause: false,
+    stop: false,
     emitShape: 'circle',
     gravity: 0.0,
     loop: true,
+    prewarm: false,
     duration: 10,
     rateOverTime: 100,
     rateOverDistance: 0,
@@ -34,11 +38,35 @@
       psys._shape.emitFrom = 'shell';
     }
   });
+  dgui.add(dobj, 'play').onFinishChange(() => {
+    if (dobj.play === true) {
+      psys.play();
+    }
+  });
+  dgui.add(dobj, 'pause').onFinishChange(() => {
+    if (dobj.pause === true) {
+      psys.pause();
+    } else if (psys.isPaused) {
+      psys.play();
+    }
+  });
+  dgui.add(dobj, 'stop').onFinishChange(() => {
+    if (dobj.stop === true) {
+      psys.stop();
+    }
+  });
   dgui.add(dobj, 'gravity').onFinishChange(() => {
     psys.gravityModifier = dobj.gravity;
   });
   dgui.add(dobj, 'loop').onFinishChange(() => {
     psys.loop = dobj.loop;
+  });
+  dgui.add(dobj, 'prewarm').onFinishChange(() => {
+    if (dobj.prewarm === true) {
+      psys.prewarm = true;
+    } else {
+      psys.prewarm = false;
+    }
   });
   dgui.add(dobj, 'duration').onFinishChange(() => {
     psys.duration = dobj.duration;
