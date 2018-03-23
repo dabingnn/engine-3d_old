@@ -15,6 +15,7 @@ import ModelComponent from './lib/framework/model-component';
 import SkinningModelComponent from './lib/framework/skinning-model-component';
 import AnimationComponent from './lib/framework/animation-component';
 import SkyboxComponent from './lib/framework/skybox-component';
+import ParticleSystemComponent from './lib/framework/particle/particle-system-component';
 
 // ui-widget components
 import ScreenComponent from './lib/framework/ui/screen-component';
@@ -82,6 +83,7 @@ export default {
   SkinningModelComponent,
   AnimationComponent,
   SkyboxComponent,
+  ParticleSystemComponent,
 
   // ui-widget components
   ScreenComponent,
