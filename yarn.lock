@@ -566,9 +566,9 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
-ecs.js@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/ecs.js/-/ecs.js-1.6.0.tgz#a893e85e9e167508648d5c36234e3d584abb73c8"
+ecs.js@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/ecs.js/-/ecs.js-1.6.1.tgz#8f60bd72a57ee6bba9b0210f1106956313392329"
 
 ecstatic@^1.4.0:
   version "1.4.1"
