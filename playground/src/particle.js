@@ -136,7 +136,7 @@
   });
 
   let ent = app.createEntity('particle-node');
-  let psys = ent.addComp('ParticleSystem');
+  let psys = ent.addComp('ParticleSystem', {capacity: 10000});
 
   // let burst = app.createObject('Burst');
   // burst.particleSystem = psys;
