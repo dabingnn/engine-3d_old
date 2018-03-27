@@ -27,16 +27,6 @@
   dgui.remember(dobj);
   dgui.add(dobj, 'emitShape').onFinishChange(() => {
     psys.shapeType = dobj.emitShape;
-    if (dobj.emitShape === 'sphere' || dobj.emitShape === 'hemisphere') {
-      psys._shape.radius = 10;
-      psys._shape.emitFromShell = true;
-    } else if (dobj.emitShape === 'circle') {
-      psys._shape.radius = 10;
-      psys._shape.emitFromEdge = true;
-    } else if (dobj.emitShape === 'box') {
-      psys._shape.boxX = psys._shape.boxY = psys._shape.boxZ = 10;
-      psys._shape.emitFrom = 'shell';
-    }
   });
   dgui.add(dobj, 'play').onFinishChange(() => {
     if (dobj.play === true) {
@@ -81,36 +71,30 @@
     psys.startDelay = dobj.startDelay;
   });
   dgui.add(dobj, 'startSpeedMin').onFinishChange(() => {
-    psys.startSpeedConstMin = dobj.startSpeedMin;
+    psys.startSpeedMin = dobj.startSpeedMin;
   });
   dgui.add(dobj, 'startSpeedMax').onFinishChange(() => {
-    psys.startSpeedConstMax = dobj.startSpeedMax;
+    psys.startSpeedMax = dobj.startSpeedMax;
   });
   dgui.add(dobj, 'startSizeMin').onFinishChange(() => {
-    psys.startSizeConstMin = dobj.startSizeMin;
+    psys.startSizeMin = dobj.startSizeMin;
   });
   dgui.add(dobj, 'startSizeMax').onFinishChange(() => {
-    psys.startSizeConstMax = dobj.startSizeMax;
+    psys.startSizeMax = dobj.startSizeMax;
   });
   dgui.add(dobj, 'startLifetime').onFinishChange(() => {
-    psys.startLifetimeConst = dobj.startLifetime;
+    psys.startLifetime = dobj.startLifetime;
   });
   dgui.add(dobj, 'startRotation').onFinishChange(() => {
-    psys.startRotationConst = dobj.startRotation;
+    psys.startRotation = dobj.startRotation;
   });
   dgui.add(dobj, 'billboard').onFinishChange(() => {
     if (dobj.billboard === 'camera') {
-      psys.material.define('USE_BILLBOARD', true);
-      psys.material.define('USE_HORIZONTAL_BILLBOARD', false);
-      psys.material.define('USE_VERTICAL_BILLBOARD', false);
+      psys.renderMode = 'billboard';
     } else if (dobj.billboard === 'horizontal') {
-      psys.material.define('USE_HORIZONTAL_BILLBOARD', true);
-      psys.material.define('USE_BILLBOARD', false);
-      psys.material.define('USE_VERTICAL_BILLBOARD', false);
+      psys.renderMode = 'horizontalBillboard';
     } else if (dobj.billboard === 'vertical') {
-      psys.material.define('USE_VERTICAL_BILLBOARD', true);
-      psys.material.define('USE_HORIZONTAL_BILLBOARD', false);
-      psys.material.define('USE_BILLBOARD', false);
+      psys.renderMode = 'verticalBillboard';
     }
   });
   dgui.add(dobj, 'simulationSpace').onFinishChange(() => {
@@ -127,7 +111,6 @@
 
   let particleMaterial = new cc.Material();
   particleMaterial.effect = app.assets.get('builtin-effect-particle-add');
-  particleMaterial.define('USE_BILLBOARD', true);
   const texUrls = {
     image: './assets/textures/particle.png',
   };
@@ -150,18 +133,20 @@
   psys.loop = true;
   psys.duration = 10;
   psys.rateOverTime = 100;
-  psys.startLifetimeConst = 8;
+  psys.startLifetime = 8;
   psys.startColorType = 'randomColor';
   psys.startSpeedType = 'randomBetweenTwoConstants';
-  psys.startSpeedConstMin = 2;
-  psys.startSpeedConstMax = 8;
+  psys.startSpeedMin = 2;
+  psys.startSpeedMax = 8;
   psys.startSizeType = 'randomBetweenTwoConstants';
-  psys.startSizeConstMin = 0.5;
-  psys.startSizeConstMax = 2.5;
+  psys.startSizeMin = 0.5;
+  psys.startSizeMax = 2.5;
   psys.startDelay = 1;
   psys.simulationSpeed = 1;
   psys.gravityModifier = 0;
   psys.shapeType = 'circle';
+  psys.radius = 10.0;
+  psys.boxSize = vec3.new(10.0, 10.0, 10.0);
   psys.play();
 
   app.on('tick', () => {
