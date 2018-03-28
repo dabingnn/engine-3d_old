@@ -55,6 +55,10 @@
       "value": false
     },
     {
+      "name": "USE_STRETCHED_BILLBOARD",
+      "value": false
+    },
+    {
       "name": "USE_HORIZONTAL_BILLBOARD",
       "value": false
     },
