@@ -95,6 +95,8 @@
       psys.renderMode = 'horizontalBillboard';
     } else if (dobj.billboard === 'vertical') {
       psys.renderMode = 'verticalBillboard';
+    } else if (dobj.billboard === 'stretch') {
+      psys.renderMode = 'stretchedBillboard';
     }
   });
   dgui.add(dobj, 'simulationSpace').onFinishChange(() => {
