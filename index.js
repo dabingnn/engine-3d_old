@@ -39,7 +39,7 @@ import Sprite from './lib/assets/sprite';
 
 // deps
 import { Node } from 'scene-graph';
-import { Component, System, Level } from 'ecs.js';
+import { Component, System, Level } from './lib/ecs';
 import * as math from 'vmath';
 import * as geometry from 'geom-utils';
 import * as primitives from 'primitives.js';
