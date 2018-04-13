@@ -43,7 +43,7 @@ import { Component, System, Level } from 'ecs.js';
 import * as math from 'vmath';
 import * as geometry from 'geom-utils';
 import * as primitives from 'primitives.js';
-import renderer from 'renderer.js';
+import renderer from './lib/renderer';
 import gfx from 'gfx.js';
 import * as memop from 'memop';
 
