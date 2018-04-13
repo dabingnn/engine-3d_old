@@ -38,7 +38,7 @@ import TextureCube from './lib/assets/texture-cube';
 import Sprite from './lib/assets/sprite';
 
 // deps
-import { Node } from 'scene-graph';
+import { Node } from './lib/scene-graph';
 import { Component, System, Level } from './lib/ecs';
 import * as math from 'vmath';
 import * as geometry from 'geom-utils';
