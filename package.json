@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/cocos-creator/engine-3d/issues",
   "dependencies": {
-    "geom-utils": "^1.2.0",
     "gfx.js": "^1.2.14",
     "memop": "^1.6.0",
     "opentype.js": "^0.7.3",
