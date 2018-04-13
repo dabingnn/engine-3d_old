@@ -41,7 +41,7 @@ import Sprite from './lib/assets/sprite';
 import { Node } from './lib/scene-graph';
 import { Component, System, Level } from './lib/ecs';
 import * as math from 'vmath';
-import * as geometry from 'geom-utils';
+import * as geometry from './lib/geom-utils';
 import * as primitives from './lib/primitives';
 import renderer from './lib/renderer';
 import gfx from 'gfx.js';
