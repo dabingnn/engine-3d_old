@@ -26,8 +26,8 @@ profile
 *.log
 
 # project files
-lib/shaders/chunks/index.js
-lib/shaders/templates/index.js
+lib/renderer/shaders/chunks/index.js
+lib/renderer/shaders/templates/index.js
 lib/builtin/effects/index.js
 examples/test-assets
 node_modules
