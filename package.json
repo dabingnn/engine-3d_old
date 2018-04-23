@@ -17,7 +17,8 @@
     "start": "electron ./playground",
     "server": "preview -p 8002 -e playground",
     "test": "tap test/*.spec.js",
-    "test:ecs": "rollup -c ./test-ecs/rollup.ecs.js && tap ./test-ecs/*.spec.js"
+    "test:ecs": "rollup -c ./test-ecs/rollup.ecs.js && tap ./test-ecs/*.spec.js",
+    "test:sg": "rollup -c ./test-scene-graph/rollup.scene-graph.js && tap ./test-scene-graph/*.spec.js"
   },
   "repository": {
     "type": "git",
