@@ -16,7 +16,8 @@
     "dev": "rollup -w -c ./script/rollup.config.js",
     "start": "electron ./playground",
     "server": "preview -p 8002 -e playground",
-    "test": "tap test/*.spec.js"
+    "test": "tap test/*.spec.js",
+    "test:ecs": "rollup -c ./test-ecs/rollup.ecs.js && tap ./test-ecs/*.spec.js"
   },
   "repository": {
     "type": "git",
