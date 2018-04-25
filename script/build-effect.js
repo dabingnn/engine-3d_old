@@ -4,8 +4,8 @@ const path_ = require('path');
 const fs = require('fs');
 const fsJetpack = require('fs-jetpack');
 
-// const renderer = require('../lib/renderer/enums');
-// todo this is a hack
+// const renderer = require('../lib/renderer');
+// TODO: this is a hack
 const renderer = {
   // projection
   PROJ_PERSPECTIVE: 0,
