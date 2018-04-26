@@ -16,7 +16,7 @@ let banner = `
  */
 `;
 
-let dest = './test-input/dist';
+let dest = './tests/test-input/dist';
 let file = 'input';
 let name = 'input';
 let sourcemap = true;
