@@ -1,7 +1,7 @@
 'use strict';
 
 const fsJetpack = require('fs-jetpack');
-const pjson = require('../package.json');
+const pjson = require('../../package.json');
 const resolve = require('@gamedev-js/rollup-plugin-node-resolve');
 const buble = require('rollup-plugin-buble');
 const commonjs = require('rollup-plugin-commonjs');
@@ -16,9 +16,9 @@ let banner = `
  */
 `;
 
-let dest = './test-ecs/dist';
-let file = 'ecs';
-let name = 'ecs';
+let dest = './tests/test-event-sys/dist';
+let file = 'event-sys';
+let name = 'eventSys';
 let sourcemap = true;
 let globals = {};
 
@@ -26,7 +26,7 @@ let globals = {};
 fsJetpack.dir(dest, { empty: true });
 
 module.exports = {
-  input: './lib/ecs/index.js',
+  input: './lib/event-sys/index.js',
   external: [],
   plugins: [
     resolve({
