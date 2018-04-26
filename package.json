@@ -17,10 +17,10 @@
     "start": "electron ./playground",
     "server": "preview -p 8002 -e playground",
     "test": "tap test/*.spec.js",
-    "test:ecs": "rollup -c ./test-ecs/rollup.ecs.js && tap ./test-ecs/*.spec.js",
-    "test:es": "rollup -c ./test-event-sys/rollup.event-sys.js && tap ./test-event-sys/*.spec.js",
-    "test:input": "rollup -c ./test-input/rollup.input.js && electron-node-tap ./test-input/*.spec.js --renderer",
-    "test:sg": "rollup -c ./test-scene-graph/rollup.scene-graph.js && tap ./test-scene-graph/*.spec.js"
+    "test:ecs": "rollup -c ./tests/test-ecs/rollup.ecs.js && tap ./tests/test-ecs/*.spec.js",
+    "test:es": "rollup -c ./tests/test-event-sys/rollup.event-sys.js && tap ./tests/test-event-sys/*.spec.js",
+    "test:input": "rollup -c ./tests/test-input/rollup.input.js && electron-node-tap ./tests/test-input/*.spec.js --renderer",
+    "test:sg": "rollup -c ./tests/test-scene-graph/rollup.scene-graph.js && tap ./tests/test-scene-graph/*.spec.js"
   },
   "repository": {
     "type": "git",
