@@ -19,6 +19,7 @@
     "test": "tap test/*.spec.js",
     "test:ecs": "rollup -c ./test-ecs/rollup.ecs.js && tap ./test-ecs/*.spec.js",
     "test:es": "rollup -c ./test-event-sys/rollup.event-sys.js && tap ./test-event-sys/*.spec.js",
+    "test:input": "rollup -c ./test-input/rollup.input.js && electron-node-tap ./test-input/*.spec.js --renderer",
     "test:sg": "rollup -c ./test-scene-graph/rollup.scene-graph.js && tap ./test-scene-graph/*.spec.js"
   },
   "repository": {
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@gamedev-js/rollup-plugin-node-resolve": "^3.0.0",
     "electron": "^1.8.1",
+    "electron-node-tap": "^1.1.4",
     "fs-jetpack": "^1.1.0",
     "lstats.js": "^1.2.7",
     "preview-server": "^1.1.2",
@@ -54,6 +56,7 @@
     "spectorjs": "^0.9.0",
     "uglify-js": "^3.3.7",
     "glsl-tokenizer": "^2.1.2",
+    "tap": "^10.3.0",
     "uglify-es": "^3.1.3",
     "yargs": "^8.0.2"
   },
