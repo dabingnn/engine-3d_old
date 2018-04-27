@@ -22,7 +22,7 @@ uniform vec3 eye;
 varying vec3 pos_w;
 varying vec3 normal_w;
 
-#if USE_NORMAL_TEXTURE || USE_ALBEDO_TEXTURE || USE_METALLIC_ROUGHNESS_TEXTURE || USE_METALLIC_TEXTURE || USE_ROUGHNESS_TEXTURE || USE_AO_TEXTURE || USE_OPACITY_TEXTURE
+#if USE_NORMAL_TEXTURE || USE_ALBEDO_TEXTURE || USE_METALLIC_ROUGHNESS_TEXTURE || USE_METALLIC_TEXTURE || USE_ROUGHNESS_TEXTURE || USE_AO_TEXTURE || USE_EMISSIVE_TEXTURE
   varying vec2 uv0;
 #endif
 
@@ -58,6 +58,13 @@ uniform float roughness;
 uniform float ao;
 #if USE_AO_TEXTURE
   uniform sampler2D aoTexture;
+#endif
+
+#if USE_EMISSIVE
+  uniform vec3 emissive;
+  #if USE_EMISSIVE_TEXTURE
+    uniform sampler2D emissiveTexture;
+  #endif
 #endif
 
 #if USE_ALPHA_TEST
@@ -224,6 +231,14 @@ void main() {
       spotLight{id} = computeSpotLighting(spot_light{id}_position, pos_w, spot_light{id}_direction, spot_light{id}_color, spot_light{id}_spot, spot_light{id}_range);
       Lo += brdf(spotLight{id}, N, V, F0, albedo, metallic, roughness);
     #pragma endFor
+  #endif
+
+  #if USE_EMISSIVE
+    vec3 emissiveColor = gammaToLinearSpaceRGB(emissive);
+    #if USE_EMISSIVE_TEXTURE
+      emissiveColor *= gammaToLinearSpaceRGB(texture2D(emissiveTexture, uv0).rgb);
+    #endif
+    Lo += emissiveColor;
   #endif
 
   // ambient lighting, will be replaced by IBL if IBL used.
