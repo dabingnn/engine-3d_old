@@ -19,7 +19,7 @@ uniform vec3 sceneAmbient;
 varying vec3 normal_w;
 varying vec3 pos_w;
 
-#if USE_NORMAL_TEXTURE || USE_DIFFUSE_TEXTURE || USE_EMISSIVE_TEXTURE || USE_OPACITY_TEXTURE
+#if USE_NORMAL_TEXTURE || USE_DIFFUSE_TEXTURE || USE_EMISSIVE_TEXTURE
   varying vec2 uv0;
 #endif
 
@@ -90,7 +90,7 @@ phongMaterial getPhongMaterial() {
   #if USE_EMISSIVE
     result.emissive = gammaToLinearSpaceRGB(emissiveColor);
     #if USE_EMISSIVE_TEXTURE
-      result.emissive = gammaToLinearSpaceRGB(texture2D(emissiveTexture, uv0).rgb);
+      result.emissive *= gammaToLinearSpaceRGB(texture2D(emissiveTexture, uv0).rgb);
     #endif
   #endif
 
