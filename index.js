@@ -40,7 +40,7 @@ import Sprite from './lib/assets/sprite';
 // deps
 import { Node } from './lib/scene-graph';
 import { Component, System, Level } from './lib/ecs';
-import * as math from 'vmath';
+import * as math from './lib/vmath';
 import * as geometry from './lib/geom-utils';
 import * as primitives from './lib/primitives';
 import renderer from './lib/renderer';
