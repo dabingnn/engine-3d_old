@@ -44,7 +44,7 @@ import * as math from 'vmath';
 import * as geometry from './lib/geom-utils';
 import * as primitives from './lib/primitives';
 import renderer from './lib/renderer';
-import gfx from 'gfx.js';
+import gfx from './lib/gfx';
 import * as memop from 'memop';
 
 export default {
