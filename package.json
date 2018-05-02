@@ -21,7 +21,8 @@
     "test:es": "rollup -c ./tests/test-event-sys/rollup.event-sys.js && tap ./tests/test-event-sys/*.spec.js",
     "test:gu": "rollup -c ./tests/test-geom-utils/rollup.geom-utils.js && tap ./tests/test-geom-utils/*.spec.js",
     "test:input": "rollup -c ./tests/test-input/rollup.input.js && electron-node-tap ./tests/test-input/*.spec.js --renderer",
-    "test:sg": "rollup -c ./tests/test-scene-graph/rollup.scene-graph.js && tap ./tests/test-scene-graph/*.spec.js"
+    "test:sg": "rollup -c ./tests/test-scene-graph/rollup.scene-graph.js && tap ./tests/test-scene-graph/*.spec.js",
+    "test:vtween": "rollup -c ./tests/test-vtween/rollup.vtween.js && tap ./tests/test-vtween/*.spec.js"
   },
   "repository": {
     "type": "git",
