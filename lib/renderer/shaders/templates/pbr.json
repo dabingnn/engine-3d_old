@@ -5,6 +5,8 @@
   "USE_METALLIC_TEXTURE": "boolean",
   "USE_ROUGHNESS_TEXTURE": "boolean",
   "USE_AO_TEXTURE": "boolean",
+  "USE_EMISSIVE": "boolean",
+  "USE_EMISSIVE_TEXTURE": "boolean",
   "USE_IBL": "boolean",
   "USE_TEX_LOD": "boolean",
   "USE_ALPHA_TEST": "boolean",
