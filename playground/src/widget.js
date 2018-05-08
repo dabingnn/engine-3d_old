@@ -33,7 +33,7 @@
     let curMousedown = null;
     let curLineColor = color3.new(0.5, 0.5, 0.0);
 
-    function _debugEvent (ent) {
+    function _debugEvent(ent) {
       ent.on('mouseenter', () => {
         curHover = ent;
       });
@@ -53,8 +53,8 @@
       });
     }
 
-    function _debugDraw () {
-      cc.utils.walk(root, ent => {
+    function _debugDraw() {
+      let drawFunc = ent => {
         let widget = ent.getComp('Widget');
         widget.getWorldCorners(a, b, c, d);
 
@@ -89,7 +89,9 @@
           ent.getWorldRot(wrot),
           5.0
         );
-      });
+      };
+      drawFunc(root);
+      cc.utils.walk(root, drawFunc);
     }
 
     cc.utils.walk(root, ent => {
@@ -151,7 +153,7 @@
     });
   }
 
-  function preset () {
+  function preset() {
     app.loadLevel(new cc.Level());
 
     // create camera
@@ -169,11 +171,11 @@
     div.setParent(screen);
     let widget = div.addComp('Widget');
     widget.setPivot(0.5, 0.0);
-    widget.setSize(200, 50);
+    widget.setSize(-200, 50);
     widget.setAnchors(0, 0, 1, 0);
-    widget.alignLeft(10);
-    widget.alignRight(10);
-    widget.alignBottom(5);
+    widget.setLeft(10);
+    widget.setRight(10);
+    widget.setOffset(0, 10);
 
     let div2 = app.createEntity('div2');
     div2.setParent(div);
@@ -181,16 +183,16 @@
     widget.setPivot(0.5, 0.5);
     widget.setSize(40, 40);
     widget.setAnchors(0, 0, 0, 1);
-    widget.alignLeft(2);
-    widget.alignTop(2);
-    widget.alignBottom(2);
+    widget.setLeft(2);
+    widget.setTop(2);
+    widget.setBottom(2);
 
-      let div22 = app.createEntity('div22');
-      div22.setParent(div2);
-      widget = div22.addComp('Widget');
-      widget.setPivot(0.5, 0.5);
-      widget.setSize(10, 10);
-      widget.setOffset(0, 10);
+    let div22 = app.createEntity('div22');
+    div22.setParent(div2);
+    widget = div22.addComp('Widget');
+    widget.setPivot(0.5, 0.5);
+    widget.setSize(10, 10);
+    widget.setOffset(0, 10);
 
     let div3 = app.createEntity('div3');
     div3.setParent(div);
@@ -198,37 +200,29 @@
     widget.setPivot(0, 1);
     widget.setSize(10, 20);
     widget.setAnchors(0, 1, 1, 1);
-    widget.alignTop(2);
-    widget.alignLeft(44);
-    widget.alignRight(2);
+    widget.setTop(2);
+    widget.setLeft(44);
+    widget.setRight(2);
 
-      let div33 = app.createEntity('div33');
-      div33.setParent(div3);
-      widget = div33.addComp('Widget');
-      widget.setPivot(0, 1);
-      widget.setSize(10, 20);
-      widget.setAnchors(0, 0, 0.3, 1);
-      widget.alignLeft(10);
-      widget.alignTop(5);
-      widget.alignBottom(5);
+    let div33 = app.createEntity('div33');
+    div33.setParent(div3);
+    widget = div33.addComp('Widget');
+    widget.setPivot(0, 1);
+    widget.setSize(10, 20);
+    widget.setAnchors(0, 0, 0.3, 1);
+    widget.setLeft(10);
+    widget.setTop(5);
+    widget.setBottom(5);
 
     let div4 = app.createEntity('div4');
     div4.setParent(div);
     widget = div4.addComp('Widget');
     widget.setPivot(0, 0);
-    widget.setSize(40, 10);
     widget.setAnchors(1, 0, 1, 0);
-    widget.alignRight(2);
-    widget.alignBottom(2);
-
-    let div5 = app.createEntity('div5');
-    div5.setParent(div);
-    widget = div5.addComp('Widget');
-    widget.setPivot(0, 0);
-    widget.setSize(40, 10);
-    widget.setAnchors(1, 0, 1, 0);
-    widget.alignRight(44);
-    widget.alignBottom(2);
+    widget.setSize(40, 20);
+    widget.setOffset(-300, 5);
+    widget.setRight(100);
+    widget.setBottom(10);
 
     _debugUI(screen);
   }
