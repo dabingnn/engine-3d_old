@@ -25,7 +25,7 @@
     "test:memop": "rollup -c ./tests/test-memop/rollup.memop.js && tap ./tests/test-memop/*.spec.js",
     "test:sg": "rollup -c ./tests/test-scene-graph/rollup.scene-graph.js && electron-node-tap ./tests/test-scene-graph/*.spec.js --renderer",
     "test:vmath": "rollup -c ./tests/test-vmath/rollup.vmath.js && tap ./tests/test-vmath/*.spec.js",
-    "test:vtween": "rollup -c ./tests/test-vtween/rollup.vtween.js && tap ./tests/test-vtween/*.spec.js"
+    "test:vtween": "rollup -c ./tests/test-vtween/rollup.vtween.js && electron-node-tap ./tests/test-vtween/*.spec.js --renderer"
   },
   "repository": {
     "type": "git",

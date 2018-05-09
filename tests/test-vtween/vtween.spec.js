@@ -1,7 +1,9 @@
 const tap = require('./tap');
 const { VTween } = require('./dist/vtween');
-const vmath = require('vmath');
-const { vec2, vec3, quat } = vmath;
+const { math } = require('../../dist/engine');
+const vec2= math.vec2;
+const vec3 = math.vec3;
+const quat = math.quat;
 
 class entity {
   constructor(params = {}) {
@@ -45,7 +47,7 @@ tap.test('vtween', t => {
     vEngine.tick(500);
     vEngine.tick(800);
 
-    t.approx(ent.lfloat, 0.3);
+    t.approximate(ent.lfloat, 0.3);
 
     t.end();
   });
