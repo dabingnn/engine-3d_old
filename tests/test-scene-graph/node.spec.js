@@ -1,5 +1,7 @@
 const tap = require('tap');
-const { vec3, quat } = require('vmath');
+const { math } = require('../../dist/engine');
+const vec3 = math.vec3;
+const quat = math.quat;
 const { Node } = require('./dist/scene-graph');
 
 tap.test('node', t => {
