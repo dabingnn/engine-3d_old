@@ -23,6 +23,8 @@ import WidgetComponent from './lib/framework/ui/widget-component';
 import ImageComponent from './lib/framework/ui/image-component';
 import TextComponent from './lib/framework/ui/text-component';
 import MaskComponent from './lib/framework/ui/mask-component';
+import UIElementComponent from './lib/framework/ui/ui-element-component';
+import ButtonComponent from './lib/framework/ui/button-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -91,6 +93,8 @@ export default {
   ImageComponent,
   TextComponent,
   MaskComponent,
+  UIElementComponent,
+  ButtonComponent,
 
   // modules
   math,
