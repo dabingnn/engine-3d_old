@@ -25,6 +25,8 @@ import TextComponent from './lib/framework/ui/text-component';
 import MaskComponent from './lib/framework/ui/mask-component';
 import UIElementComponent from './lib/framework/ui/ui-element-component';
 import ButtonComponent from './lib/framework/ui/button-component';
+import ToggleComponent from './lib/framework/ui/toggle-component';
+import ToggleGroupComponent from './lib/framework/ui/toggle-group-component';
 
 // assets
 import Asset from './lib/assets/asset';
