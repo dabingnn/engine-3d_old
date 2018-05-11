@@ -27,6 +27,7 @@ import UIElementComponent from './lib/framework/ui/ui-element-component';
 import ButtonComponent from './lib/framework/ui/button-component';
 import ToggleComponent from './lib/framework/ui/toggle-component';
 import ToggleGroupComponent from './lib/framework/ui/toggle-group-component';
+import SliderComponent from './lib/framework/ui/slider-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -99,6 +100,7 @@ export default {
   ButtonComponent,
   ToggleComponent,
   ToggleGroupComponent,
+  SliderComponent,
 
   // modules
   math,
