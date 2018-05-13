@@ -28,6 +28,7 @@ import ButtonComponent from './lib/framework/ui/button-component';
 import ToggleComponent from './lib/framework/ui/toggle-component';
 import ToggleGroupComponent from './lib/framework/ui/toggle-group-component';
 import SliderComponent from './lib/framework/ui/slider-component';
+import EditBoxComponent from './lib/framework/ui/edit-box-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -101,6 +102,7 @@ export default {
   ToggleComponent,
   ToggleGroupComponent,
   SliderComponent,
+  EditBoxComponent,
 
   // modules
   math,
