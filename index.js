@@ -97,6 +97,8 @@ export default {
   MaskComponent,
   UIElementComponent,
   ButtonComponent,
+  ToggleComponent,
+  ToggleGroupComponent,
 
   // modules
   math,
