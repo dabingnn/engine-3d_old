@@ -30,6 +30,8 @@ import ToggleGroupComponent from './lib/framework/ui/toggle-group-component';
 import SliderComponent from './lib/framework/ui/slider-component';
 import EditBoxComponent from './lib/framework/ui/edit-box-component';
 import ScrollBarComponent from './lib/framework/ui/scroll-bar-component';
+import BoundComponent from './lib/framework/ui/bound-component';
+import ScrollViewComponent from './lib/framework/ui/scroll-view-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -105,6 +107,8 @@ export default {
   SliderComponent,
   EditBoxComponent,
   ScrollBarComponent,
+  BoundComponent,
+  ScrollViewComponent,
 
   // modules
   math,
