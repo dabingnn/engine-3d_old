@@ -32,6 +32,7 @@ import EditBoxComponent from './lib/framework/ui/edit-box-component';
 import ScrollBarComponent from './lib/framework/ui/scroll-bar-component';
 import BoundComponent from './lib/framework/ui/bound-component';
 import ScrollViewComponent from './lib/framework/ui/scroll-view-component';
+import DropDownComponent from './lib/framework/ui/drop-down-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -109,6 +110,7 @@ export default {
   ScrollBarComponent,
   BoundComponent,
   ScrollViewComponent,
+  DropDownComponent,
 
   // modules
   math,
