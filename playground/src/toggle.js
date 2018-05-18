@@ -31,8 +31,8 @@
     checkerImage.setAnchors(0, 0, 1, 1);
     checkerImage.setSize(-10, -10);
 
-    toggle._background = image;
-    toggle._checker = checkerImage;
+    toggle._background = ent;
+    toggle._checker = checker;
     toggle._updateState();
   }
 
@@ -75,8 +75,8 @@
     text._align = 'left-center';
 
     //
-    toggle._background = image;
-    toggle._checker = checkerImage;
+    toggle._background = entBG;
+    toggle._checker = entChecker;
     toggle._updateState();
   }
 
