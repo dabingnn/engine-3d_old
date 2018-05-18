@@ -19,12 +19,12 @@
     image.setAnchors(0.5, 0.5, 0.5, 0.5);
     image.setSize(160, 30);
     let button = ent.addComp('Button');
-    button._background = image;
-    button._transition = 'color';
-    button._transitionColors.normal = color4.new(0.8, 0.8, 0.8, 1);
-    button._transitionColors.highlight = color4.new(1, 1, 0, 1);
-    button._transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
-    button._transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
+    button.background = ent;
+    button.transition = 'color';
+    button.transitionColors.normal = color4.new(0.8, 0.8, 0.8, 1);
+    button.transitionColors.highlight = color4.new(1, 1, 0, 1);
+    button.transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
+    button.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
     button._updateState();
   }
 
@@ -43,16 +43,16 @@
     let text = entLabel.addComp('Text');
     text.setAnchors(0, 0, 1, 1);
     text.setSize(0, 0);
-    text._text = 'Foobar';
-    text._color = color4.new(0, 0, 0, 1);
-    text._align = 'middle-center';
+    text.text = 'Foobar';
+    text.color = color4.new(0, 0, 0, 1);
+    text.align = 'middle-center';
 
-    button._background = image;
-    button._transition = 'color';
-    button._transitionColors.normal = color4.new(1, 1, 1, 1);
-    button._transitionColors.highlight = color4.new(1, 1, 0, 1);
-    button._transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
-    button._transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
+    button.background = ent;
+    button.transition = 'color';
+    button.transitionColors.normal = color4.new(1, 1, 1, 1);
+    button.transitionColors.highlight = color4.new(1, 1, 0, 1);
+    button.transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
+    button.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
     button._updateState();
 
     ent.on('transition', e => {
