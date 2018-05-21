@@ -119,10 +119,6 @@
       "value": false
     },
     {
-      "name": "USE_OPACITY_TEXTURE",
-      "value": false
-    },
-    {
       "name": "USE_ALPHA_TEST",
       "value": false
     },
