@@ -23,6 +23,16 @@ import WidgetComponent from './lib/framework/ui/widget-component';
 import ImageComponent from './lib/framework/ui/image-component';
 import TextComponent from './lib/framework/ui/text-component';
 import MaskComponent from './lib/framework/ui/mask-component';
+import UIElementComponent from './lib/framework/ui/ui-element-component';
+import ButtonComponent from './lib/framework/ui/button-component';
+import ToggleComponent from './lib/framework/ui/toggle-component';
+import ToggleGroupComponent from './lib/framework/ui/toggle-group-component';
+import SliderComponent from './lib/framework/ui/slider-component';
+import EditBoxComponent from './lib/framework/ui/edit-box-component';
+import ScrollBarComponent from './lib/framework/ui/scroll-bar-component';
+import BoundComponent from './lib/framework/ui/bound-component';
+import ScrollViewComponent from './lib/framework/ui/scroll-view-component';
+import DropDownComponent from './lib/framework/ui/drop-down-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -40,12 +50,12 @@ import Sprite from './lib/assets/sprite';
 // deps
 import { Node } from './lib/scene-graph';
 import { Component, System, Level } from './lib/ecs';
-import * as math from 'vmath';
+import * as math from './lib/vmath';
 import * as geometry from './lib/geom-utils';
 import * as primitives from './lib/primitives';
 import renderer from './lib/renderer';
-import gfx from 'gfx.js';
-import * as memop from 'memop';
+import gfx from './lib/gfx';
+import * as memop from './lib/memop';
 
 export default {
   // registry
@@ -91,6 +101,16 @@ export default {
   ImageComponent,
   TextComponent,
   MaskComponent,
+  UIElementComponent,
+  ButtonComponent,
+  ToggleComponent,
+  ToggleGroupComponent,
+  SliderComponent,
+  EditBoxComponent,
+  ScrollBarComponent,
+  BoundComponent,
+  ScrollViewComponent,
+  DropDownComponent,
 
   // modules
   math,
