@@ -54,6 +54,16 @@
           "value": null
         },
         {
+          "name": "emissive",
+          "type": "color3",
+          "value": [0, 0, 0]
+        },
+        {
+          "name": "emissiveTexture",
+          "type": "texture2d",
+          "value": null
+        },
+        {
           "name": "normalTexture",
           "type": "texture2d",
           "value": null
@@ -138,7 +148,11 @@
       "value": false
     },
     {
-      "name": "USE_OPACITY_TEXTURE",
+      "name": "USE_EMISSIVE",
+      "value": false
+    },
+    {
+      "name": "USE_EMISSIVE_TEXTURE",
       "value": false
     },
     {
