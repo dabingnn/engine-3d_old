@@ -9,8 +9,19 @@ uniform float maxDepth;
 uniform float bias;
 varying float vDepth;
 
+#if USE_SKINNING
+  #include <skinning.vert>
+#endif
+
 void main() {
-  gl_Position = lightViewProjMatrix * model * vec4(a_position, 1.0);
+  vec4 pos = vec4(a_position, 1);
+
+  #if USE_SKINNING
+    mat4 skinMat = skinMatrix();
+    pos = skinMat * pos;
+  #endif
+
+  gl_Position = lightViewProjMatrix * model * pos;
   // compute vDepth according to active camera's minDepth and maxDepth.
   vDepth = ((gl_Position.z + minDepth) / (minDepth + maxDepth)) + bias;
 }
