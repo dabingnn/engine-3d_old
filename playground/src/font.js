@@ -60,8 +60,8 @@
   let otTextComp = otTextEnt.addComp('Text');
   otTextComp.color = color4.new(1, 1, 0, 1);
   otTextComp.align = 'middle-center';
-  otTextComp.width = 512;
-  otTextComp.height = 256;
+  otTextComp.sizeX = 512;
+  otTextComp.sizeY = 256;
   otTextComp.setOffset(-100, -100);
 
   let debugEnt = app.createEntity('debugEntity');
@@ -71,8 +71,8 @@
   fontAltasSprite.height = 512;
   let debugImageComp = debugEnt.addComp('Image');
   debugImageComp.color = color4.new(1, 1, 1, 1);
-  debugImageComp.width = 512;
-  debugImageComp.height = 512;
+  debugImageComp.sizeX = 512;
+  debugImageComp.sizeY = 512;
   debugImageComp.setOffset(500, -300);
 
   let otfontUrls = {
@@ -95,8 +95,8 @@
   bmTextComp.align = 'middle-center';
   bmTextComp.wrap = true;
   bmTextComp.color = color4.new(0, 1, 0, 1);
-  bmTextComp.width = 512;
-  bmTextComp.height = 256;
+  bmTextComp.sizeX = 512;
+  bmTextComp.sizeY = 256;
   bmTextComp.setOffset(500, 200);
   let bmfontUrls = {
     json: `./assets/fonts/bmfontdata.json`,
@@ -125,7 +125,7 @@
   sysTextComp.align = 'middle-center';
   sysTextComp.wrap = true;
   sysTextComp.color = color4.new(1, 1, 1, 1);
-  sysTextComp.width = 600;
-  sysTextComp.height = 300;
+  sysTextComp.sizeX = 600;
+  sysTextComp.sizeY = 300;
   sysTextComp.setOffset(-100, 200);
 })();
