@@ -1,5 +1,6 @@
 const tap = require('./tap');
-const { vec3 } = require('vmath');
+const { math } = require('../../dist/engine');
+const vec3 = math.vec3;
 const { intersect, ray, line, triangle, sphere, box } = require('./dist/geom-utils');
 
 tap.test('intersect', t => {
@@ -114,7 +115,7 @@ tap.test('intersect', t => {
       1, 1, 1,
       ori_x.x, ori_x.y, ori_x.z,
       ori_y.x, ori_y.y, ori_y.z,
-      ori_z.x, ori_z.y, ori_z.z,
+      ori_z.x, ori_z.y, ori_z.z
     );
     let out = vec3.create();
     let intersects = intersect.ray_box(r1, b1, out);

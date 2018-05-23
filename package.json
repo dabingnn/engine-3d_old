@@ -20,7 +20,7 @@
     "test:ecs": "rollup -c ./tests/test-ecs/rollup.ecs.js && tap ./tests/test-ecs/*.spec.js",
     "test:es": "rollup -c ./tests/test-event-sys/rollup.event-sys.js && tap ./tests/test-event-sys/*.spec.js",
     "test:gfx": "rollup -c ./tests/test-gfx/rollup.gfx.js && electron-node-tap ./tests/test-gfx/*.spec.js --renderer --detail",
-    "test:gu": "rollup -c ./tests/test-geom-utils/rollup.geom-utils.js && tap ./tests/test-geom-utils/*.spec.js",
+    "test:gu": "rollup -c ./tests/test-geom-utils/rollup.geom-utils.js && electron-node-tap ./tests/test-geom-utils/*.spec.js --renderer",
     "test:input": "rollup -c ./tests/test-input/rollup.input.js && electron-node-tap ./tests/test-input/*.spec.js --renderer",
     "test:memop": "rollup -c ./tests/test-memop/rollup.memop.js && tap ./tests/test-memop/*.spec.js",
     "test:sg": "rollup -c ./tests/test-scene-graph/rollup.scene-graph.js && electron-node-tap ./tests/test-scene-graph/*.spec.js --renderer",
