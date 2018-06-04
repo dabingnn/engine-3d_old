@@ -1,6 +1,6 @@
 (() => {
   const { app, cc, dgui } = window;
-  const { vec3, quat } = cc.math;
+  const { vec3 } = cc.math;
 
   let dobj = {
     play: true,
@@ -26,7 +26,17 @@
   };
   dgui.remember(dobj);
   dgui.add(dobj, 'emitShape').onFinishChange(() => {
-    psys.shapeType = dobj.emitShape;
+    psys.shape = dobj.emitShape;
+    switch(dobj.emitShape) {
+      case 'box':
+        psys.shapeModule.boxScale = vec3.new(10.0, 10.0, 10.0);
+        psys.shapeModule.emitFrom = 'volume';
+        break;
+      case 'circle':
+        psys.shapeModule.radius = 10.0;
+        psys.shapeModule.arc = 360;
+        break;
+    }
   });
   dgui.add(dobj, 'play').onFinishChange(() => {
     if (dobj.play === true) {
@@ -46,7 +56,7 @@
     }
   });
   dgui.add(dobj, 'gravity').onFinishChange(() => {
-    psys.gravityModifier = dobj.gravity;
+    psys.gravityModifier.constant = dobj.gravity;
   });
   dgui.add(dobj, 'loop').onFinishChange(() => {
     psys.loop = dobj.loop;
@@ -62,41 +72,41 @@
     psys.duration = dobj.duration;
   });
   dgui.add(dobj, 'rateOverTime').onFinishChange(() => {
-    psys.rateOverTime = dobj.rateOverTime;
+    psys.rateOverTime.constant = dobj.rateOverTime;
   });
   dgui.add(dobj, 'rateOverDistance').onFinishChange(() => {
-    psys.rateOverDistance = dobj.rateOverDistance;
+    psys.rateOverDistance.constant = dobj.rateOverDistance;
   });
   dgui.add(dobj, 'startDelay').onFinishChange(() => {
-    psys.startDelay = dobj.startDelay;
+    psys.startDelay.constant = dobj.startDelay;
   });
   dgui.add(dobj, 'startSpeedMin').onFinishChange(() => {
-    psys.startSpeedMin = dobj.startSpeedMin;
+    psys.startSpeed.constantMin = dobj.startSpeedMin;
   });
   dgui.add(dobj, 'startSpeedMax').onFinishChange(() => {
-    psys.startSpeedMax = dobj.startSpeedMax;
+    psys.startSpeed.constantMax = dobj.startSpeedMax;
   });
   dgui.add(dobj, 'startSizeMin').onFinishChange(() => {
-    psys.startSizeMin = dobj.startSizeMin;
+    psys.startSize.constantMin = dobj.startSizeMin;
   });
   dgui.add(dobj, 'startSizeMax').onFinishChange(() => {
-    psys.startSizeMax = dobj.startSizeMax;
+    psys.startSize.constantMax = dobj.startSizeMax;
   });
   dgui.add(dobj, 'startLifetime').onFinishChange(() => {
-    psys.startLifetime = dobj.startLifetime;
+    psys.startLifetime.constant = dobj.startLifetime;
   });
   dgui.add(dobj, 'startRotation').onFinishChange(() => {
-    psys.startRotation = dobj.startRotation;
+    psys.startRotation.constant = dobj.startRotation;
   });
   dgui.add(dobj, 'billboard').onFinishChange(() => {
     if (dobj.billboard === 'camera') {
-      psys.renderMode = 'billboard';
+      psys.renderer.renderMode = 'billboard';
     } else if (dobj.billboard === 'horizontal') {
-      psys.renderMode = 'horizontalBillboard';
+      psys.renderer.renderMode = 'horizontalBillboard';
     } else if (dobj.billboard === 'vertical') {
-      psys.renderMode = 'verticalBillboard';
+      psys.renderer.renderMode = 'verticalBillboard';
     } else if (dobj.billboard === 'stretch') {
-      psys.renderMode = 'stretchedBillboard';
+      psys.renderer.renderMode = 'stretchedBillboard';
     }
   });
   dgui.add(dobj, 'simulationSpace').onFinishChange(() => {
@@ -131,24 +141,25 @@
   // psys.addBurst(burst);
 
   vec3.set(ent.lpos, 0, 0, 0);
-  psys.material = particleMaterial;
+  psys.renderer.material = particleMaterial;
   psys.loop = true;
   psys.duration = 10;
-  psys.rateOverTime = 100;
-  psys.startLifetime = 8;
-  psys.startColorType = 'randomColor';
-  psys.startSpeedType = 'randomBetweenTwoConstants';
-  psys.startSpeedMin = 2;
-  psys.startSpeedMax = 8;
-  psys.startSizeType = 'randomBetweenTwoConstants';
-  psys.startSizeMin = 0.5;
-  psys.startSizeMax = 2.5;
-  psys.startDelay = 1;
+  psys.rateOverTime.constant = 100;
+  psys.startLifetime.constant = 8;
+  psys.startSpeed.mode = 'twoConstants';
+  psys.startSpeed.constantMin = 2;
+  psys.startSpeed.constantMax = 8;
+  psys.startSize.mode = 'twoConstants';
+  psys.startSize.constantMin = 0.5;
+  psys.startSize.constantMax = 2.5;
+  psys.startDelay.mode = 'constant';
+  psys.startDelay.constant = 1;
   psys.simulationSpeed = 1;
-  psys.gravityModifier = 0;
-  psys.shapeType = 'circle';
-  psys.radius = 10.0;
-  psys.boxSize = vec3.new(10.0, 10.0, 10.0);
+  psys.gravityModifier.mode = 'constant';
+  psys.gravityModifier.constant = 0;
+  psys.shape = 'circle';
+  psys.shapeModule.radius = 10.0;
+  psys.shapeModule.arc = 360;
   psys.play();
 
   app.on('tick', () => {
