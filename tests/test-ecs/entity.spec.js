@@ -1,553 +1,200 @@
 const tap = require('tap');
-const { App } = require('./dist/ecs');
-
+const { App, Entity } = require('./dist/ecs');
 tap.test('entity', t => {
-
-  tap.test('enable', t => {
+  // active
+  tap.test('active', t => {
     let app = new App();
 
-    tap.test('app.createEntity()', t => {
-      let enableCount = 0;
-      let ent1 = app.createEntity('Entity1');
-
-      t.assert(ent1.enabled === true, 'The enabled is true for new entity');
-
-      ent1.on('enable', function () {
-        enableCount += 1;
-      });
-      app.tick();
-
-      t.equal(enableCount, 1);
-
+    tap.test('app.createEntity', t => {
+      let ent = app.createEntity('entity1');
+      t.assert(ent.active === true, 'Active is true for new entity.');
       t.end();
     });
 
-    tap.test('entity.enabled = true', t => {
-      let enableCount = 0;
-      let ent1 = app.createEntity('Entity1');
-
-      t.assert(ent1.enabled === true);
-
-      ent1.on('enable', function () {
-        enableCount += 1;
-      });
-      app.tick();
-
-      t.equal(enableCount, 1);
-
-      ent1.enabled = false;
-      ent1.enabled = true;
-
-      t.assert(ent1.enabled === true);
-      t.equal(enableCount, 2);
-
+    tap.test('ent.active=true/false', t => {
+      let ent = app.createEntity('entity1');
+      ent.active = false;
+      t.assert(ent.active === false, 'Active is false if setted to false.');
+      ent.active = true;
+      t.assert(ent.active === true, 'Active is true if setted to true.');
       t.end();
     });
 
-    tap.test('entity.clone()', t => {
-      let enableCount = 0;
-      let ent1 = app.createEntity('Entity1');
-
-      let ent2 = ent1.clone();
-
-      t.assert(ent2.enabled === true);
-
-      ent2.on('enable', function () {
-        enableCount += 1;
-      });
-      app.tick();
-
-      t.equal(enableCount, 1);
-
-      ent2.enabled = false;
-      ent2.enabled = true;
-
-      t.equal(enableCount, 2);
-
-      t.end();
-    });
-
-    tap.test('entity.deepClone()', t => {
-      let ent1 = app.createEntity('ent1');
-      let ent1_1 = app.createEntity('ent1_1');
-      let ent1_2 = app.createEntity('ent1_2');
-      let ent1_1_1 = app.createEntity('ent1_1_1');
-      let ent1_1_2 = app.createEntity('ent1_1_2');
-      let ent1_2_1 = app.createEntity('ent1_2_1');
-      let ent1_2_2 = app.createEntity('ent1_2_2');
-      ent1_1.setParent(ent1);
-      ent1_2.setParent(ent1);
-      ent1_1_1.setParent(ent1_1);
-      ent1_1_2.setParent(ent1_1);
-      ent1_2_1.setParent(ent1_2);
-      ent1_2_2.setParent(ent1_2);
-
-      let ent2 = ent1.deepClone();
-
-      t.assert(ent2.enabled === true);
-      t.assert(ent2._children[0].enabled === true);
-      t.assert(ent2._children[1].enabled === true);
-      t.assert(ent2._children[0]._children[0].enabled === true);
-      t.assert(ent2._children[0]._children[1].enabled === true);
-      t.assert(ent2._children[1]._children[0].enabled === true);
-      t.assert(ent2._children[1]._children[1].enabled === true);
-
-      let enableCount = 0;
-      let enableCount_1 = 0;
-      let enableCount_2 = 0;
-      let enableCount_1_1 = 0;
-      let enableCount_1_2 = 0;
-      let enableCount_2_1 = 0;
-      let enableCount_2_2 = 0;
-
-      ent2.on('enable', function () {
-        enableCount += 1;
-      });
-      ent2._children[0].on('enable', function () {
-        enableCount_1 += 1;
-      });
-      ent2._children[1].on('enable', function () {
-        enableCount_2 += 1;
-      });
-      ent2._children[0]._children[0].on('enable', function () {
-        enableCount_1_1 += 1;
-      });
-      ent2._children[0]._children[1].on('enable', function () {
-        enableCount_1_2 += 1;
-      });
-      ent2._children[1]._children[0].on('enable', function () {
-        enableCount_2_1 += 1;
-      });
-      ent2._children[1]._children[1].on('enable', function () {
-        enableCount_2_2 += 1;
-      });
-      app.tick();
-
-      t.equal(enableCount, 1);
-      t.equal(enableCount_1, 1);
-      t.equal(enableCount_2, 1);
-      t.equal(enableCount_1_1, 1);
-      t.equal(enableCount_1_2, 1);
-      t.equal(enableCount_2_1, 1);
-      t.equal(enableCount_2_2, 1);
-
-      enableCount = 0;
-      enableCount_1 = 0;
-      enableCount_2 = 0;
-      enableCount_1_1 = 0;
-      enableCount_1_2 = 0;
-      enableCount_2_1 = 0;
-      enableCount_2_2 = 0;
-
-      ent2.enabled = false;
-      ent2.enabled = true;
-
-      t.equal(enableCount, 1);
-      t.equal(enableCount_1, 1);
-      t.equal(enableCount_2, 1);
-      t.equal(enableCount_1_1, 1);
-      t.equal(enableCount_1_2, 1);
-      t.equal(enableCount_2_1, 1);
-      t.equal(enableCount_2_2, 1);
-
-      t.end();
-    });
-
-    tap.test('move the entity from disabled parent to a enabled parent', t => {
-
-      /**
-       * [o] ent0
-       * [x] ent1
-       *  |- [o] ent1_1
-       *      |- [o] ent1_1_1
-       *      |- [o] ent1_1_2
-       *  |- [x] ent1_2
-       *      |- [o] ent1_2_1
-       *      |- [o] ent1_2_1
-       *
-       * ent1_1.setParent(ent0)
-       * ent1_2.setParent(ent0)
-       */
-
-      let ent0 = app.createEntity('ent0');
-      let ent1 = app.createEntity('ent1');
-      let ent1_1 = app.createEntity('ent1_1');
-      let ent1_2 = app.createEntity('ent1_2');
-      let ent1_1_1 = app.createEntity('ent1_1_1');
-      let ent1_1_2 = app.createEntity('ent1_1_2');
-      let ent1_2_1 = app.createEntity('ent1_2_1');
-      let ent1_2_2 = app.createEntity('ent1_2_2');
-      ent1.enabled = false;
-      ent1_2.enabled = false;
-      ent1_1.setParent(ent1);
-      ent1_2.setParent(ent1);
-      ent1_1_1.setParent(ent1_1);
-      ent1_1_2.setParent(ent1_1);
-      ent1_2_1.setParent(ent1_2);
-      ent1_2_2.setParent(ent1_2);
-      app.tick();
-
-      let enableCount_1 = 0;
-      let enableCount_2 = 0;
-      let enableCount_1_1 = 0;
-      let enableCount_1_2 = 0;
-      let enableCount_2_1 = 0;
-      let enableCount_2_2 = 0;
-      ent1_1.on('enable', function () {
-        enableCount_1 += 1;
-      });
-      ent1_1_1.on('enable', function () {
-        enableCount_1_1 += 1;
-      });
-      ent1_1_2.on('enable', function () {
-        enableCount_1_2 += 1;
-      });
-      ent1_2.on('enable', function () {
-        enableCount_2 += 1;
-      });
-      ent1_2_1.on('enable', function () {
-        enableCount_2_1 += 1;
-      });
-      ent1_2_2.on('enable', function () {
-        enableCount_2_2 += 1;
-      });
-
-      ent1_1.setParent(ent0);
-      ent1_2.setParent(ent0);
-      app.tick();
-
-      t.equal(enableCount_1, 1);
-      t.equal(enableCount_1_1, 1);
-      t.equal(enableCount_1_2, 1);
-      t.equal(enableCount_2, 0);
-      t.equal(enableCount_2_1, 0);
-      t.equal(enableCount_2_2, 0);
-
+    tap.test('ent.deactivate/activate', t => {
+      let ent = app.createEntity('entity1');
+      ent.deactivate();
+      t.assert(ent.active === false, 'Active is false if deactivate.');
+      ent.activate();
+      t.assert(ent.active === true, 'Active is true if activate.');
       t.end();
     });
 
     t.end();
   });
 
-  tap.test('disable', t => {
+  tap.test('activeInHierarchy', t => {
+
     let app = new App();
 
-    tap.test('entity.destroy()', t => {
-      let disableCount = 0;
-      let ent1 = app.createEntity('Entity1');
-      app.tick();
-      ent1.on('disable', function () {
-        disableCount += 1;
-      });
+    tap.test('app.createEntity with level', t => {
+      // simulating unactivated level
+      let mockLevel = new Entity('mockLevel');
+      mockLevel.active = true;
+      let ent = app.createEntity('entity1');
+      t.assert(ent.activeInHierarchy === true, 'ActivateInHierarchy should be true when created to active Level.');
 
-      ent1.destroy();
-      app.tick();
-      t.equal(disableCount, 1);
-
+      let ent2 = app.createEntity('entity1', mockLevel);
+      t.assert(ent2.activeInHierarchy === false, 'ActivateInHierarchy should be false when created to inacitve level.');
       t.end();
     });
 
-    tap.test('entity.deepClone() then entity.destroy()', t => {
-      let ent1 = app.createEntity();
-      let ent1_1 = app.createEntity();
-      let ent1_2 = app.createEntity();
-      let ent1_1_1 = app.createEntity();
-      let ent1_1_2 = app.createEntity();
-      let ent1_2_1 = app.createEntity();
-      let ent1_2_2 = app.createEntity();
-      ent1_1.setParent(ent1);
-      ent1_2.setParent(ent1);
-      ent1_1_1.setParent(ent1_1);
-      ent1_1_2.setParent(ent1_1);
-      ent1_2_1.setParent(ent1_2);
-      ent1_2_2.setParent(ent1_2);
-
-      let ent2 = ent1.deepClone();
-
-      let disableCount = 0;
-      let disableCount_1 = 0;
-      let disableCount_2 = 0;
-      let disableCount_1_1 = 0;
-      let disableCount_1_2 = 0;
-      let disableCount_2_1 = 0;
-      let disableCount_2_2 = 0;
-
-      ent2.on('disable', function () {
-        disableCount += 1;
-      });
-      ent2._children[0].on('disable', function () {
-        disableCount_1 += 1;
-      });
-      ent2._children[1].on('disable', function () {
-        disableCount_2 += 1;
-      });
-      ent2._children[0]._children[0].on('disable', function () {
-        disableCount_1_1 += 1;
-      });
-      ent2._children[0]._children[1].on('disable', function () {
-        disableCount_1_2 += 1;
-      });
-      ent2._children[1]._children[0].on('disable', function () {
-        disableCount_2_1 += 1;
-      });
-      ent2._children[1]._children[1].on('disable', function () {
-        disableCount_2_2 += 1;
-      });
-      app.tick();
-
-      ent2.destroy();
-      app.tick();
-
-      t.equal(disableCount, 1);
-      t.equal(disableCount_1, 1);
-      t.equal(disableCount_2, 1);
-      t.equal(disableCount_1_1, 1);
-      t.equal(disableCount_1_2, 1);
-      t.equal(disableCount_2_1, 1);
-      t.equal(disableCount_2_2, 1);
-
+    tap.test('app.createEntity and set parent', t => {
+      let ent = app.createEntity('entity1');
+      ent.setParent(null);
+      // simulating activeInHierarchy entity;
+      let mockEntity = app.createEntity('ent1');
+      let mockEntity2 = app.createEntity('ent2');
+      mockEntity2.active = false;
+      t.assert(ent.activeInHierarchy === false, 'ActivateInHierarchy should be false when set to null parent.');
+      ent.setParent(mockEntity);
+      t.assert(ent.activeInHierarchy === true, 'ActivateInHierarchy should be true when set to activeInHierarchy parent.');
+      ent.setParent(mockEntity2);
+      t.assert(ent.activeInHierarchy === false, 'ActivateInHierarchy should be false when set to inactive parent.');
       t.end();
     });
 
-    tap.test('entity.enabled = false', t => {
-      let disableCount = 0;
-      let ent1 = app.createEntity('Entity1');
-      app.tick();
-      ent1.on('disable', function () {
-        disableCount += 1;
-      });
-      ent1.enabled = false;
-
-      t.equal(disableCount, 1);
-
-      t.end();
-    });
-
-    tap.test('entity.deepClone() then entity.enabled = false', t => {
-      let ent1 = app.createEntity();
-      let ent1_1 = app.createEntity();
-      let ent1_2 = app.createEntity();
-      let ent1_1_1 = app.createEntity();
-      let ent1_1_2 = app.createEntity();
-      let ent1_2_1 = app.createEntity();
-      let ent1_2_2 = app.createEntity();
-      ent1_1.setParent(ent1);
-      ent1_2.setParent(ent1);
-      ent1_1_1.setParent(ent1_1);
-      ent1_1_2.setParent(ent1_1);
-      ent1_2_1.setParent(ent1_2);
-      ent1_2_2.setParent(ent1_2);
-
-      let ent2 = ent1.deepClone();
-
-      let disableCount = 0;
-      let disableCount_1 = 0;
-      let disableCount_2 = 0;
-      let disableCount_1_1 = 0;
-      let disableCount_1_2 = 0;
-      let disableCount_2_1 = 0;
-      let disableCount_2_2 = 0;
-
-      ent2.on('disable', function () {
-        disableCount += 1;
-      });
-      ent2._children[0].on('disable', function () {
-        disableCount_1 += 1;
-      });
-      ent2._children[1].on('disable', function () {
-        disableCount_2 += 1;
-      });
-      ent2._children[0]._children[0].on('disable', function () {
-        disableCount_1_1 += 1;
-      });
-      ent2._children[0]._children[1].on('disable', function () {
-        disableCount_1_2 += 1;
-      });
-      ent2._children[1]._children[0].on('disable', function () {
-        disableCount_2_1 += 1;
-      });
-      ent2._children[1]._children[1].on('disable', function () {
-        disableCount_2_2 += 1;
-      });
-      app.tick();
-
-      ent2.enabled = false;
-
-      t.equal(disableCount, 1);
-      t.equal(disableCount_1, 1);
-      t.equal(disableCount_2, 1);
-      t.equal(disableCount_1_1, 1);
-      t.equal(disableCount_1_2, 1);
-      t.equal(disableCount_2_1, 1);
-      t.equal(disableCount_2_2, 1);
+    tap.test('active changed', t => {
+      let mockEntity = app.createEntity('parent');
+      let ent = app.createEntity('entity1');
+      ent.setParent(mockEntity);
+      mockEntity.active = false;
+      ent.active = false;
+      t.assert(ent.activeInHierarchy === false, 'ActivateInHierarchy should be false when parent is inactive.');
+      ent.active = true;
+      t.assert(ent.activeInHierarchy === false, 'ActivateInHierarchy should be false when parent is inactive.');
+      mockEntity.active = true;
+      ent.active = false;
+      t.assert(ent.activeInHierarchy === false, 'ActivateInHierarchy should be false when self is inactive.');
+      ent.active = true;
+      t.assert(ent.activeInHierarchy === true, 'ActivateInHierarchy should be false when both self and hierarchy is active.');
 
       t.end();
     });
+    t.end();
+  });
 
-    tap.test('move the entity from enabled parent to a disabled parent', t => {
-
-      /**
-       * [x] ent0
-       * [o] ent1
-       *  |- [o] ent1_1
-       *      |- [o] ent1_1_1
-       *      |- [o] ent1_1_2
-       *  |- [x] ent1_2
-       *      |- [o] ent1_2_1
-       *      |- [o] ent1_2_1
-       *
-       * ent1.setParent(ent0)
-       */
-
-      let ent0 = app.createEntity('ent0');
-      let ent1 = app.createEntity('ent1');
-      let ent1_1 = app.createEntity('ent1_1');
-      let ent1_2 = app.createEntity('ent1_2');
-      let ent1_1_1 = app.createEntity('ent1_1_1');
-      let ent1_1_2 = app.createEntity('ent1_1_2');
-      let ent1_2_1 = app.createEntity('ent1_2_1');
-      let ent1_2_2 = app.createEntity('ent1_2_2');
-
-      ent0.enabled = false;
-      ent1_2.enabled = false;
-
-      ent1_1.setParent(ent1);
-      ent1_2.setParent(ent1);
-      ent1_1_1.setParent(ent1_1);
-      ent1_1_2.setParent(ent1_1);
-      ent1_2_1.setParent(ent1_2);
-      ent1_2_2.setParent(ent1_2);
-      app.tick();
-
-      let disableCount_1 = 0;
-      let disableCount_2 = 0;
-      let disableCount_1_1 = 0;
-      let disableCount_1_2 = 0;
-      let disableCount_2_1 = 0;
-      let disableCount_2_2 = 0;
-      ent1_1.on('disable', function () {
-        disableCount_1 += 1;
-      });
-      ent1_1_1.on('disable', function () {
-        disableCount_1_1 += 1;
-      });
-      ent1_1_2.on('disable', function () {
-        disableCount_1_2 += 1;
-      });
-      ent1_2.on('disable', function () {
-        disableCount_2 += 1;
-      });
-      ent1_2_1.on('disable', function () {
-        disableCount_2_1 += 1;
-      });
-      ent1_2_2.on('disable', function () {
-        disableCount_2_2 += 1;
+  // active and inactive message
+  tap.test('active and inactive message', t => {
+    let app = new App();
+    tap.test('set parent', t => {
+      let ent = app.createEntity('entity1');
+      // simulating activeInHierarchy entity;
+      let mockEntity = app.createEntity('ent1');
+      let mockEntity2 = app.createEntity('ent2');
+      mockEntity2.active = false;
+      let activeCount = 0;
+      let deActiveCount = 0;
+      ent.on('active', () => {
+        activeCount += 1;
       });
 
-      ent1.setParent(ent0);
-      app.tick();
+      ent.on('inactive', () => {
+        deActiveCount += 1;
+      });
 
-      t.equal(disableCount_1, 1);
-      t.equal(disableCount_1_1, 1);
-      t.equal(disableCount_1_2, 1);
-      t.equal(disableCount_2, 0);
-      t.equal(disableCount_2_1, 0);
-      t.equal(disableCount_2_2, 0);
+      ent.setParent(null);
+      t.equal(deActiveCount, 1);
+      ent.setParent(mockEntity);
+      t.equal(activeCount, 1);
+      ent.setParent(mockEntity2);
+      t.equal(deActiveCount, 2);
+      ent.setParent(mockEntity);
+      t.equal(activeCount, 2);
+      t.end();
+    });
+
+    tap.test('active changed', t => {
+      let mockEntity = app.createEntity('parent');
+      let ent = app.createEntity('entity1');
+      ent.setParent(mockEntity);
+      let activeCount = 0;
+      let deActiveCount = 0;
+      ent.on('active', () => {
+        activeCount += 1;
+      });
+
+      ent.on('inactive', () => {
+        deActiveCount += 1;
+      });
+      mockEntity.active = false;
+      ent.active = false;
+      t.equal(deActiveCount, 1);
+      t.equal(activeCount, 0);
+      mockEntity.active = true;
+      ent.active = true;
+      t.equal(deActiveCount, 1);
+      t.equal(activeCount, 1);
+      mockEntity.active = true;
+      ent.active = false;
+      t.equal(deActiveCount, 2);
+      t.equal(activeCount, 1);
+      ent.active = true;
+      mockEntity.active = false;
+      t.equal(deActiveCount, 3);
+      t.equal(activeCount, 2);
 
       t.end();
     });
 
     t.end();
   });
-
-  tap.test('ready', t => {
+  // activate and deactivate reentrance
+  tap.test('activate and deactive reentrance', t => {
     let app = new App();
-
-    tap.test('entity.create()', t => {
-      let readyCount = 0;
-      let ent1 = app.createEntity('Entity1');
-      ent1.on('ready', function () {
-        readyCount += 1;
-      });
-      app.tick();
-      t.equal(readyCount, 1);
-
-      t.end();
+    let ent = app.createEntity('ent');
+    let activeCount = 0;
+    let inActiveCount = 0;
+    ent.on('active', () => {
+      activeCount++;
     });
-
-    tap.test('entity.clone()', t => {
-      let readyCount = 0;
-      let ent1 = app.createEntity('Entity1');
-
-      let ent2 = ent1.clone();
-      ent2.on('ready', function () {
-        readyCount += 1;
-      });
-      app.tick();
-      t.equal(readyCount, 1);
-
-      t.end();
+    ent.on('inactive', () => {
+      inActiveCount++;
     });
-
-    tap.test('entity.deepClone()', t => {
-      let ent1 = app.createEntity();
-      let ent1_1 = app.createEntity();
-      let ent1_2 = app.createEntity();
-      let ent1_1_1 = app.createEntity();
-      let ent1_1_2 = app.createEntity();
-      let ent1_2_1 = app.createEntity();
-      let ent1_2_2 = app.createEntity();
-      ent1_1.setParent(ent1);
-      ent1_2.setParent(ent1);
-      ent1_1_1.setParent(ent1_1);
-      ent1_1_2.setParent(ent1_1);
-      ent1_2_1.setParent(ent1_2);
-      ent1_2_2.setParent(ent1_2);
-
-      let ent2 = ent1.deepClone();
-
-      let readyCount = 0;
-      let readyCount_1 = 0;
-      let readyCount_2 = 0;
-      let readyCount_1_1 = 0;
-      let readyCount_1_2 = 0;
-      let readyCount_2_1 = 0;
-      let readyCount_2_2 = 0;
-
-      ent2.on('ready', function () {
-        readyCount += 1;
-      });
-      ent2._children[0].on('ready', function () {
-        readyCount_1 += 1;
-      });
-      ent2._children[1].on('ready', function () {
-        readyCount_2 += 1;
-      });
-      ent2._children[0]._children[0].on('ready', function () {
-        readyCount_1_1 += 1;
-      });
-      ent2._children[0]._children[1].on('ready', function () {
-        readyCount_1_2 += 1;
-      });
-      ent2._children[1]._children[0].on('ready', function () {
-        readyCount_2_1 += 1;
-      });
-      ent2._children[1]._children[1].on('ready', function () {
-        readyCount_2_2 += 1;
-      });
-      app.tick();
-
-      t.equal(readyCount, 1);
-      t.equal(readyCount_1, 1);
-      t.equal(readyCount_2, 1);
-      t.equal(readyCount_1_1, 1);
-      t.equal(readyCount_1_2, 1);
-      t.equal(readyCount_2_1, 1);
-      t.equal(readyCount_2_2, 1);
-
-      t.end();
-    });
-
+    ent.active = true;
+    t.equal(activeCount, 0);
+    t.equal(inActiveCount, 0);
+    ent.active = false;
+    t.equal(activeCount, 0);
+    t.equal(inActiveCount, 1);
+    ent.deactivate();
+    t.equal(activeCount, 0);
+    t.equal(inActiveCount, 1);
+    ent.deactivate();
+    t.equal(activeCount, 0);
+    t.equal(inActiveCount, 1);
+    ent.activate();
+    t.equal(activeCount, 1);
+    t.equal(inActiveCount, 1);
+    ent.activate();
+    t.equal(activeCount, 1);
+    t.equal(inActiveCount, 1);
+    t.end();
+  });
+  // destroy
+  tap.test('destroy and destroy reentrance', t => {
+    let app = new App();
+    let ent = app.createEntity('entity1');
+    ent.destroy();
+    t.assert(ent._destroyed === true, 'should be labeled as destroyed when call destroy');
+    let parent = app.createEntity('parent');
+    let child = app.createEntity('child');
+    child.setParent(parent);
+    parent.destroy();
+    t.assert(parent._destroyed === true, 'child and parent should be labeled as destroyed when call parent.destroy');
+    t.assert(child._destroyed === true, 'child and parent should be labeled as destroyed when call parent.destroy');
+    t.equal(app._deadEntities.length, 3);
+    parent.destroy();
+    t.equal(app._deadEntities.length, 3);
     t.end();
   });
 
@@ -591,24 +238,247 @@ tap.test('entity', t => {
     t.end();
   });
 
-  tap.test('destroy in the same frame', t => {
-    let enableCount = 0;
-    let disableCount = 0;
+  // addComp
+  tap.test('Components', t => {
+    class MockComponent {
+      constructor() {
+        this._changeToFalseTime = 0;
+        this._changeToTrueTime = 0;
+      }
 
+      destroy() {
+
+      }
+      _onEntityActiveChanged(val) {
+        if (val) {
+          this._changeToTrueTime++;
+        } else {
+          this._changeToFalseTime++;
+        }
+      }
+    }
+
+    class MockComponentMultiple {
+      constructor() {
+
+      }
+
+      destroy() {
+
+      }
+      _onEntityActiveChanged() {
+
+      }
+    }
+
+    MockComponentMultiple.multiple = true;
+
+    tap.test('addComp, getComp and getComps', t => {
+      let app = new App();
+
+      app.registerClass('MockComponent', MockComponent);
+      app.registerClass('MockComponentMultiple', MockComponentMultiple);
+      let ent = app.createEntity('ent');
+      let comp = ent.addComp('MockComponent');
+      t.equal(ent._comps.length, 1);
+      t.equal(ent._comps[0], comp);
+      t.equal(ent.getComp('MockComponent'), comp);
+      t.equal(ent.getComps('MockComponent').length, 1);
+      t.equal(null, ent.addComp('MockComponent'));
+      t.equal(ent.getComp('MockComponent'), comp);
+      t.equal(ent.getComps('MockComponent').length, 1);
+      t.equal(ent._comps.length, 1);
+
+      let comp1 = ent.addComp('MockComponentMultiple');
+      t.equal(ent._comps.length, 2);
+      t.equal(ent._comps[1], comp1);
+      t.equal(ent.getComp('MockComponentMultiple'), comp1);
+      t.equal(ent.getComps('MockComponentMultiple').length, 1);
+
+      let comp2 = ent.addComp('MockComponentMultiple');
+      t.equal(ent._comps.length, 3);
+      t.equal(ent._comps[2], comp2);
+      // should return the first one
+      t.equal(ent.getComp('MockComponentMultiple'), comp1);
+      let comps = ent.getComps('MockComponentMultiple');
+      t.equal(comps.length, 2);
+      t.equal(comps[0], comp1);
+      t.equal(comps[1], comp2);
+
+      t.end();
+    });
+
+    tap.test('comp._onEntityActiveChanged', t => {
+      let app = new App();
+
+      app.registerClass('MockComponent', MockComponent);
+      tap.test('set parent', t => {
+        let ent = app.createEntity('entity1');
+        // simulating activeInHierarchy entity;
+        let mockEntity = app.createEntity('ent1');
+        let mockEntity2 = app.createEntity('ent2');
+        mockEntity2.active = false;
+
+        let comp = ent.addComp('MockComponent');
+        t.equal(comp._changeToFalseTime, 0);
+        t.equal(comp._changeToTrueTime, 1);
+
+        ent.setParent(null);
+        t.equal(comp._changeToFalseTime, 1);
+        t.equal(comp._changeToTrueTime, 1);
+        ent.setParent(mockEntity);
+        t.equal(comp._changeToFalseTime, 1);
+        t.equal(comp._changeToTrueTime, 2);
+        ent.setParent(mockEntity2);
+        t.equal(comp._changeToFalseTime, 2);
+        t.equal(comp._changeToTrueTime, 2);
+        ent.setParent(mockEntity);
+        t.equal(comp._changeToFalseTime, 2);
+        t.equal(comp._changeToTrueTime, 3);
+        t.end();
+      });
+
+      tap.test('active changed', t => {
+        let mockEntity = app.createEntity('parent');
+        let ent = app.createEntity('entity1');
+        let comp = ent.addComp('MockComponent');
+        t.equal(comp._changeToFalseTime, 0);
+        t.equal(comp._changeToTrueTime, 1);
+        ent.setParent(mockEntity);
+        t.equal(comp._changeToFalseTime, 0);
+        t.equal(comp._changeToTrueTime, 1);
+        mockEntity.active = false;
+        ent.active = false;
+        t.equal(comp._changeToFalseTime, 1);
+        t.equal(comp._changeToTrueTime, 1);
+        mockEntity.active = true;
+        ent.active = true;
+        t.equal(comp._changeToFalseTime, 1);
+        t.equal(comp._changeToTrueTime, 2);
+        mockEntity.active = true;
+        ent.active = false;
+        t.equal(comp._changeToFalseTime, 2);
+        t.equal(comp._changeToTrueTime, 2);
+        ent.active = true;
+        mockEntity.active = false;
+        t.equal(comp._changeToFalseTime, 3);
+        t.equal(comp._changeToTrueTime, 3);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    // getCompsInChildren
+    tap.test('getCompsInChildren', t => {
+      let app = new App();
+      let parent = app.createEntity('parent');
+      let child0 = app.createEntity('child');
+      let child1 = app.createEntity('child');
+      child0.setParent(parent);
+      child1.setParent(parent);
+      app.registerClass('MockComponent', MockComponent);
+      app.registerClass('MockComponentMultiple', MockComponentMultiple);
+
+      parent.addComp('MockComponent');
+
+      let comps = parent.getCompsInChildren('MockComponent');
+      t.equal(comps.length, 0);
+
+      let comp0 = child0.addComp('MockComponent');
+      comps = parent.getCompsInChildren('MockComponent');
+      t.equal(comps.length, 1);
+      t.equal(comp0, comps[0]);
+
+      let comp1 = child1.addComp('MockComponent');
+      comps = parent.getCompsInChildren('MockComponent');
+      t.equal(comps.length, 2);
+      t.equal(comp0, comps[0]);
+      t.equal(comp1, comps[1]);
+
+      comp0 = child0.addComp('MockComponentMultiple');
+      comps = parent.getCompsInChildren('MockComponentMultiple');
+      t.equal(comps.length, 1);
+      t.equal(comp0, comps[0]);
+
+      comp1 = child1.addComp('MockComponentMultiple');
+      comps = parent.getCompsInChildren('MockComponentMultiple');
+      t.equal(comps.length, 2);
+      t.equal(comp0, comps[0]);
+      t.equal(comp1, comps[1]);
+
+      let comp2 = child0.addComp('MockComponentMultiple');
+      comps = parent.getCompsInChildren('MockComponentMultiple');
+      t.equal(comps.length, 3);
+      t.equal(comp0, comps[0]);
+      t.equal(comp2, comps[1]);
+      t.equal(comp1, comps[2]);
+
+      t.end();
+    });
+    t.end();
+  });
+
+  // clone
+
+  tap.test('entity.clone', t => {
+    class MockComponent {
+      constructor() {
+      }
+
+      destroy() {
+
+      }
+      _onEntityActiveChanged(val) {
+      }
+    }
     let app = new App();
-    let ent1 = app.createEntity('Entity1');
-    ent1.on('enable', function () {
-      enableCount += 1;
-    });
-    ent1.on('disable', function () {
-      disableCount += 1;
-    });
+    app.registerClass('MockComponent', MockComponent);
+    let parent = app.createEntity('parent');
+    let child = app.createEntity('child');
+    child.setParent(parent);
+    parent.addComp('MockComponent');
+    let cloned = parent.clone();
+    t.equal(cloned.active, parent.active);
+    t.equal(cloned.children.length, 0);
+    t.equal(cloned._comps.length, parent._comps.length);
+    t.assert(cloned._comps[0] instanceof MockComponent, 'component should be cloned!');
+    t.end();
+  });
 
-    ent1.destroy();
-    app.tick();
+  // entity.deepClone
 
-    t.equal(enableCount, 0);
-    t.equal(disableCount, 0);
+  tap.test('entity.deepClone', t => {
+    class MockComponent {
+      constructor() {
+      }
+
+      destroy() {
+
+      }
+      _onEntityActiveChanged(val) {
+      }
+    }
+    let app = new App();
+    app.registerClass('MockComponent', MockComponent);
+    let parent = app.createEntity('parent');
+    let child = app.createEntity('child');
+    let child2 = app.createEntity('child2');
+    child2.active = false;
+    child.setParent(parent);
+    child2.setParent(parent);
+    parent.addComp('MockComponent');
+    child.addComp('MockComponent');
+    let cloned = parent.deepClone();
+    t.equal(cloned.active, parent.active);
+    t.equal(cloned.children.length, 2);
+    t.equal(cloned._comps.length, parent._comps.length);
+    t.assert(cloned._comps[0] instanceof MockComponent, 'component should be cloned!');
+    let clonedChild = cloned.children[0];
+    t.equal(clonedChild.active, child.active);
+    t.assert(clonedChild._comps[0] instanceof MockComponent, 'component should be cloned!');
+    t.equal(cloned.children[1].active, child2.active);
     t.end();
   });
 
