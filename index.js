@@ -98,6 +98,7 @@ export default {
 
   // ui-widget components
   ScreenComponent,
+  ScreenScalerHelper,
   WidgetComponent,
   ImageComponent,
   TextComponent,
