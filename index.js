@@ -19,7 +19,7 @@ import ParticleSystemComponent from './lib/framework/particle/particle-system-co
 
 // ui-widget components
 import ScreenComponent from './lib/framework/ui/screen-component';
-import ScreenScalerHelper from './lib/framework/ui/screen-scaler-helper';
+import ScreenScalerComponent from './lib/framework/ui/screen-scaler-component';
 import WidgetComponent from './lib/framework/ui/widget-component';
 import ImageComponent from './lib/framework/ui/image-component';
 import TextComponent from './lib/framework/ui/text-component';
@@ -98,7 +98,7 @@ export default {
 
   // ui-widget components
   ScreenComponent,
-  ScreenScalerHelper,
+  ScreenScalerComponent,
   WidgetComponent,
   ImageComponent,
   TextComponent,
