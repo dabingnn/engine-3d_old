@@ -18,11 +18,11 @@
     image.setOffset(0, 50);
     image.setSize(40, 40);
     let toggle = ent.addComp('Toggle');
-    toggle._transition = 'color';
-    toggle._transitionColors.normal = color4.new(0.8, 0.8, 0.8, 1);
-    toggle._transitionColors.highlight = color4.new(1, 1, 0, 1);
-    toggle._transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
-    toggle._transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
+    toggle.transition = 'color';
+    toggle.transitionColors.normal = color4.new(0.8, 0.8, 0.8, 1);
+    toggle.transitionColors.highlight = color4.new(1, 1, 0, 1);
+    toggle.transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
+    toggle.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
 
     let checker = app.createEntity('checker');
     checker.setParent(ent);
@@ -31,8 +31,8 @@
     checkerImage.setAnchors(0, 0, 1, 1);
     checkerImage.setSize(-10, -10);
 
-    toggle._background = ent;
-    toggle._checker = checker;
+    toggle.background = ent;
+    toggle.checker = checker;
     toggle._updateState();
   }
 
@@ -44,11 +44,11 @@
     widget.setOffset(0, -50);
     widget.setSize(200, 40);
     let toggle = entToggle.addComp('Toggle');
-    toggle._transition = 'color';
-    toggle._transitionColors.normal = color4.new(0.8, 0.8, 0.8, 1);
-    toggle._transitionColors.highlight = color4.new(1, 1, 0, 1);
-    toggle._transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
-    toggle._transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
+    toggle.transition = 'color';
+    toggle.transitionColors.normal = color4.new(0.8, 0.8, 0.8, 1);
+    toggle.transitionColors.highlight = color4.new(1, 1, 0, 1);
+    toggle.transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
+    toggle.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
 
     let entBG = app.createEntity('background');
     entBG.setParent(entToggle);
@@ -70,13 +70,13 @@
     text.setAnchors(0, 1, 0, 1);
     text.setOffset(110, 0);
     text.setSize(100, 30);
-    text._text = 'Foobar';
-    text._color = color4.new(0.1, 0.1, 0.1, 1);
-    text._align = 'left-center';
+    text.text = 'Foobar';
+    text.color = color4.new(0.1, 0.1, 0.1, 1);
+    text.align = 'left-center';
 
     //
-    toggle._background = entBG;
-    toggle._checker = entChecker;
+    toggle.background = entBG;
+    toggle.checker = entChecker;
     toggle._updateState();
   }
 
