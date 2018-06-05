@@ -37,7 +37,8 @@ function buildEffects(dest, path) {
     code += `    name: '${name}',\n`;
     code += `    techniques: ${JSON.stringify(json.techniques)},\n`;
     code += `    properties: ${JSON.stringify(json.properties)},\n`;
-    code += `    defines: ${JSON.stringify(json.defines)}\n`;
+    code += `    defines: ${JSON.stringify(json.defines)},\n`;
+    code += `    dependencies: ${JSON.stringify(json.dependencies)}\n`;
     code += '  },\n';
   }
   code = `export default [\n${code}];`;

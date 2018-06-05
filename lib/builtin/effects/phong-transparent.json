@@ -146,5 +146,12 @@
       "name": "NUM_SHADOW_LIGHTS",
       "value": 0
     }
+  ],
+
+  "dependencies": [
+    {
+      "define": "USE_NORMAL_TEXTURE",
+      "extension": "OES_standard_derivatives"
+    }
   ]
 }
