@@ -126,7 +126,7 @@
 
   buttonManager.children[8].children[0].getComp('Text').text = 'reset';
   buttonManager.children[8].on('clicked', () => {
-    layout.resize();
+    layout.reset();
     layout.spacingX = 5;
     layout.spacingY = 5;
     layout.cellWidth = 100;
