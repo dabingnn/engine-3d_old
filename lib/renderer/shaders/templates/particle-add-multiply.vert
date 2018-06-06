@@ -26,11 +26,17 @@ varying vec4 color;
 
 void main () {
   vec4 pos = vec4(a_position, 1);
+#if USE_STRETCHED_BILLBOARD
+  vec4 velocity = vec4(a_color0.xyz,0);
+#endif
 
 #if USE_WORLD_SPACE
   // simulate in world space. apply model matrix on CPU side.
 #else
   pos = model * pos;
+  #if USE_STRETCHED_BILLBOARD
+  velocity = model * velocity;
+  #endif
 #endif
 
   vec2 cornerOffset = vec2((a_uv.x - 0.5) * a_uv0.x, (a_uv.y - 0.5) * a_uv0.x);
@@ -48,9 +54,9 @@ void main () {
   vec3 camUp = normalize(vec3(view[0][1], view[1][1], view[2][1]));
   pos.xyz += (camRight * rotatedOffset.x) + (camUp * rotatedOffset.y);
 #elif USE_STRETCHED_BILLBOARD
-  vec3 camRight = normalize(cross(pos.xyz - eye, a_color0.xyz));
-  vec3 camUp = normalize(a_color0.xyz);
-  pos.xyz += (camRight * cornerOffset.x) + (camUp * cornerOffset.y * a_color0.w);
+  vec3 camRight = normalize(cross(pos.xyz - eye, velocity.xyz));
+  vec3 camUp = normalize(velocity.xyz);
+  pos.xyz += (camRight * cornerOffset.x) + camUp * (cornerOffset.y + a_color0.w / 2.0 * sign(cornerOffset.y));
 #elif USE_HORIZONTAL_BILLBOARD
   vec3 camRight = vec3(1, 0, 0);
   vec3 camUp = vec3(0, 0, -1);
