@@ -34,6 +34,7 @@ import ScrollBarComponent from './lib/framework/ui/scroll-bar-component';
 import BoundComponent from './lib/framework/ui/bound-component';
 import ScrollViewComponent from './lib/framework/ui/scroll-view-component';
 import DropDownComponent from './lib/framework/ui/drop-down-component';
+import GridLayoutComponent from './lib/framework/ui/grid-layout-component';
 
 // assets
 import Asset from './lib/assets/asset';
@@ -113,6 +114,7 @@ export default {
   BoundComponent,
   ScrollViewComponent,
   DropDownComponent,
+  GridLayoutComponent,
 
   // modules
   math,
