@@ -1,6 +1,6 @@
 (() => {
   const { cc, app } = window;
-  const { vec3, color4 } = cc.math;
+  const { vec3 } = cc.math;
 
   //load asset
   let bunnyTexture = null;
@@ -16,35 +16,40 @@
   }, (err, texture) => {
     bunnyTexture = texture;
 
-    tl = app._vtween.newTimeLine({});
+    tl = app._vtween.newTimeLine({loopNum: 3});
 
     ent1 = createBunny(-300, 0, 'bunnys_0');
     let prop1 = {
-      'offsetX': { keys: { value: 100, duration: 3 }, type: 'number' }
+      'offsetX': { clips: { value: 100, duration: 3 }, type: 'number' }
     };
-    ent1.addTween('Image', prop1, { autoplay: false });
-    tl.add(ent1.tweens);
+    ent1.createTimeline();
+    ent1.addTracks('Image', prop1);
+    tl.addChild(ent1.timeline);
 
     ent2 = createBunny(-200, 0, 'bunnys_1');
     let prop2 = {
-      'offsetY': { keys: { value: 100, duration: 1 }, type: 'number' }
+      'offsetY': { clips: { value: 100, duration: 1 }, type: 'number' }
     };
-    ent2.addTween('Image', prop2, { autoplay: false });
-    tl.add(ent2.tweens);
+    ent2.createTimeline();
+    ent2.addTracks('Image', prop2);
+    tl.addChild(ent2.timeline);
 
     ent3 = createBunny(-100, 0, 'bunnys_2');
     let prop3 = {
-      'offsetY': { keys: { value: -100, duration: 1, delay: 0.8 }, type: 'number' }
+      'offsetY': { clips: [{ value: -100, duration: 1, delay: 1, easing: cc.vtween.easing.bounceIn }], type: 'number' }
     };
-    ent3.addTween('Image', prop3, { autoplay: false });
-    tl.add(ent3.tweens);
+    ent3.createTimeline();
+    ent3.addTracks('Image', prop3);
+    tl.addChild(ent3.timeline);
 
     ent4 = createBunny(0, 0, 'bunnys_3');
     let prop4 = {
-      'offsetY': { keys: { value: 100, duration: 1, delay: 1.5 }, type: 'number' }
+      'offsetX': { clips: { value: 100, duration: 1, delay: 1.5 }, type: 'number' },
+      'offsetY': { clips: { value: 100, duration: 1, delay: 1.5 }, type: 'number' }
     };
-    ent4.addTween('Image', prop4, { autoplay: false });
-    tl.add(ent4.tweens);
+    ent4.createTimeline();
+    ent4.addTracks('Image', prop4);
+    tl.addChild(ent4.timeline);
 
     tl.play();
   });
