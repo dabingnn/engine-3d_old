@@ -93,6 +93,18 @@
     g.material_bak = g.material;
     geometries.push(e);
   }
+  let bbhints = [];
+  let bbsize = vec3.create();
+  for (let i = 0; i < manifest.geometries.num; i++) {
+    let e = app.createEntity("bb_" + manifest.geometries.names[i]);
+    let g = e.addComp('Model');
+    vec3.sub(bbsize, geometries[i].getComp('Model').mesh._maxPos, 
+      geometries[i].getComp('Model').mesh._minPos);
+    g.mesh = cc.utils.createMesh(app, cc.primitives.box(bbsize.x, bbsize.y, bbsize.z));
+    g.material = materials[2]; e.lpos = manifest.geometries.pos[i];
+    g.material_bak = g.material; e.layer = cc.utils.Layers.IgnoreRaycast;
+    bbhints.push(e);
+  }
 
   // camera
   let camera = app.createEntity('camera');
