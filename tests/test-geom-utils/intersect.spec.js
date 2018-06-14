@@ -1,6 +1,6 @@
 const tap = require('./tap');
-const { math } = require('../../dist/engine');
-const vec3 = math.vec3;
+const { math, renderer } = require('../../dist/engine');
+const { vec3, mat3, mat4, quat } = math;
 const { intersect, ray, line, triangle, sphere, box } = require('./dist/geom-utils');
 
 tap.test('intersect', t => {
@@ -122,6 +122,83 @@ tap.test('intersect', t => {
 
     t.assert(intersects);
     t.equal_v3(out, [Math.sqrt(2), 0, 0]);
+
+    t.end();
+  });
+
+  t.test('sphere_frustum', t => {
+    let eye = vec3.new(4, 5, 6);
+    let at = vec3.create();
+    let up = vec3.new(0, 1, 0);
+    let v = new renderer.View();
+    mat4.perspective(v._matProj, Math.PI/2, 16/9, 0.01, 1000);
+    let center = vec3.new(1, 2, 3);
+    let s = sphere.new(center.x, center.y, center.z, 1);
+    let intersects = false;
+
+    // let transformed = vec3.create();
+    // let inFrustum = function(v) {
+    //   return v.x > -1 && v.x < 1 && v.y > -1 && v.y < 1 && v.z > -1 && v.z < 1;
+    // };
+
+    let update = function(x, y, z) {
+      vec3.set(at, x, y, z); 
+      mat4.lookAt(v._matView, eye, at, up);
+      mat4.mul(v._matViewProj, v._matProj, v._matView);
+      v.updateFrustumPlanes();
+      intersects = intersect.sphere_frustum(s, v._frustumPlanes);
+      
+      /**
+       * an rough comparison test (compare the result with manual clipping space test)
+       * it's just an approximation since only the sphere center is concerned,
+       * use this only when doing quick-and-dirty try-outs
+       */
+      // vec3.transformMat4(transformed, center, v._matViewProj);
+      // t.assert(inFrustum(transformed) == intersects);
+    };
+
+    // hand-tuned unit-tests. 3 steps to reproduce in playground/pbr.js:
+    // modify `app._device._gl.canvas` width:height to be 16:9
+    // change the sphere to be located at `center` with radius 1
+    // place the camera to `eye` and look at following parameters passed into each `update`
+    update(1, 2, 3);    t.assert( intersects); // (T) facing towards the sphere
+    update(7, 8, 9);    t.assert(!intersects); // (F) facing away from the sphere
+    update(5, 5, 3);    t.assert( intersects); // (T) a small portion of the sphere is in lower-left corner
+    update(5, 5.25, 3); t.assert(!intersects); // (F) sphere has just left the frustum
+
+    t.end();
+  });
+
+  t.test('box_frustum', t => {
+    let eye = vec3.new(4, 5, 6);
+    let at = vec3.create();
+    let up = vec3.new(0, 1, 0);
+    let v = new renderer.View();
+    mat4.perspective(v._matProj , Math.PI/2, 16/9, 0.01, 1000);
+    let center = vec3.new(1, 2, 3);
+    let axis = vec3.new(3, 2, 1);
+    let angle = Math.PI / 16 * 13;
+    let q = quat.create(); quat.fromAxisAngle(q, vec3.normalize(axis, axis), angle);
+    let m = mat3.create(); mat3.fromQuat(m, q);
+    let b = box.new(center.x, center.y, center.z, 1, 1, 1, m.m00, m.m01, m.m02, m.m03, m.m04, m.m05, m.m06, m.m07, m.m08);
+    let intersects = false;
+
+    let update = function(x, y, z) {
+      vec3.set(at, x, y, z); 
+      mat4.lookAt(v._matView, eye, at, up);
+      mat4.mul(v._matViewProj, v._matProj, v._matView);
+      v.updateFrustumPlanes();
+      intersects = intersect.box_frustum(b, v._frustumPlanes);
+    };
+
+    // hand-tuned unit-tests. 3 steps to reproduce in playground/pbr.js:
+    // modify `app._device._gl.canvas` width:height to be 16:9
+    // change the sphere to a length 2 cube located at `center` and rotated by `q'
+    // place the camera to `eye` and look at following parameters passed into each `update`
+    update(1, 2, 3);   t.assert( intersects); // (T) facing towards the sphere
+    update(7, 8, 9);   t.assert(!intersects); // (F) facing away from the sphere
+    update(5, 5.7, 3); t.assert( intersects); // (T) a small portion of the box is in lower-left corner
+    update(5, 6, 3);   t.assert(!intersects); // (F) sphere has just left the frustum
 
     t.end();
   });
