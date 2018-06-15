@@ -1,10 +1,6 @@
 (() => {
-  const { cc, uikit, app } = window;
+  const { cc, app } = window;
   const { color4, quat, vec3 } = cc.math;
-
-  let underfind;
-  let isnull = null;
-  let kong = '';
 
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, 10, 10, 10);
@@ -40,16 +36,17 @@
     handleSprite._color = color4.new(0, 1, 1, 1);
     handleSprite.setAnchors(0, 0, 0, 1);
     handleSprite.setSize(40, 40);
-    scrollBar._background = handle;
-    scrollBar._transition = 'color';
-    scrollBar._transitionColors.normal = color4.new(0, 1, 1, 1);
-    scrollBar._transitionColors.highlight = color4.new(1, 1, 0, 1);
-    scrollBar._transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
-    scrollBar._transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
+    scrollBar.background = handle;
+    scrollBar.transition = 'color';
+    scrollBar.transitionColors.normal = color4.new(0, 1, 1, 1);
+    scrollBar.transitionColors.highlight = color4.new(1, 1, 0, 1);
+    scrollBar.transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
+    scrollBar.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
     scrollBar._updateState();
 
-    scrollBar._handle = handleSprite;
-    scrollBar._size = 0.1;
+    scrollBar.handle = handle;
+    scrollBar.reverse = true;
+    scrollBar.size = 0.1;
   }
 
   // vertical reverse
@@ -75,17 +72,17 @@
     handleSprite._color = color4.new(0, 1, 1, 1);
     handleSprite.setAnchors(0, 0, 1, 0);
     handleSprite.setSize(40, 40);
-    scrollBar._background = handle;
-    scrollBar._transition = 'color';
-    scrollBar._transitionColors.normal = color4.new(0, 1, 1, 1);
-    scrollBar._transitionColors.highlight = color4.new(1, 1, 0, 1);
-    scrollBar._transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
-    scrollBar._transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
+    scrollBar.background = handle;
+    scrollBar.transition = 'color';
+    scrollBar.transitionColors.normal = color4.new(0, 1, 1, 1);
+    scrollBar.transitionColors.highlight = color4.new(1, 1, 0, 1);
+    scrollBar.transitionColors.pressed = color4.new(0.5, 0.5, 0.5, 1);
+    scrollBar.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
     scrollBar._updateState();
 
-    scrollBar._handle = handleSprite;
-    scrollBar._direction = 'vertical';
-    scrollBar._reverse = true;
-    scrollBar._size = 0.1;
+    scrollBar.handle = handle;
+    scrollBar.direction = 'vertical';
+    scrollBar.reverse = true;
+    scrollBar.size = 0.1;
   }
 })();
