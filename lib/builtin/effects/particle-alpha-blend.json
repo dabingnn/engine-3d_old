@@ -22,7 +22,12 @@
           "name": "tintColor",
           "type": "color4",
           "value": [0.5, 0.5, 0.5, 0.5]
-        }
+        }, 
+        { 
+          "name": "frameTile", 
+          "type": "float2", 
+          "value": [1,1] 
+        } 
       ],
       "passes": [
        {
