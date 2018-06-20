@@ -145,20 +145,21 @@ tap.test('intersect', t => {
       pj.m04, pj.m05, pj.m06, pj.m07,
       pj.m08, pj.m09, pj.m10, pj.m11,
       pj.m12, pj.m13, pj.m14, pj.m15);
-    let intersects = false;
+    let i1 = false, i2 = false;
 
     let update = function(x, y, z) {
       vec3.set(at, x, y, z); 
       mat4.lookAt(v._matView, eye, at, up);
       mat4.mul(v._matViewProj, v._matProj, v._matView);
-      v.updateFrustumPlanes();
-      intersects = intersect.sphere_frustum(s, v._frustumPlanes);
+      v.updateFrustum();
+      i1 = intersect.sphere_frustum(s, v._frustum);
+      i2 = intersect.sphere_frustum_accurate(s, v._frustum);
     };
 
-    update(7, 2, 5); t.assert( intersects); // (T) facing towards the sphere
-    update(1, 2, 3); t.assert(!intersects); // (F) facing away from the sphere
-    update(5, 4, 3); t.assert( intersects); // (T) a small portion of the sphere is in lower-left corner
-    update(5, 5, 3); t.assert(!intersects); // (F) sphere has just left the frustum
+    update(7, 2, 5); t.assert( i1); t.assert( i2); // (T) facing towards the sphere
+    update(1, 2, 3); t.assert(!i1); t.assert(!i2); // (F) facing away from the sphere
+    update(5, 4, 3); t.assert( i1); t.assert( i2); // (T) a small portion of the sphere is in lower-left corner
+    update(5, 5, 3); t.assert(!i1); t.assert(!i2); // (F) sphere has just left the frustum
 
     t.end();
   });
@@ -170,30 +171,37 @@ tap.test('intersect', t => {
     let center = vec3.new(1, 2, 3);
     let axis = vec3.new(3, 2, 1);
     let angle = Math.PI / 16 * 13;
+    let size = vec3.new(1, 1, 1);
 
     let q = quat.create(); quat.fromAxisAngle(q, vec3.normalize(axis, axis), angle);
     let m = mat3.create(); mat3.fromQuat(m, q);
-    let b = box.new(center.x, center.y, center.z, 1, 1, 1, m.m00, m.m01, m.m02, m.m03, m.m04, m.m05, m.m06, m.m07, m.m08);
-    let v = new renderer.View();
+    let b = box.new(center.x, center.y, center.z, size.x, size.y, size.z, m.m00, m.m01, m.m02, m.m03, m.m04, m.m05, m.m06, m.m07, m.m08);
+    let v = new renderer.View(); v._frustum.updateVertices = true;
     mat4.set(v._matProj,
       pj.m00, pj.m01, pj.m02, pj.m03,
       pj.m04, pj.m05, pj.m06, pj.m07,
       pj.m08, pj.m09, pj.m10, pj.m11,
       pj.m12, pj.m13, pj.m14, pj.m15);
-    let intersects = false;
 
     let update = function(x, y, z) {
       vec3.set(at, x, y, z); 
       mat4.lookAt(v._matView, eye, at, up);
       mat4.mul(v._matViewProj, v._matProj, v._matView);
-      v.updateFrustumPlanes();
-      intersects = intersect.box_frustum(b, v._frustumPlanes);
+      mat4.invert(v._matInvViewProj, v._matViewProj);
+      v.updateFrustum();
+      i1 = intersect.box_frustum(b, v._frustum);
+      i2 = intersect.box_frustum_accurate(b, v._frustum);
     };
 
-    update(1, 2, 3); t.assert( intersects); // (T) facing towards the sphere
-    update(7, 2, 5); t.assert(!intersects); // (F) facing away from the sphere
-    update(5, 4, 3); t.assert( intersects); // (T) a small portion of the box is in lower-left corner
-    update(5, 5, 3); t.assert(!intersects); // (F) sphere has just left the frustum
+    let i1 = false, i2 = false;
+    // make sure we have the right frustum setup
+    update(5, 4, 3);
+    t.equal_v3(v._frustum.vertices[0], [137.02885239, 29.89705380, -68.51022681]);
+
+    update(1, 2, 3); t.assert( i1); t.assert( i2); // (T) facing towards the box
+    update(7, 2, 5); t.assert(!i1); t.assert(!i2); // (F) facing away from the box
+    update(5, 4, 3); t.assert( i1); t.assert( i2); // (T) a small portion of the box is in lower-left corner
+    update(5, 5, 3); t.assert(!i1); t.assert(!i2); // (F) box has just left the frustum
 
     t.end();
   });
@@ -213,13 +221,13 @@ tap.test('intersect', t => {
       pj.m12, pj.m13, pj.m14, pj.m15);
     mat4.lookAt(v._matView, eye, at, up);
     mat4.mul(v._matViewProj, v._matProj, v._matView);
-    v.updateFrustumPlanes();
+    v.updateFrustum();
 
     let intersects = false;
-    intersects = intersect.sphere_frustum(s, v._frustumPlanes);
+    intersects = intersect.sphere_frustum(s, v._frustum);
     t.assert( intersects); // (T) false positive
-    intersects = intersect.sphere_frustum_accurate(s, v._frustumPlanes);
-    // t.assert(!intersects); // (F) actually outside the frustum
+    intersects = intersect.sphere_frustum_accurate(s, v._frustum);
+    t.assert(!intersects); // (F) actually outside the frustum
 
     t.end();
   });
@@ -235,7 +243,7 @@ tap.test('intersect', t => {
     let q = quat.create(); quat.fromAxisAngle(q, vec3.normalize(axis, axis), angle);
     let m = mat3.create(); mat3.fromQuat(m, q);
     let b = box.new(center.x, center.y, center.z, 15, 25, 15, m.m00, m.m01, m.m02, m.m03, m.m04, m.m05, m.m06, m.m07, m.m08);
-    let v = new renderer.View();
+    let v = new renderer.View(); v._frustum.updateVertices = true;
     mat4.lookAt(v._matView, eye, at, up);
     mat4.set(v._matProj,
       pj.m00, pj.m01, pj.m02, pj.m03,
@@ -243,13 +251,16 @@ tap.test('intersect', t => {
       pj.m08, pj.m09, pj.m10, pj.m11,
       pj.m12, pj.m13, pj.m14, pj.m15);
     mat4.mul(v._matViewProj, v._matProj, v._matView);
-    v.updateFrustumPlanes();
+    mat4.invert(v._matInvViewProj, v._matViewProj);
+    v.updateFrustum();
+    // make sure we have the right frustum setup
+    t.equal_v3(v._frustum.vertices[0], [137.02885239, 29.89705380, -68.51022681]);
 
     let intersects = false;
-    intersects = intersect.box_frustum(b, v._frustumPlanes);
+    intersects = intersect.box_frustum(b, v._frustum);
     t.assert( intersects); // (T) false positive
-    intersects = intersect.box_frustum_accurate(b, v._frustumPlanes);
-    // t.assert(!intersects); // (F) actually outside the frustum
+    intersects = intersect.box_frustum_accurate(b, v._frustum);
+    t.assert(!intersects); // (F) actually outside the frustum
 
     t.end();
   });

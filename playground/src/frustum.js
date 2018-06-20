@@ -114,6 +114,7 @@
 
   // TWEAK: look at point
   camera.lookAt(vec3.new(5, 4, 3));
+  app._forward.accurateFrustumCulling = true;
 
   // warp the frustum boundary hint
   app._device._gl.canvas.width = app._device._gl.canvas.height / 9 * 16;
