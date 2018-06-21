@@ -129,7 +129,7 @@
   let mulNorm = (function() {
     let m = mat3.create();
     return function(om, a, i) {
-      mat3.transpose(m, mat3.invert(m, mat3.fromMat4(m, om)));
+      mat3.normalFromMat4(m, om);
       let x = a[i], y = a[i+1], z = a[i+2];
       a[ i ] = x * m.m00 + y * m.m03 + z * m.m06;
       a[i+1] = x * m.m01 + y * m.m04 + z * m.m07;
@@ -147,5 +147,4 @@
   frustum.mesh = cc.utils.createMesh(app, manifest.geometries.meshes[0]);
   frustum.material = materials[1]; // transparent material
   frustum._models[0]._boundingBox = null; // disable frustum culling for this
-
 })();
