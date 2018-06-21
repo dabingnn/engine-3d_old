@@ -1,6 +1,6 @@
 (() => {
   const { cc, app } = window;
-  const { vec3, color3, color4, quat } = cc.math;
+  const { vec3, color3, color4, quat, mat3 } = cc.math;
 
   // manifest
   let manifest = {};
@@ -117,10 +117,34 @@
   app._forward.accurateFrustumCulling = true;
 
   // warp the frustum boundary hint
+  let mulPos = (function() {
+    return function(m, a, i) {
+      let x = a[i], y = a[i+1], z = a[i+2],
+          rhw = 1 / (m.m03 * x + m.m07 * y + m.m11 * z + m.m15);
+      a[ i ] = (m.m00 * x + m.m04 * y + m.m08 * z + m.m12) * rhw;
+      a[i+1] = (m.m01 * x + m.m05 * y + m.m09 * z + m.m13) * rhw;
+      a[i+2] = (m.m02 * x + m.m06 * y + m.m10 * z + m.m14) * rhw;
+    };
+  })();
+  let mulNorm = (function() {
+    let m = mat3.create();
+    return function(om, a, i) {
+      mat3.transpose(m, mat3.invert(m, mat3.fromMat4(m, om)));
+      let x = a[i], y = a[i+1], z = a[i+2];
+      a[ i ] = x * m.m00 + y * m.m03 + z * m.m06;
+      a[i+1] = x * m.m01 + y * m.m04 + z * m.m07;
+      a[i+2] = x * m.m02 + y * m.m05 + z * m.m08;
+    };
+  })();
   app._device._gl.canvas.width = app._device._gl.canvas.height / 9 * 16;
   cam.extractView(view, app._device._gl.canvas.width, app._device._gl.canvas.height);
-  geometries[0]._lmatrix = view._matInvViewProj;
   let frustum = geometries[0].getComp('Model');
+  let mesh = manifest.geometries.meshes[0];
+  for (let i = 0; i < mesh.positions.length; i += 3) {
+    mulPos(view._matInvViewProj, mesh.positions, i);
+    mulNorm(view._matInvViewProj, mesh.normals, i);
+  }
+  frustum.mesh = cc.utils.createMesh(app, manifest.geometries.meshes[0]);
   frustum.material = materials[1]; // transparent material
   frustum._models[0]._boundingBox = null; // disable frustum culling for this
 
