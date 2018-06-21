@@ -1,5 +1,5 @@
 (() => {
-  const { cc, app, uikit } = window;
+  const { cc, app } = window;
   const { vec3, color4 } = cc.math;
 
   let camEnt = app.createEntity('camera');
@@ -14,27 +14,27 @@
   let entity = app.createEntity('scrollView');
   entity.setParent(screen);
   let scrollSprite = entity.addComp('Image');
-  scrollSprite.color = color4.new(1, 1, 1, 1);
+  scrollSprite.color = color4.new(1, 1, 1, 0.5);
   scrollSprite.setSize(220, 220);
   let scrollView = entity.addComp('ScrollView');
 
   // 200x200
   let view = app.createEntity('view');
   view.setParent(entity);
-  let viewSprite = view.addComp('Image');
-  viewSprite.color = color4.new(1, 0, 1, 1);
-  viewSprite.setAnchors(0, 0, 1, 1);
-  viewSprite.setSize(-20, -20);
-  viewSprite.setOffset(-10, 10);
-  // let viewMask = view.addComp('Mask');
+  let viewMask = view.addComp('Mask');
+  viewMask.color = color4.new(1, 0, 1, 0.5);
+  viewMask.setAnchors(0, 0, 1, 1);
+  viewMask.setSize(-20, -20);
+  viewMask.setOffset(-10, 10);
 
   // 300x400
   let content = app.createEntity('content');
   content.setParent(view);
   let contentSprite = content.addComp('Image');
-  contentSprite._color = color4.new(0.8, 0.8, 0.8, 1);
+  contentSprite.color = color4.new(0.8, 0.8, 0.8, 1);
   contentSprite.setSize(300, 400);
   contentSprite.setPivot(1, 1);
+  contentSprite.setOffset(100, 100);
 
   let temp = app.createEntity('temp');
   temp.setParent(content);
@@ -75,7 +75,7 @@
   vScrollBar._updateState();
 
   vScrollBar.dragArea = screen;
-  vScrollBar.handle = vScrollBarHandleSprite;
+  vScrollBar.handle = vScrollBarHandle;
   vScrollBar.direction = 'vertical';
   vScrollBar.reverse = true;
   // vScrollBar.scrollPos = 0.3;
@@ -111,13 +111,13 @@
   hScrollBar.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
   hScrollBar._updateState();
 
-  hScrollBar._dragArea = screen;
-  hScrollBar._handle = hScrollBarHandleSprite;
-  hScrollBar._direction = 'horizontal';
+  hScrollBar.dragArea = screen;
+  hScrollBar.handle = hScrollBarHandle;
+  hScrollBar.direction = 'horizontal';
 
-  scrollView._content = contentSprite;
-  scrollView._viewPort = viewSprite;
-  scrollView._movementType = 'elastic';
-  scrollView._vScrollBar = vScrollBar;
-  scrollView._hScrollBar = hScrollBar;
+  scrollView.content = content;
+  scrollView.viewPort = view;
+  scrollView.movementType = 'elastic';
+  scrollView.vScrollBar = vScrollBarEnt;
+  scrollView.hScrollBar = hScrollBarEnt;
 })();
