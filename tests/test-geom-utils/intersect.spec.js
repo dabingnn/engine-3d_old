@@ -176,7 +176,7 @@ tap.test('intersect', t => {
     let q = quat.create(); quat.fromAxisAngle(q, vec3.normalize(axis, axis), angle);
     let m = mat3.create(); mat3.fromQuat(m, q);
     let b = box.new(center.x, center.y, center.z, size.x, size.y, size.z, m.m00, m.m01, m.m02, m.m03, m.m04, m.m05, m.m06, m.m07, m.m08);
-    let v = new renderer.View(); v._frustum.updateVertices = true;
+    let v = new renderer.View(); v.fullUpdate = true;
     mat4.set(v._matProj,
       pj.m00, pj.m01, pj.m02, pj.m03,
       pj.m04, pj.m05, pj.m06, pj.m07,
@@ -243,7 +243,7 @@ tap.test('intersect', t => {
     let q = quat.create(); quat.fromAxisAngle(q, vec3.normalize(axis, axis), angle);
     let m = mat3.create(); mat3.fromQuat(m, q);
     let b = box.new(center.x, center.y, center.z, 15, 25, 15, m.m00, m.m01, m.m02, m.m03, m.m04, m.m05, m.m06, m.m07, m.m08);
-    let v = new renderer.View(); v._frustum.updateVertices = true;
+    let v = new renderer.View(); v.fullUpdate = true;
     mat4.lookAt(v._matView, eye, at, up);
     mat4.set(v._matProj,
       pj.m00, pj.m01, pj.m02, pj.m03,
