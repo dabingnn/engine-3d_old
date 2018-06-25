@@ -20,14 +20,9 @@
     pbrMaterial.useIBL = dobj.useIBL;
     if (dobj.useIBL) {
       loadIBL();
-    } else {
-      if (skyboxEnt) {
-        skyboxEnt.destroy();
-        skyboxEnt = null;
-      }
     }
-    // TODO: skyboxEnt.enabled = dobj.useIBL;
   });
+
   dgui.add(dobj, 'useTexLod').onFinishChange(() => {
     pbrMaterial.useTexLod = dobj.useTexLod;
   });
@@ -41,7 +36,7 @@
     loadTexture(dobj.albedo, texture => {
       if (texture) {
         pbrMaterial.define('USE_ALBEDO_TEXTURE', true);
-        pbrMaterial.setProperty('albedoTexture', texture);
+        pbrMaterial.setProperty('albedo_texture', texture);
       } else {
         pbrMaterial.define('USE_ALBEDO_TEXTURE', false);
       }
@@ -51,7 +46,7 @@
     loadTexture(dobj.normal, texture => {
       if (texture) {
         pbrMaterial.define('USE_NORMAL_TEXTURE', true);
-        pbrMaterial.setProperty('normalTexture', texture);
+        pbrMaterial.setProperty('normal_texture', texture);
       } else {
         pbrMaterial.define('USE_NORMAL_TEXTURE', false);
       }
@@ -61,7 +56,7 @@
     loadTexture(dobj.metallic, texture => {
       if (texture) {
         pbrMaterial.define('USE_METALLIC_TEXTURE', true);
-        pbrMaterial.setProperty('metallicTexture', texture);
+        pbrMaterial.setProperty('metallic_texture', texture);
       } else {
         pbrMaterial.define('USE_METALLIC_TEXTURE', false);
       }
@@ -71,7 +66,7 @@
     loadTexture(dobj.roughness, texture => {
       if (texture) {
         pbrMaterial.define('USE_ROUGHNESS_TEXTURE', true);
-        pbrMaterial.setProperty('roughnessTexture', texture);
+        pbrMaterial.setProperty('roughness_texture', texture);
       } else {
         pbrMaterial.define('USE_ROUGHNESS_TEXTURE', false);
       }
@@ -81,7 +76,7 @@
     loadTexture(dobj.ao, texture => {
       if (texture) {
         pbrMaterial.define('USE_AO_TEXTURE', true);
-        pbrMaterial.setProperty('aoTexture', texture);
+        pbrMaterial.setProperty('ao_texture', texture);
       } else {
         pbrMaterial.define('USE_AO_TEXTURE', false);
       }
@@ -92,9 +87,6 @@
   let meshSphere = cc.utils.createMesh(app, sphere(3, {
     segments: 64,
   }));
-
-  // create skybox
-  let skyboxEnt = null;
 
   // create point light
   let lightEnt = app.createEntity('point-light');
@@ -113,7 +105,7 @@
   pbrMaterial.setProperty('maxReflectionLod', dobj.maxRefLod);
   pbrMaterial.setProperty('ao', 1.0);
   pbrMaterial.define('USE_AO_TEXTURE', false);
-    // start loading
+  // start loading
   loadIBL();
   const lutUrls = {
     json: './assets/textures/brdfLUT.json',
@@ -125,7 +117,7 @@
   loadTexture(dobj.albedo, texture => {
     if (texture) {
       pbrMaterial.define('USE_ALBEDO_TEXTURE', true);
-      pbrMaterial.setProperty('albedoTexture', texture);
+      pbrMaterial.setProperty('albedo_texture', texture);
     } else {
       pbrMaterial.define('USE_ALBEDO_TEXTURE', false);
     }
@@ -133,7 +125,7 @@
   loadTexture(dobj.normal, texture => {
     if (texture) {
       pbrMaterial.define('USE_NORMAL_TEXTURE', true);
-      pbrMaterial.setProperty('normalTexture', texture);
+      pbrMaterial.setProperty('normal_texture', texture);
     } else {
       pbrMaterial.define('USE_NORMAL_TEXTURE', false);
     }
@@ -141,7 +133,7 @@
   loadTexture(dobj.metallic, texture => {
     if (texture) {
       pbrMaterial.define('USE_METALLIC_TEXTURE', true);
-      pbrMaterial.setProperty('metallicTexture', texture);
+      pbrMaterial.setProperty('metallic_texture', texture);
     } else {
       pbrMaterial.define('USE_METALLIC_TEXTURE', false);
     }
@@ -149,7 +141,7 @@
   loadTexture(dobj.roughness, texture => {
     if (texture) {
       pbrMaterial.define('USE_ROUGHNESS_TEXTURE', true);
-      pbrMaterial.setProperty('roughnessTexture', texture);
+      pbrMaterial.setProperty('roughness_texture', texture);
     } else {
       pbrMaterial.define('USE_ROUGHNESS_TEXTURE', false);
     }
@@ -157,7 +149,7 @@
   loadTexture(dobj.ao, texture => {
     if (texture) {
       pbrMaterial.define('USE_AO_TEXTURE', true);
-      pbrMaterial.setProperty('aoTexture', texture);
+      pbrMaterial.setProperty('ao_texture', texture);
     } else {
       pbrMaterial.define('USE_AO_TEXTURE', false);
     }
@@ -172,7 +164,9 @@
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, 10, 10, 10);
   camEnt.lookAt(vec3.new(0, 0, 0));
-  camEnt.addComp('Camera');
+  let camComp = camEnt.addComp('Camera');
+  camComp.clearFlags = camComp.clearFlags | cc.renderer.CLEAR_SKYBOX;
+  app._debugger._camera._clearFlags = camComp.clearFlags;
 
   function loadIBL () {
     if (!dobj.useIBL) {
@@ -191,12 +185,12 @@
       imageNegZ: `${envSrc}/environment_back_0.jpg`,
     };
     app.assets.loadUrls('texture', envUrls, (err, cubeMap) => {
-      skyboxEnt = app.createEntity('skybox');
-      let skyboxComp = skyboxEnt.addComp('Skybox');
+      let skyboxComp = camEnt.addComp('Skybox');
       let skyboxMaterial = new Material();
       skyboxMaterial.effect = app.assets.get('builtin-effect-skybox');
       skyboxMaterial.setProperty('cubeMap', cubeMap);
       skyboxComp.material = skyboxMaterial;
+      app._debugger._camera._clearModel = skyboxComp._model;
     });
 
     // load indirect lighting resource
