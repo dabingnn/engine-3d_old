@@ -34,7 +34,6 @@ import EditBoxComponent from './lib/framework/ui/edit-box-component';
 import ScrollBarComponent from './lib/framework/ui/scroll-bar-component';
 import BoundComponent from './lib/framework/ui/bound-component';
 import ScrollViewComponent from './lib/framework/ui/scroll-view-component';
-import DropDownComponent from './lib/framework/ui/drop-down-component';
 import GridLayoutComponent from './lib/framework/ui/grid-layout-component';
 
 // assets
@@ -117,7 +116,6 @@ export default {
   ScrollBarComponent,
   BoundComponent,
   ScrollViewComponent,
-  DropDownComponent,
   GridLayoutComponent,
 
   // modules
