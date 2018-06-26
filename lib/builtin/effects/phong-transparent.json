@@ -19,7 +19,7 @@
           "value": [0, 0]
         },
         {
-          "name": "diffuseTexture",
+          "name": "diffuse_texture",
           "type": "texture2d",
           "value": null
         },
@@ -29,7 +29,7 @@
           "value": [0, 0, 0]
         },
         {
-          "name": "specularTexture",
+          "name": "specular_texture",
           "type": "texture2d",
           "value": null
         },
@@ -39,7 +39,7 @@
           "value": [0, 0, 0]
         },
         {
-          "name": "emissiveTexture",
+          "name": "emissive_texture",
           "type": "texture2d",
           "value": null
         },
@@ -49,7 +49,7 @@
           "value": 10
         },
         {
-          "name": "normalTexture",
+          "name": "normal_texture",
           "type": "texture2d",
           "value": null
         },
