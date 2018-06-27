@@ -61,7 +61,7 @@
       window.app = app;
 
       // init dgui
-      let dgui = new dat.GUI();
+      let dgui = new dat.GUI({width:270});
       dgui.domElement.classList.add('dgui');
       window.dgui = dgui;
 
