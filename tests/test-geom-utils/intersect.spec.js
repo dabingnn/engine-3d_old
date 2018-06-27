@@ -130,7 +130,7 @@ tap.test('intersect', t => {
   // test scene could be found at playground/frustum.js
 
   let pj = mat4.create();
-  mat4.perspective(pj, Math.PI / 3, 16 / 9, 1, 100);
+  mat4.perspective(pj, Math.PI / 3, 16 / 9, 0.5, 100);
 
   t.test('sphere_frustum', t => {
     let eye = vec3.new(4, 5, 6);
