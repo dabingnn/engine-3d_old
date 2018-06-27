@@ -109,7 +109,7 @@
   // camera
   let camera = app.createEntity('camera');
   let center = vec3.new(-3, 0, 0);
-  vec3.set(camera.lpos, -3, 2, 7);
+  vec3.set(camera.lpos, -3, 4, 10);
   camera.lookAt(center);
   camera.addComp('Camera');
 
@@ -121,7 +121,7 @@
       this.input = app._input;
       this.canvas = app._device._gl.canvas;
       this.camera = camera.getComp('Camera')._camera;
-      this.dist = 7; this.height = 2; this.angle = Math.PI / 2;
+      this.dist = 10; this.height = 4; this.angle = Math.PI / 2;
     }
 
     tick() {
