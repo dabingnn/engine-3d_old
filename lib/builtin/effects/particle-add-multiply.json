@@ -27,7 +27,17 @@
           "name": "frameTile", 
           "type": "float2", 
           "value": [1,1] 
-        } 
+        },
+        {
+          "name": "velocityScale",
+          "type": "float",
+          "value": 0
+        },
+        {
+          "name": "lengthScale",
+          "type": "float",
+          "value": 0
+        }
       ],
       "passes": [
        {
