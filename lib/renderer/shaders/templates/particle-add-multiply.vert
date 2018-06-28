@@ -5,7 +5,7 @@ attribute vec3 a_uv;  // xy:vertex index,z:frame index
 attribute vec2 a_uv0; // size, angle
 attribute vec4 a_color;
 #if USE_STRETCHED_BILLBOARD
-attribute vec4 a_color0; // velocity.x, velocity.y, velocity.z, scale
+attribute vec3 a_color0; // velocity.x, velocity.y, velocity.z, scale
 #endif
 
 uniform vec2 frameTile; 
@@ -20,6 +20,8 @@ uniform mat4 viewProj;
 
 #if USE_STRETCHED_BILLBOARD
   uniform vec3 eye;
+  uniform float velocityScale;
+  uniform float lengthScale;
 #endif
 
 varying vec2 uv;
@@ -56,8 +58,8 @@ void main () {
   pos.xyz += (camRight * rotatedOffset.x) + (camUp * rotatedOffset.y);
 #elif USE_STRETCHED_BILLBOARD
   vec3 camRight = normalize(cross(pos.xyz - eye, velocity.xyz));
-  vec3 camUp = normalize(velocity.xyz);
-  pos.xyz += (camRight * cornerOffset.x) + camUp * (a_color0.w / 2.0 * sign(cornerOffset.y));
+  vec3 camUp = velocity.xyz * velocityScale + normalize(velocity.xyz) * lengthScale * a_uv0.x;
+  pos.xyz += (camRight * abs(cornerOffset.x) * sign(cornerOffset.y)) - camUp * a_uv.x;
 #elif USE_HORIZONTAL_BILLBOARD
   vec3 camRight = vec3(1, 0, 0);
   vec3 camUp = vec3(0, 0, -1);
