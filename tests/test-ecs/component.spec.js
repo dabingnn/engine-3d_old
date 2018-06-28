@@ -177,5 +177,42 @@ tap.test('component', t => {
     t.end();
   });
 
+  tap.test('onInit sequence', t => {
+    let indicator = [];
+    class MockComponent extends Component {
+      constructor() {
+        super();
+      }
+
+      onInit() {
+        indicator.push('MockComponent');
+      }
+    }
+
+    class MockComponent2 extends Component {
+      constructor() {
+        super();
+      }
+
+      onInit() {
+        indicator.push('MockComponent2');
+      }
+    }
+    let app = new App();
+    app.registerClass('MockComponent', MockComponent);
+    app.registerClass('MockComponent2', MockComponent2);
+    let ent = app.createEntity('ent');
+    ent.active = false;
+    ent.addComp('MockComponent');
+    let ent2 = app.createEntity('ent2');
+    ent2.setParent(ent);
+    ent2.addComp('MockComponent2');
+    ent.active = true;
+    t.equal(indicator.length, 2);
+    t.equal(indicator[0], 'MockComponent');
+    t.equal(indicator[1], 'MockComponent2');
+    t.end();
+  });
+
   t.end();
 });
