@@ -108,9 +108,13 @@
   // camera
   let camera = app.createEntity('camera');
   vec3.set(camera.lpos, 4, 5, 6);
-  let cam = camera.addComp('Camera')._camera;
+  let cam = camera.addComp('Camera');
   let view = new cc.renderer.View();
-  cam.setNear(1); cam.setFar(100); cam.setFov(Math.PI / 3);
+  cam.near = 0.5; cam.far = 100; cam.fov = 60;
+  // debugging camera should have the same fov,
+  // but a much longer visible range (0.01-1000)
+  app._debugger._camera.setFov(Math.PI/3);
+
 
   // TWEAK: look at point
   camera.lookAt(vec3.new(5, 4, 3));
@@ -137,7 +141,7 @@
     };
   })();
   app._device._gl.canvas.width = app._device._gl.canvas.height / 9 * 16;
-  cam.extractView(view, app._device._gl.canvas.width, app._device._gl.canvas.height);
+  cam._camera.extractView(view, app._device._gl.canvas.width, app._device._gl.canvas.height);
   let frustum = geometries[0].getComp('Model');
   let mesh = manifest.geometries.meshes[0];
   for (let i = 0; i < mesh.positions.length; i += 3) {
