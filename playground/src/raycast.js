@@ -108,9 +108,6 @@
 
   // camera
   let camera = app.createEntity('camera');
-  let center = vec3.new(-3, 0, 0);
-  vec3.set(camera.lpos, -3, 4, 10);
-  camera.lookAt(center);
   camera.addComp('Camera');
 
   class RaycastTest extends cc.ScriptComponent {
@@ -121,7 +118,9 @@
       this.input = app._input;
       this.canvas = app._device._gl.canvas;
       this.camera = camera.getComp('Camera')._camera;
-      this.dist = 10; this.height = 4; this.angle = Math.PI / 2;
+      
+      this.center = vec3.new(-2, 1, 1);
+      this.dist = 10; this.height = 4; this.angle = 0;
     }
 
     tick() {
@@ -134,10 +133,10 @@
       if (this.input.keypress('e')) this.height += 0.1;
       if (this.input.keypress('q')) this.height -= 0.1;
       if (!this.input.keypress('Shift')) this.angle += 0.005;
-      vec3.set(camera.lpos, center.x + Math.cos(this.angle) * this.dist, 
-        center.y + this.height, 
-        center.z + Math.sin(this.angle) * this.dist);
-      camera.lookAt(center);
+      vec3.set(camera.lpos, this.center.x + Math.cos(this.angle) * this.dist, 
+        this.center.y + this.height, 
+        this.center.z + Math.sin(this.angle) * this.dist);
+      camera.lookAt(this.center);
 
       // reset materials
       for (let i = 0; i < geometries.length; i++) {
