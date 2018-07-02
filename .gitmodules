@@ -1,0 +1,3 @@
+[submodule "examples/tests-3d"]
+	path = examples/tests-3d
+	url = git@github.com:cocos-creator/tests-3d.git
