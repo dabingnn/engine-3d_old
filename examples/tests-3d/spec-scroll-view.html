@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>spec-script-simple</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    body {
+      background-color: #333;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    .fit {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  </style>
+</head>
+
+<body class="fit">
+  <canvas id="canvas" tabindex="-1" class="fit"></canvas>
+  <script src="../dist/engine.dev.js"></script>
+  <script>
+    // init app
+    let app = new cc.App(document.getElementById('canvas'));
+    const { vec3 } = cc.math;
+
+    app.resize();
+
+    load();
+
+    // load level
+    function load() {
+      let baseUrl = '../out';
+
+      cc.resl({
+        manifest: {
+          assetInfos: {
+            type: 'text',
+            parser: JSON.parse,
+            src: `${baseUrl}/assets.json`
+          },
+
+          scene: {
+            type: 'text',
+            parser: JSON.parse,
+            src: `${baseUrl}/spec-scroll-view.json`
+          },
+        },
+
+        onDone(data) {
+          const assetInfos = data.assetInfos;
+          const sceneJson = data.scene;
+
+          let info = null;
+          let uuid = null;
+
+          for (uuid in assetInfos) {
+            info = assetInfos[uuid];
+            for (let item in info.urls) {
+              info.urls[item] = baseUrl + '/' + info.urls[item];
+            }
+
+            app.assets.registerAsset(uuid, info);
+          }
+
+          cc.utils.parseLevel(
+            app,
+            sceneJson,
+            (err, level) => {
+              app.loadLevel(level);
+
+              // let camEnt = app.createEntity('camera');
+              // vec3.set(camEnt.lpos, 10, 10, 10);
+              // camEnt.lookAt(vec3.new(0, 0, 0));
+              // camEnt.addComp('Camera');
+            }
+          );
+        }
+      });
+    }
+
+    // run app
+    app.run();
+  </script>
+</body>
+
+</html>
