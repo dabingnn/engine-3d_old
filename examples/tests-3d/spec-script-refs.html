@@ -24,7 +24,7 @@
 
 <body class="fit">
   <canvas id="canvas" tabindex="-1" class="fit"></canvas>
-  <script src="../dist/engine.dev.js"></script>
+  <script src="../../dist/engine.dev.js"></script>
   <script>
     // init app
     let app = new cc.App(document.getElementById('canvas'));
@@ -54,7 +54,7 @@
 
     // load level
     function load() {
-      let baseUrl = '../out';
+      let baseUrl = '../assets/out';
 
       cc.resl({
         manifest: {
