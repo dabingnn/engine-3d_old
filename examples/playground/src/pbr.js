@@ -9,7 +9,7 @@
     useIBL: true,
     useTexLod: true,
     maxRefLod: 9,
-    envURL: './assets/ibl-bakes/home',
+    envURL: '../assets/ibl-bakes/home',
     albedo: '',
     normal: '',
     ao: '',
@@ -183,8 +183,8 @@
 
   // immediate init
   const lutUrls = {
-    json: './assets/textures/brdfLUT.json',
-    image: './assets/textures/brdfLUT.png',
+    json: '../assets/textures/brdfLUT.json',
+    image: '../assets/textures/brdfLUT.png',
   };
   app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
     setProperty('brdfLUT', lutMap);

@@ -18,8 +18,8 @@
   image.type = 'sliced';
 
   app.assets.loadUrls('texture', {
-    json: './assets/sprites/quad.json',
-    image: './assets/sprites/quad.png',
+    json: '../assets/sprites/quad.json',
+    image: '../assets/sprites/quad.png',
   }, (err, texture) => {
     let sprite = texture.sprites['orange-box-64x64'];
     sprite.left = 1;
