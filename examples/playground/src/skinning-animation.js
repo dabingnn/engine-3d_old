@@ -3,7 +3,7 @@
   const { resl, path } = cc;
 
   let dobj = {
-    baseUrl: 'assets/out',
+    baseUrl: '../assets/out',
     scene: 'spec-zed',
     entityPath: 'zed',
     animName: 'spell1',

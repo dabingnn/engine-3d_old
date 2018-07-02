@@ -124,7 +124,7 @@
   let particleMaterial = new cc.Material();
   particleMaterial.effect = app.assets.get('builtin-effect-particle-add');
   const texUrls = {
-    image: './assets/textures/particle.png',
+    image: '../assets/textures/particle.png',
   };
   app.assets.loadUrls('texture', texUrls, (err, mainTexture) => {
     particleMaterial.setProperty('mainTexture', mainTexture);

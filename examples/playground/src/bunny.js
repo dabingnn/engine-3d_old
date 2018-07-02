@@ -94,8 +94,8 @@
   let bunnyCounts = 0;
 
   app.assets.loadUrls('texture', {
-    json: './assets/sprites/bunny.json',
-    image: './assets/sprites/bunny.png'
+    json: '../assets/sprites/bunny.json',
+    image: '../assets/sprites/bunny.png'
   }, (err, texture) => {
     bunnyTexture = texture;
 

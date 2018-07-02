@@ -76,8 +76,8 @@
   debugImageComp.setOffset(500, -300);
 
   let otfontUrls = {
-    bin: `./assets/fonts/Roboto-Black.ttf`,
-    json: `./assets/fonts/Roboto-Black.json`
+    bin: `../assets/fonts/Roboto-Black.ttf`,
+    json: `../assets/fonts/Roboto-Black.json`
   };
   app.assets.loadUrls('otfont', otfontUrls, (err, font) => {
     otTextComp.font = font;
@@ -99,13 +99,13 @@
   bmTextComp.sizeY = 256;
   bmTextComp.setOffset(500, 200);
   let bmfontUrls = {
-    json: `./assets/fonts/bmfontdata.json`,
+    json: `../assets/fonts/bmfontdata.json`,
   };
   let bmfontTextureInfo = {
     "type": "texture",
     "urls": {
-      "json": "./assets/fonts/bmfontTexture.json",
-      "image": "./assets/fonts/bmfontTexture.png"
+      "json": "../assets/fonts/bmfontTexture.json",
+      "image": "../assets/fonts/bmfontTexture.png"
     }
   };
   app.assets.registerAsset('bmfont', bmfontTextureInfo);
