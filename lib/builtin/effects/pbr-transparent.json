@@ -19,7 +19,7 @@
           "value": [0, 0]
         },
         {
-          "name": "albedoTexture",
+          "name": "albedo_texture",
           "type": "texture2d",
           "value": null
         },

@@ -3,10 +3,10 @@
   const { resl, path } = cc;
 
   let dobj = {
-    baseUrl: '/Users/johnny/gamedev-js/u3d-exporter/out',
-    scene: 'scene',
-    entityPath: '',
-    animName: '',
+    baseUrl: 'assets/out',
+    scene: 'spec-zed',
+    entityPath: 'zed',
+    animName: 'spell1',
     load: load,
     play: play,
   };
