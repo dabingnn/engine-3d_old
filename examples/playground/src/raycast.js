@@ -153,7 +153,7 @@
 
       // raycasting
       let ray = this.camera.screenPointToRay(this.pos, this.canvas.width, this.canvas.height);
-      if (app.Raycast(this.hitInfo, ray)) {
+      if (app.scene.raycast(this.hitInfo, ray)) {
         this.hitInfo.entity.getComp('Model').material = materials[0];
       }
     }
