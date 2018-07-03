@@ -82,11 +82,12 @@
               anim_name = anim.clips[Math.floor(Math.random() * anim.clips.length)]._name;
               anim.play(anim_name);
 
-              // note the shadow mapping won't work
-              // if inappropriate values are assigned to the following params
-              app.find('light').getComp('Light').shadowFrustumSize = 6;
-              // vec4.set(app.find('light').lpos, 2, 2, 3);
-              // app.find('light').getComp('Light').shadowBias = 0.0001;
+              let e = app.find('light');
+              let l = e.getComp('Light');
+              // fine-tune the shadow quality
+              l.shadowMaxDepth = 5;
+              l.shadowFrustumSize = 6;
+              // vec4.set(e.lpos, 2, 2, 3); // already set in level
             }
           );
         }
