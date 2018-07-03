@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>spec-script-sprite</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    body {
+      background-color: #333;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    .fit {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  </style>
+
+  <script src="../../dist/engine.dev.js"></script>
+</head>
+
+<body class="fit">
+  <canvas id="canvas" tabindex="-1" class="fit"></canvas>
+
+  <script>
+    // init app
+    let app = new cc.App(document.getElementById('canvas'));
+    const { vec3 }  = cc.math;
+
+    let camEnt = app.createEntity('camera');
+    vec3.set(camEnt.lpos, 10, 10, 10);
+    camEnt.lookAt(vec3.new(0, 0, 0));
+    camEnt.addComp('Camera');
+
+    let entity = app.createEntity('sliced-sprite');
+    let screen = app.createEntity('screen');
+    screen.addComp('Screen');
+
+    entity.setParent(screen);
+    let image = entity.addComp('Image');
+    image.setSize(200, 50);
+    image.setAnchors(0.2, 0.2, 0.8, 0.8);
+    image.type = 'sliced';
+
+    app.resize();
+
+    // load level
+    let baseUrl = '../assets/out';
+    cc.resl({
+      manifest: {
+        assetInfos: {
+          type: 'text',
+          parser: JSON.parse,
+          src: `${baseUrl}/assets.json`
+        },
+
+        scene: {
+          type: 'text',
+          parser: JSON.parse,
+          src: `${baseUrl}/spec-script-sprite.json`
+        },
+      },
+
+      onDone(data) {
+        const assetInfos = data.assetInfos;
+        const sceneJson = data.scene;
+
+        let info = null;
+        let uuid = null;
+
+        for (uuid in assetInfos) {
+          info = assetInfos[uuid];
+          for (let item in info.urls) {
+            info.urls[item] = baseUrl + '/' + info.urls[item];
+          }
+
+          app.assets.registerAsset(uuid, info);
+        }
+
+        app.assets.loadUrls('texture', {
+          json: `${baseUrl}/sprites/${uuid}.json`,
+          image: `${baseUrl}/sprites/${uuid}.png`,
+        }, (err, texture) => {
+          let sprite = texture.sprites['dark-gray-angle-32x32'];
+          sprite.left = 1;
+          sprite.top = 1;
+          sprite.right = 1;
+          sprite.bottom = 1;
+          sprite.commit();
+
+          image.sprite = sprite;
+        });
+      }
+    });
+
+    // run app
+    app.run();
+  </script>
+</body>
+
+</html>

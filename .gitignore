@@ -29,8 +29,11 @@ profile
 lib/renderer/shaders/chunks/index.js
 lib/renderer/shaders/templates/index.js
 lib/builtin/effects/index.js
-examples/test-assets
+examples/assets
 node_modules
 bower_components
 dist
 yarn.lock
+
+# docs
+docs

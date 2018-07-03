@@ -19,7 +19,7 @@
           "value": [0, 0]
         },
         {
-          "name": "albedoTexture",
+          "name": "albedo_texture",
           "type": "texture2d",
           "value": null
         },
@@ -29,7 +29,7 @@
           "value": 1
         },
         {
-          "name": "metallicTexture",
+          "name": "metallic_texture",
           "type": "texture2d",
           "value": null
         },
@@ -39,7 +39,7 @@
           "value": 0.5
         },
         {
-          "name": "roughnessTexture",
+          "name": "roughness_texture",
           "type": "texture2d",
           "value": null
         },
@@ -49,7 +49,7 @@
           "value": 0.2
         },
         {
-          "name": "aoTexture",
+          "name": "ao_texture",
           "type": "texture2d",
           "value": null
         },
@@ -59,12 +59,12 @@
           "value": [0, 0, 0]
         },
         {
-          "name": "emissiveTexture",
+          "name": "emissive_texture",
           "type": "texture2d",
           "value": null
         },
         {
-          "name": "normalTexture",
+          "name": "normal_texture",
           "type": "texture2d",
           "value": null
         },
@@ -139,7 +139,7 @@
       "value": false
     },
     {
-      "name": "USE_METALLIC_ROUGHNESS_TEXTURE",
+      "name": "USE_MRA_TEXTURE",
       "value": false
     },
     {
