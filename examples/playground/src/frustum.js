@@ -1,6 +1,11 @@
 (() => {
-  const { cc, app } = window;
-  const { vec3, color3, color4, quat, mat3 } = cc.math;
+  const { cc, app, dgui } = window;
+  const { vec3, color3, color4, quat, mat3, toRadian } = cc.math;
+
+  // controllers
+  let dobj = {
+    accurateFrustumCulling: true
+  };
 
   // manifest
   let manifest = {};
@@ -55,13 +60,13 @@
     ],
     axis: [
       vec3.new(0, 1, 0),
-      vec3.new(0, 1, 0),
+      vec3.new(2, 2, 2),
       vec3.new(3, 2, 1),
-      vec3.new(0, 1, 0),
+      vec3.new(2, 2, 2),
       vec3.new(1, 2, 3),
     ],
     angle: [
-      0, 0, Math.PI / 16 * 13, 0, -Math.PI / 16 * 13,
+      0, Math.PI / 16, Math.PI / 16 * 13, -Math.PI / 16, -Math.PI / 16 * 13,
     ],
     active: [
       true, true, true, true, true
@@ -113,12 +118,12 @@
   cam.near = 0.5; cam.far = 100; cam.fov = 60;
   // debugging camera should have the same fov,
   // but a much longer visible range (0.01-1000)
-  app._debugger._camera.setFov(Math.PI/3);
+  app._debugger._camera.setFov(toRadian(cam.fov));
 
 
   // TWEAK: look at point
   camera.lookAt(vec3.new(5, 4, 3));
-  app._forward.accurateFrustumCulling = true;
+  app._forward.accurateFrustumCulling = dobj.accurateFrustumCulling;
 
   // warp the frustum boundary hint
   let mulPos = (function() {
@@ -151,4 +156,44 @@
   frustum.mesh = cc.utils.createMesh(app, manifest.geometries.meshes[0]);
   frustum.material = materials[1]; // transparent material
   frustum._models[0]._boundingBox = null; // disable frustum culling for this
+
+  // debug controller
+  dgui.remember(dobj);
+  dgui.add(dobj, 'accurateFrustumCulling').onFinishChange(() => {
+    app._forward.accurateFrustumCulling = dobj.accurateFrustumCulling;
+  });
+  // monkey patch the extraction function to show exactly
+  // which model has been submitted to the pipeline
+  let submitted = {};
+  for (let i = 1; i < geometries.length; i++) {
+    let models = geometries[i].getComp('Model')._models;
+    models[0].extractDrawItemOld = models[0].extractDrawItem;
+    models[0].extractDrawItem = function(out) {
+      submitted[models[0]._node.name] = true;
+      models[0].extractDrawItemOld(out);
+    };
+  }
+  // on-screen text
+  let w = app._device._gl.canvas.width, h = app._device._gl.canvas.height;
+  let screen = app.createEntity('screen');
+  screen.addComp('Screen');
+  let entWidget = app.createEntity('widget');
+  entWidget.setParent(screen);
+  let widget = entWidget.addComp('Widget');
+  widget.setSize(w, h);
+  let entLabel = app.createEntity('label');
+  entLabel.setParent(entWidget);
+  let text = entLabel.addComp('Text');
+  text.setSize(w, h);
+  text.text = '';
+  text.align = 'middle-center';
+  text.color = color4.new(1, 0.7, 0, 1);
+  text.fontSize = 14;
+  // sync the result to screen every frame
+  app.on('tick', () => {
+    text.text = "Drawing models:\n";
+    for (let m in submitted) text.text += m + "\n";
+    submitted = {};
+  });
+
 })();
