@@ -22,7 +22,7 @@ uniform vec3 eye;
 varying vec3 pos_w;
 varying vec3 normal_w;
 
-#if USE_NORMAL_TEXTURE || USE_ALBEDO_TEXTURE || USE_METALLIC_ROUGHNESS_TEXTURE || USE_METALLIC_TEXTURE || USE_ROUGHNESS_TEXTURE || USE_AO_TEXTURE || USE_EMISSIVE_TEXTURE
+#if USE_NORMAL_TEXTURE || USE_ALBEDO_TEXTURE || USE_MRA_TEXTURE || USE_METALLIC_TEXTURE || USE_ROUGHNESS_TEXTURE || USE_AO_TEXTURE || USE_EMISSIVE_TEXTURE
   varying vec2 uv0;
 #endif
 
@@ -38,32 +38,32 @@ varying vec3 normal_w;
 // material parameters
 uniform vec4 albedo;
 #if USE_ALBEDO_TEXTURE
-  uniform sampler2D albedoTexture;
+  uniform sampler2D albedo_texture;
 #endif
 
-#if USE_METALLIC_ROUGHNESS_TEXTURE
-  uniform vec2 sampler2D metalRoughnessTexture;
+#if USE_MRA_TEXTURE
+  uniform vec2 sampler2D mra_texture;
 #endif
 
 uniform float metallic;
 #if USE_METALLIC_TEXTURE
-  uniform sampler2D metallicTexture;
+  uniform sampler2D metallic_texture;
 #endif
 
 uniform float roughness;
 #if USE_ROUGHNESS_TEXTURE
-  uniform sampler2D roughnessTexture;
+  uniform sampler2D roughness_texture;
 #endif
 
 uniform float ao;
 #if USE_AO_TEXTURE
-  uniform sampler2D aoTexture;
+  uniform sampler2D ao_texture;
 #endif
 
 #if USE_EMISSIVE
   uniform vec3 emissive;
   #if USE_EMISSIVE_TEXTURE
-    uniform sampler2D emissiveTexture;
+    uniform sampler2D emissive_texture;
   #endif
 #endif
 
@@ -72,10 +72,10 @@ uniform float ao;
 #endif
 
 #if USE_NORMAL_TEXTURE
-  uniform sampler2D normalTexture;
+  uniform sampler2D normal_texture;
   // get world-space normal from normal texture
   vec3 getNormalFromTexture() {
-    vec3 tangentNormal = texture2D(normalTexture, uv0).rgb * 2.0 - 1.0;
+    vec3 tangentNormal = texture2D(normal_texture, uv0).rgb * 2.0 - 1.0;
     vec3 q1  = dFdx(pos_w);
     vec3 q2  = dFdy(pos_w);
     vec2 st1 = dFdx(uv0);
@@ -162,7 +162,7 @@ void main() {
   float opacity = 1.0;
 
   #if USE_ALBEDO_TEXTURE
-    vec4 baseColor = gammaToLinearSpaceRGBA(albedo * texture2D(albedoTexture, uv0).rgba);
+    vec4 baseColor = gammaToLinearSpaceRGBA(albedo * texture2D(albedo_texture, uv0).rgba);
     vec3 albedo    = baseColor.rgb;
     opacity = baseColor.a;
   #else
@@ -175,23 +175,21 @@ void main() {
     if(opacity < alphaTestThreshold) discard;
   #endif
 
-  #if USE_METALLIC_ROUGHNESS_TEXTURE
-    // Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
-    // This layout intentionally reserves the 'r' channel for (optional) occlusion map data
-    vec3 metalRoughness = texture2D(metalRoughnessTexture, uv0).rgb;
-    float metallic = metalRoughness.b;
+  #if USE_MRA_TEXTURE
+    vec3 metalRoughness = texture2D(mra_texture, uv0).rgb;
+    float metallic = metalRoughness.r;
     float roughness = metalRoughness.g;
+    float ao = metalRoughness.b;
   #else
     #if USE_METALLIC_TEXTURE
-      float metallic  = texture2D(metallicTexture, uv0).r;
+      float metallic  = texture2D(metallic_texture, uv0).r;
     #endif
     #if USE_ROUGHNESS_TEXTURE
-      float roughness  = texture2D(roughnessTexture, uv0).r;
+      float roughness  = texture2D(roughness_texture, uv0).r;
     #endif
-  #endif
-
-  #if USE_AO_TEXTURE
-    float ao  = texture2D(aoTexture, uv0).r;
+    #if USE_AO_TEXTURE
+      float ao  = texture2D(ao_texture, uv0).r;
+    #endif
   #endif
 
   vec3 N = normalize(normal_w);
@@ -236,7 +234,7 @@ void main() {
   #if USE_EMISSIVE
     vec3 emissiveColor = gammaToLinearSpaceRGB(emissive);
     #if USE_EMISSIVE_TEXTURE
-      emissiveColor *= gammaToLinearSpaceRGB(texture2D(emissiveTexture, uv0).rgb);
+      emissiveColor *= gammaToLinearSpaceRGB(texture2D(emissive_texture, uv0).rgb);
     #endif
     Lo += emissiveColor;
   #endif

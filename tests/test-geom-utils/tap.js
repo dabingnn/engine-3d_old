@@ -9,7 +9,7 @@ tap.Test.prototype.addAssert('approximate', 3, function (found, wanted, maxDiffe
   let diff = Math.abs(found - wanted);
 
   maxDifferent = maxDifferent || 0.0001;
-  message = message || `should be approximateimate (${maxDifferent})`;
+  message = message || `should be approximate (${maxDifferent})`;
 
   if ( diff <= maxDifferent ) {
     return this.pass(message, extra);
@@ -24,7 +24,7 @@ tap.Test.prototype.addAssert('approximate', 3, function (found, wanted, maxDiffe
 
 tap.Test.prototype.addAssert('deepapproximate', 3, function (found, wanted, maxDifferent, message, extra ) {
   maxDifferent = maxDifferent || 0.0001;
-  message = message || `should be approximateimate (${maxDifferent})`;
+  message = message || `should be approximate (${maxDifferent})`;
 
   for ( let name in found ) {
     let diff = Math.abs(found[name] - wanted[name]);
@@ -47,7 +47,7 @@ tap.Test.prototype.addAssert('approximateArray', 3, function (found, wanted, max
   }
 
   maxDifferent = maxDifferent || 0.0001;
-  message = message || `should be approximateimate (${maxDifferent})`;
+  message = message || `should be approximate (${maxDifferent})`;
 
   for ( let i = 0; i < found.length; ++i ) {
     let diff = Math.abs(found[i] - wanted[i]);
@@ -67,7 +67,7 @@ tap.Test.prototype.addAssert('notapproximate', 3, function (found, wanted, maxDi
   let diff = Math.abs(found - wanted);
 
   maxDifferent = maxDifferent || 0.0001;
-  message = message || `should be not approximateimate (${maxDifferent})`;
+  message = message || `should be not approximate (${maxDifferent})`;
 
   if ( diff > maxDifferent ) {
     return this.pass(message, extra);

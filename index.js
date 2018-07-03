@@ -14,6 +14,7 @@ import LightComponent from './lib/framework/light-component';
 import ModelComponent from './lib/framework/model-component';
 import SkinningModelComponent from './lib/framework/skinning-model-component';
 import AnimationComponent from './lib/framework/animation-component';
+import AudioSourceComponent from './lib/framework/audio-source-component';
 import SkyboxComponent from './lib/framework/skybox-component';
 import ParticleSystemComponent from './lib/framework/particle/particle-system-component';
 
@@ -33,7 +34,6 @@ import EditBoxComponent from './lib/framework/ui/edit-box-component';
 import ScrollBarComponent from './lib/framework/ui/scroll-bar-component';
 import BoundComponent from './lib/framework/ui/bound-component';
 import ScrollViewComponent from './lib/framework/ui/scroll-view-component';
-import DropDownComponent from './lib/framework/ui/drop-down-component';
 import GridLayoutComponent from './lib/framework/ui/grid-layout-component';
 
 // assets
@@ -43,6 +43,7 @@ import Joints from './lib/assets/joints';
 import Material from './lib/assets/material';
 import Prefab from './lib/assets/prefab';
 import AnimationClip from './lib/assets/animation-clip';
+import { AudioClip } from './lib/assets/audio-clip';
 import Gltf from './lib/assets/gltf';
 import Texture from './lib/assets/texture';
 import Texture2D from './lib/assets/texture-2d';
@@ -75,6 +76,7 @@ export default {
   Material,
   Prefab,
   AnimationClip,
+  AudioClip,
   Gltf,
   Texture,
   Texture2D,
@@ -94,6 +96,7 @@ export default {
   ModelComponent,
   SkinningModelComponent,
   AnimationComponent,
+  AudioSourceComponent,
   SkyboxComponent,
   ParticleSystemComponent,
 
@@ -113,7 +116,6 @@ export default {
   ScrollBarComponent,
   BoundComponent,
   ScrollViewComponent,
-  DropDownComponent,
   GridLayoutComponent,
 
   // modules
