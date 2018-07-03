@@ -26,7 +26,7 @@
   };
   dgui.remember(dobj);
   dgui.add(dobj, 'emitShape').onFinishChange(() => {
-    psys.shape = dobj.emitShape;
+    psys.shapeModule.shapeType = dobj.emitShape;
     switch(dobj.emitShape) {
       case 'box':
         psys.shapeModule.boxScale = vec3.new(10.0, 10.0, 10.0);
@@ -157,7 +157,8 @@
   psys.simulationSpeed = 1;
   psys.gravityModifier.mode = 'constant';
   psys.gravityModifier.constant = 0;
-  psys.shape = 'circle';
+  psys.shapeModule.enable = true;
+  psys.shapeModule.shapeType = 'circle';
   psys.shapeModule.radius = 10.0;
   psys.shapeModule.arc = 360;
   psys.play();
