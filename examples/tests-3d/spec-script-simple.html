@@ -28,7 +28,49 @@
   <script>
     // init app
     let app = new cc.App(document.getElementById('canvas'));
-    const { vec3 }  = cc.math;
+    const { vec3 } = cc.math;
+
+    class Foobar extends cc.ScriptComponent {
+      onInit() {
+        console.log('Foobar.foo: ' + this._foo);
+        console.log('Foobar.bar: ' + this._bar);
+      }
+    }
+
+    Foobar.schema = {
+      foo: {
+        type: 'string',
+        default: ''
+      },
+
+      bar: {
+        type: 'string',
+        default: ''
+      }
+    }
+
+    app.registerClass('Foobar', Foobar);
+
+    class User extends cc.ScriptComponent {
+      onInit() {
+        console.log('User.name: ' + this._name);
+        console.log('User ID: ' + this._ID);
+      }
+    }
+
+    User.schema = {
+      name: {
+        type: 'boolean',
+        default: false,
+      },
+
+      ID: {
+        type: 'string',
+        default: '',
+      },
+    }
+
+    app.registerClass('User',User);
 
     app.resize();
 
@@ -74,11 +116,6 @@
             sceneJson,
             (err, level) => {
               app.loadLevel(level);
-
-              // let camEnt = app.createEntity('camera');
-              // vec3.set(camEnt.lpos, 10, 10, 10);
-              // camEnt.lookAt(vec3.new(0, 0, 0));
-              // camEnt.addComp('Camera');
             }
           );
         }
