@@ -4,8 +4,8 @@
   const { vec3, quat, color3, color4 } = cc.math;
 
   let dobj = {
-    baseUrl: '/Users/johnny/gamedev-js/u3d-exporter/out',
-    scene: 'scene',
+    baseUrl: '../assets/out',
+    scene: 'spec-primitives',
     load,
     preset,
   };
