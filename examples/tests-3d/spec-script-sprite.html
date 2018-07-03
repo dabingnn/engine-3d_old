@@ -30,22 +30,36 @@
   <script>
     // init app
     let app = new cc.App(document.getElementById('canvas'));
-    const { vec3 }  = cc.math;
+    const { vec3 } = cc.math;
 
-    let camEnt = app.createEntity('camera');
-    vec3.set(camEnt.lpos, 10, 10, 10);
-    camEnt.lookAt(vec3.new(0, 0, 0));
-    camEnt.addComp('Camera');
+    class Asset extends cc.ScriptComponent {
+      start() {
+        let exitScreen = app.activeLevel.getCompsInChildren('Screen');
+        let screen = null;
+        if (exitScreen.length > 0) {
+          screen = exitScreen[0];
+        }
 
-    let entity = app.createEntity('sliced-sprite');
-    let screen = app.createEntity('screen');
-    screen.addComp('Screen');
+        if (screen === null) {
+          screen = app.createEntity('screen');
+          screen.addComp('Screen');
+        }
 
-    entity.setParent(screen);
-    let image = entity.addComp('Image');
-    image.setSize(200, 50);
-    image.setAnchors(0.2, 0.2, 0.8, 0.8);
-    image.type = 'sliced';
+        let ent = app.createEntity('ent');
+        ent.setParent(screen);
+        let image = ent.addComp('Image');
+        image.sprite = this._test;
+      }
+    }
+
+    Asset.schema = {
+      test: {
+        type: 'asset',
+        default: null
+      }
+    }
+
+    app.registerClass('Asset', Asset);
 
     app.resize();
 
@@ -82,19 +96,13 @@
           app.assets.registerAsset(uuid, info);
         }
 
-        app.assets.loadUrls('texture', {
-          json: `${baseUrl}/sprites/${uuid}.json`,
-          image: `${baseUrl}/sprites/${uuid}.png`,
-        }, (err, texture) => {
-          let sprite = texture.sprites['dark-gray-angle-32x32'];
-          sprite.left = 1;
-          sprite.top = 1;
-          sprite.right = 1;
-          sprite.bottom = 1;
-          sprite.commit();
-
-          image.sprite = sprite;
-        });
+        cc.utils.parseLevel(
+          app,
+          sceneJson,
+          (err, level) => {
+            app.loadLevel(level);
+          }
+        );
       }
     });
 
