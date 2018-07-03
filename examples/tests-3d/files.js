@@ -52,5 +52,6 @@ var files = {
 		"spec-scroll-view",
 		"spec-slider",
 		"spec-edit-box",
+		"spec-transition-state",
 	]
 };
