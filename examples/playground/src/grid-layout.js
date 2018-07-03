@@ -1,5 +1,5 @@
 (() => {
-  const { cc, app } = window;
+  const { cc, app, dgui } = window;
   const { color4, vec3 } = cc.math;
 
   let camEnt = app.createEntity('camera');
@@ -38,102 +38,67 @@
     labelComp.text = i + '';
   }
 
-  let buttonManager = app.createEntity('ButtonManager');
-  buttonManager.setParent(screen);
-  let managerWidget = buttonManager.addComp('Widget');
-  managerWidget.setAnchors(0, 0, 1, 1);
-  managerWidget.setSize(0, 0);
-  let managerGrid = buttonManager.addComp('GridLayout');
-  managerGrid.childAlign = 'upper-center';
-  managerGrid.spacingX = 5;
-  managerGrid.spacingY = 5;
-  managerGrid.constraint = 'fixed-col';
-  managerGrid.constraintCount = 4;
-  managerGrid.cellWidth = 200;
-  managerGrid.cellHeight = 30;
+  let options = {
+    paddingLeft: layout.paddingLeft,
+    paddingRight: layout.paddingRight,
+    paddingBottom: layout.paddingBottom,
+    paddingTop: layout.paddingTop,
+    spacingX: layout.spacingX,
+    spacingY: layout.spacingY,
+    cellWidth: layout.cellWidth,
+    cellHeight: layout.cellHeight,
+    startCorner: layout.corner,
+    startAxis: layout.axisDirection,
+    childAlignmlayout: layout.childAlign,
+    constraint: layout.constraint,
+    value: layout.constraintCount
+  };
 
-  for (let i = 0; i < 9; ++i) {
-    let child = app.createEntity('child_' + i);
-    child.setParent(buttonManager);
-    let childWidget = child.addComp('Image');
-    childWidget.color = color4.new(0, 1, 1, 1);
-    childWidget.setPivot(0, 0);
-    let button = child.addComp('Button');
-    button.background = child;
-    button.transition = 'color';
-    button.transitionColors.normal = color4.new(0, 1, 1, 1);
-    button.transitionColors.highlight = color4.new(0, 1, 0, 1);
-    button.transitionColors.pressed = color4.new(0, 0.5, 0.5, 1);
-    button.transitionColors.disabled = color4.new(0.2, 0.2, 0.2, 1);
-    button._updateState();
-
-    let label = app.createEntity('label');
-    label.setParent(child);
-    let labelComp = label.addComp('Text');
-    labelComp.color = color4.new(0, 0, 0, 1);
-    labelComp.setSize(0, 0);
-    labelComp.setAnchors(0, 0, 1, 1);
-    labelComp.fontSize = 20;
-    labelComp.align = 'middle-center';
-    labelComp.text = i + '';
-  }
-
-  buttonManager.children[0].children[0].getComp('Text').text = 'corner-lower-right';
-  buttonManager.children[0].on('clicked', () => {
-    layout.corner = 'lower-right';
+  dgui.add(options, 'paddingLeft').onFinishChange(() => {
+    layout.paddingLeft = options.paddingLeft;
   });
 
-  buttonManager.children[1].children[0].getComp('Text').text = 'padding-H40-V20';
-  buttonManager.children[1].on('clicked', () => {
-    layout.paddingLeft = 20;
-    layout.paddingRight = 20;
-    layout.paddingBottom = 10;
-    layout.paddingTop = 10;
+  dgui.add(options, 'paddingRight').onFinishChange(() => {
+    layout.paddingRight = options.paddingRight;
   });
 
-  buttonManager.children[2].children[0].getComp('Text').text = 'Spacing-X10-Y10';
-  buttonManager.children[2].on('clicked', () => {
-    layout.spacingX = 10;
-    layout.spacingY = 10;
+  dgui.add(options, 'paddingBottom').onFinishChange(() => {
+    layout.paddingBottom = options.paddingBottom;
   });
 
-  buttonManager.children[3].children[0].getComp('Text').text = 'align-center';
-  buttonManager.children[3].on('clicked', () => {
-    layout.childAlign = 'middle-center';
+  dgui.add(options, 'paddingTop').onFinishChange(() => {
+    layout.paddingTop = options.paddingTop;
   });
 
-  buttonManager.children[4].children[0].getComp('Text').text = 'align-lower-right';
-  buttonManager.children[4].on('clicked', () => {
-    layout.childAlign = 'lower-right';
+  dgui.add(options, 'spacingX').onFinishChange(() => {
+    layout.spacingX = options.spacingX;
   });
 
-  buttonManager.children[5].children[0].getComp('Text').text = 'vertical';
-  buttonManager.children[5].on('clicked', () => {
-    layout.axisDirection = 'vertical';
+  dgui.add(options, 'spacingY').onFinishChange(() => {
+    layout.spacingY = options.spacingY;
   });
 
-  buttonManager.children[6].children[0].getComp('Text').text = 'fixed-col-4';
-  buttonManager.children[6].on('clicked', () => {
-    layout.constraint = 'fixed-col';
-    layout.constraintCount = 4;
+  dgui.add(options, 'cellWidth').onFinishChange(() => {
+    layout.cellWidth = options.cellWidth;
   });
 
-  buttonManager.children[7].children[0].getComp('Text').text = 'fixed-row-5';
-  buttonManager.children[7].on('clicked', () => {
-    layout.constraint = 'fixed-row';
-    layout.constraintCount = 5;
+  dgui.add(options, 'cellHeight').onFinishChange(() => {
+    layout.cellHeight = options.cellHeight;
   });
 
-  buttonManager.children[8].children[0].getComp('Text').text = 'reset';
-  buttonManager.children[8].on('clicked', () => {
-    layout.reset();
-    layout.spacingX = 5;
-    layout.spacingY = 5;
-    layout.cellWidth = 100;
-    layout.cellHeight = 30;
-    layout.childAlign = 'upper-center';
-    layout.constraint = 'flexible';
-    layout.constraintCount = 2;
-    layout.corner = 'upper-left';
+  dgui.add(options, 'startCorner').onFinishChange(() => {
+    layout.corner = options.startCorner;
+  });
+
+  dgui.add(options, 'childAlignmlayout').onFinishChange(() => {
+    layout.childAlign = options.childAlignmlayout;
+  });
+
+  dgui.add(options, 'constraint').onFinishChange(() => {
+    layout.constraint = options.constraint;
+  });
+
+  dgui.add(options, 'value').onFinishChange(() => {
+    layout.constraintCount = options.value;
   });
 })();
