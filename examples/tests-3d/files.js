@@ -53,5 +53,20 @@ var files = {
 		"spec-slider",
 		"spec-edit-box",
 		"spec-transition-state",
+	],
+	"particle": [
+		"spec-particlesystem-box",
+		"spec-particlesystem-circle",
+		"spec-particlesystem-colorovertime",
+		"spec-particlesystem-cone",
+		"spec-particlesystem-forceovertime",
+		"spec-particlesystem-hemisphere",
+		"spec-particlesystem-limitvelocity",
+		"spec-particlesystem-renderer",
+		"spec-particlesystem-rotationovertime",
+		"spec-particlesystem-sizeovertime",
+		"spec-particlesystem-sphere",
+		"spec-particlesystem-texturesheet",
+		"spec-particlesystem-velocityovertime"
 	]
 };
