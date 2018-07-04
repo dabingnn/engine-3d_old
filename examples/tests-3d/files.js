@@ -39,7 +39,6 @@ var files = {
 	"ui": [
 		"spec-bitmap-font",
 		"spec-button",
-		"spec-mask",
 		"spec-mask-nested",
 		"spec-mask-same-level",
 		"spec-opentype-font",
