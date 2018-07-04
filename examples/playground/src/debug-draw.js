@@ -9,8 +9,8 @@
   camEnt.lookAt(vec3.new(0, 0, 0));
   camEnt.addComp('Camera');
 
-  let start = vec3.create();
-  let end = vec3.create();
+  let start = vec3.zero();
+  let end = vec3.zero();
   let color = color3.create();
   let rot = quat.create();
   let timer = 0.0;

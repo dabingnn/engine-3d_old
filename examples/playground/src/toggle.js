@@ -84,11 +84,11 @@
   app.on('tick', () => {
     cc.utils.walk(screen, ent => {
       let color = color3.new(0, 0, 0);
-      let a = vec3.create();
-      let b = vec3.create();
-      let c = vec3.create();
-      let d = vec3.create();
-      let wpos = vec3.create();
+      let a = vec3.zero();
+      let b = vec3.zero();
+      let c = vec3.zero();
+      let d = vec3.zero();
+      let wpos = vec3.zero();
       let wrot = quat.create();
 
       let widget = ent.getComp('Widget');
