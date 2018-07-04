@@ -30,7 +30,7 @@
 
 <body class="fit">
   <canvas id="canvas" tabindex="-1" class="fit"></canvas>
-  <script src="../dist/engine.dev.js"></script>
+  <script src="../../dist/engine.dev.js"></script>
   <script src="../../node_modules/dat.gui/build/dat.gui.min.js"></script>
   <script>
     // init app
@@ -74,7 +74,7 @@
 
     // load level
     function load() {
-      let baseUrl = '../out';
+      let baseUrl = '../assets/out';
 
       cc.resl({
         manifest: {
@@ -119,10 +119,10 @@
                 highlight: button.transitionColors.highlight,
                 pressed: button.transitionColors.pressed,
                 disabled: button.transitionColors.disabled,
-                transitionSpritesNormal: button.transitionSprites.normal ? button.transitionSprites.normal : '',
-                transitionSpritesHighlight: button.transitionSprites.highlight ? button.transitionSprites.highlight : '',
-                transitionSpritesPressed: button.transitionSprites.pressed ? button.transitionSprites.pressed : '',
-                transitionSpritesDisabled: button.transitionSprites.disabled ? button.transitionSprites.disabled : '',
+                transitionSpritesNormal: '',
+                transitionSpritesHighlight: '',
+                transitionSpritesPressed: '',
+                transitionSpritesDisabled: '',
               };
 
               dgui.add(options, 'transition').onFinishChange(() => {
