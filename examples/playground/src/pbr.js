@@ -9,7 +9,7 @@
     useIBL: true,
     useTexLod: true,
     maxRefLod: 9,
-    envURL: '../assets/ibl-bakes/home',
+    envURL: '../assets/pbr/ibl/home',
     albedo: '',
     normal: '',
     ao: '',
@@ -127,14 +127,15 @@
 
     // load environment box.
     let envSrc = `${dobj.envURL}/environment`;
+    // front, back, top, bottom, right, left
     const envUrls = {
       json: `${envSrc}/environment.json`,
-      imagePosX: `${envSrc}/environment_right_0.jpg`,
-      imageNegX: `${envSrc}/environment_left_0.jpg`,
-      imagePosY: `${envSrc}/environment_top_0.jpg`,
-      imageNegY: `${envSrc}/environment_bottom_0.jpg`,
-      imagePosZ: `${envSrc}/environment_front_0.jpg`,
-      imageNegZ: `${envSrc}/environment_back_0.jpg`,
+      imagePosZ: `${envSrc}/environment_0.jpg`,
+      imageNegZ: `${envSrc}/environment_1.jpg`,
+      imagePosY: `${envSrc}/environment_2.jpg`,
+      imageNegY: `${envSrc}/environment_3.jpg`,
+      imagePosX: `${envSrc}/environment_4.jpg`,
+      imageNegX: `${envSrc}/environment_5.jpg`,
     };
     app.assets.loadUrls('texture', envUrls, (err, cubeMap) => {
       let skyboxComp = camEnt.getComp('Skybox');
@@ -146,45 +147,29 @@
       }
       skyboxComp.material.setProperty('cubeMap', cubeMap);
       activateSkyBox(skyboxComp._model);
+      setProperty('specularEnvTexture', cubeMap);
     });
 
     // load indirect lighting resource
     let diffuseSrc = `${dobj.envURL}/diffuse`;
     const difUrls = {
       json: `${diffuseSrc}/diffuse.json`,
-      imagePosX: `${diffuseSrc}/diffuse_right_0.jpg`,
-      imageNegX: `${diffuseSrc}/diffuse_left_0.jpg`,
-      imagePosY: `${diffuseSrc}/diffuse_top_0.jpg`,
-      imageNegY: `${diffuseSrc}/diffuse_bottom_0.jpg`,
-      imagePosZ: `${diffuseSrc}/diffuse_front_0.jpg`,
-      imageNegZ: `${diffuseSrc}/diffuse_back_0.jpg`,
+      imagePosZ: `${diffuseSrc}/diffuse_0.jpg`,
+      imageNegZ: `${diffuseSrc}/diffuse_1.jpg`,
+      imagePosY: `${diffuseSrc}/diffuse_2.jpg`,
+      imageNegY: `${diffuseSrc}/diffuse_3.jpg`,
+      imagePosX: `${diffuseSrc}/diffuse_4.jpg`,
+      imageNegX: `${diffuseSrc}/diffuse_5.jpg`,
     };
     app.assets.loadUrls('texture', difUrls, (err, cubeMap) => {
       setProperty('diffuseEnvTexture', cubeMap);
-    });
-
-    let specularSrc = `${dobj.envURL}/specular`;
-    let specUrls = {
-      json: `${specularSrc}/specular.json`,
-    };
-    for(let i = 0; i < 10; ++i) {
-      let suffix = i === 0 ? '' : `@${i}`;
-      specUrls[`imagePosX${suffix}`] = `${specularSrc}/specular_right_${i}.jpg`;
-      specUrls[`imageNegX${suffix}`] = `${specularSrc}/specular_left_${i}.jpg`;
-      specUrls[`imagePosY${suffix}`] = `${specularSrc}/specular_top_${i}.jpg`;
-      specUrls[`imageNegY${suffix}`] = `${specularSrc}/specular_bottom_${i}.jpg`;
-      specUrls[`imagePosZ${suffix}`] = `${specularSrc}/specular_front_${i}.jpg`;
-      specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_back_${i}.jpg`;
-    }
-    app.assets.loadUrls('texture', specUrls, (err, cubeMap) => {
-      setProperty('specularEnvTexture', cubeMap);
     });
   };
 
   // immediate init
   const lutUrls = {
-    json: '../assets/textures/brdfLUT.json',
-    image: '../assets/textures/brdfLUT.png',
+    json: '../assets/pbr/brdfLUT.json',
+    image: '../assets/pbr/brdfLUT.png',
   };
   app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
     setProperty('brdfLUT', lutMap);
