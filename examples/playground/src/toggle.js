@@ -72,7 +72,7 @@
     text.setSize(100, 30);
     text.text = 'Foobar';
     text.color = color4.new(0.1, 0.1, 0.1, 1);
-    text.align = 'left-center';
+    text.align = 'middle-center';
 
     //
     toggle.background = entBG;
