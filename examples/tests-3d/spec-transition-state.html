@@ -146,19 +146,27 @@
               });
 
               dgui.add(options, 'transitionSpritesNormal').onFinishChange(() => {
-                button.transitionSprites.normal = app.assets.get(options.transitionSpritesNormal);
+                if (options.transitionSpritesNormal) {
+                  button.transitionSprites.normal = app.assets.get(options.transitionSpritesNormal);
+                }
               });
 
               dgui.add(options, 'transitionSpritesHighlight').onFinishChange(() => {
-                button.transitionSprites.highlight = app.assets.get(options.transitionSpritesHighlight);
+                if (options.transitionSpritesHighlight) {
+                  button.transitionSprites.highlight = app.assets.get(options.transitionSpritesHighlight);
+                }
               });
 
               dgui.add(options, 'transitionSpritesPressed').onFinishChange(() => {
-                button.transitionSprites.pressed = app.assets.get(options.transitionSpritesPressed);
+                if (options.transitionSpritesPressed) {
+                  button.transitionSprites.pressed = app.assets.get(options.transitionSpritesPressed);
+                }
               });
 
               dgui.add(options, 'transitionSpritesDisabled').onFinishChange(() => {
-                button.transitionSprites.disabled = app.assets.get(options.transitionSpritesDisabled);
+                if (options.transitionSpritesDisabled) {
+                  button.transitionSprites.disabled = app.assets.get(options.transitionSpritesDisabled);
+                }
               });
             }
           );
