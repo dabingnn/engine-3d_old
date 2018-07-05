@@ -8,8 +8,8 @@
   let dobj = {
     useIBL: true,
     useTexLod: true,
-    maxRefLod: 9,
-    envURL: '../assets/pbr/ibl/home',
+    maxRefLod: 7,
+    envURL: '../assets/pbr/ibl/loft',
     albedo: '',
     normal: '',
     ao: '',
@@ -147,7 +147,6 @@
       }
       skyboxComp.material.setProperty('cubeMap', cubeMap);
       activateSkyBox(skyboxComp._model);
-      setProperty('specularEnvTexture', cubeMap);
     });
 
     // load indirect lighting resource
@@ -164,12 +163,29 @@
     app.assets.loadUrls('texture', difUrls, (err, cubeMap) => {
       setProperty('diffuseEnvTexture', cubeMap);
     });
+
+    let specularSrc = `${dobj.envURL}/specular`;
+    let specUrls = {
+      json: `${specularSrc}/specular.json`,
+    };
+    for(let i = 0; i < 8; ++i) {
+      let suffix = i === 0 ? '' : `@${i}`;
+      specUrls[`imagePosX${suffix}`] = `${specularSrc}/specular_${i}_0.jpg`;
+      specUrls[`imageNegX${suffix}`] = `${specularSrc}/specular_${i}_1.jpg`;
+      specUrls[`imagePosY${suffix}`] = `${specularSrc}/specular_${i}_2.jpg`;
+      specUrls[`imageNegY${suffix}`] = `${specularSrc}/specular_${i}_3.jpg`;
+      specUrls[`imagePosZ${suffix}`] = `${specularSrc}/specular_${i}_4.jpg`;
+      specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_${i}_5.jpg`;
+    }
+    app.assets.loadUrls('texture', specUrls, (err, cubeMap) => {
+      setProperty('specularEnvTexture', cubeMap);
+    });
   };
 
   // immediate init
   const lutUrls = {
     json: '../assets/pbr/brdfLUT.json',
-    image: '../assets/pbr/brdfLUT.png',
+    image: '../assets/pbr/brdfLUT.jpg',
   };
   app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
     setProperty('brdfLUT', lutMap);

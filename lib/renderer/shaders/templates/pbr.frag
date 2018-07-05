@@ -253,9 +253,9 @@ void main() {
     // sample both the specularEnvTexture and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     vec3 R = reflect(-V, N);
     #if USE_TEX_LOD
-      vec3 specularEnv = textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod).rgb;
+      vec3 specularEnv = gammaToLinearSpaceRGB(textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod).rgb);
     #else
-      vec3 specularEnv = textureCube(specularEnvTexture, R).rgb;
+      vec3 specularEnv = gammaToLinearSpaceRGB(textureCube(specularEnvTexture, R).rgb);
     #endif
     vec2 brdf  = texture2D(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = specularEnv * (F * brdf.x + brdf.y);
