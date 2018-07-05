@@ -19,16 +19,26 @@
       left: 0;
       right: 0;
     }
+
+    .dgui {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
   </style>
 </head>
 
 <body class="fit">
   <canvas id="canvas" tabindex="-1" class="fit"></canvas>
   <script src="../../dist/engine.dev.js"></script>
+  <script src="../../node_modules/dat.gui/build/dat.gui.min.js"></script>
   <script>
     // init app
     let app = new cc.App(document.getElementById('canvas'));
-    const { vec3 }  = cc.math;
+    const { vec3 } = cc.math;
+
+    let dgui = new dat.GUI({ width: 270 });
+    dgui.domElement.classList.add('dgui');
 
     app.resize();
 
@@ -78,9 +88,25 @@
               // play random anim
               let ent = app.find('zed');
               let anim = ent.getComp('Animation');
-              let anim_name = [];
-              anim_name = anim.clips[Math.floor(Math.random() * anim.clips.length)]._name;
-              anim.play(anim_name);
+              let animClips = [];
+              for (let i = 0; i < anim.clips.length; i++) {
+                const clip = anim.clips[i];
+                animClips.push(clip._name);
+              }
+
+               let dobj = {
+                animName: animClips[Math.floor(Math.random() * animClips.length)],
+                play: play,
+              }
+
+              dgui.add(dobj, 'animName', animClips).onFinishChange(() => {
+                play();
+              });
+              dgui.add(dobj, 'play');
+
+              function play() {
+                anim.play(dobj.animName);
+              }
 
               let e = app.find('light');
               let l = e.getComp('Light');
