@@ -130,12 +130,12 @@
     // front, back, top, bottom, right, left
     const envUrls = {
       json: `${envSrc}/environment.json`,
-      imagePosZ: `${envSrc}/environment_0.jpg`,
-      imageNegZ: `${envSrc}/environment_1.jpg`,
+      imagePosX: `${envSrc}/environment_0.jpg`,
+      imageNegX: `${envSrc}/environment_1.jpg`,
       imagePosY: `${envSrc}/environment_2.jpg`,
       imageNegY: `${envSrc}/environment_3.jpg`,
-      imagePosX: `${envSrc}/environment_4.jpg`,
-      imageNegX: `${envSrc}/environment_5.jpg`,
+      imagePosZ: `${envSrc}/environment_4.jpg`,
+      imageNegZ: `${envSrc}/environment_5.jpg`,
     };
     app.assets.loadUrls('texture', envUrls, (err, cubeMap) => {
       let skyboxComp = camEnt.getComp('Skybox');
@@ -154,12 +154,12 @@
     let diffuseSrc = `${dobj.envURL}/diffuse`;
     const difUrls = {
       json: `${diffuseSrc}/diffuse.json`,
-      imagePosZ: `${diffuseSrc}/diffuse_0.jpg`,
-      imageNegZ: `${diffuseSrc}/diffuse_1.jpg`,
+      imagePosX: `${diffuseSrc}/diffuse_0.jpg`,
+      imageNegX: `${diffuseSrc}/diffuse_1.jpg`,
       imagePosY: `${diffuseSrc}/diffuse_2.jpg`,
       imageNegY: `${diffuseSrc}/diffuse_3.jpg`,
-      imagePosX: `${diffuseSrc}/diffuse_4.jpg`,
-      imageNegX: `${diffuseSrc}/diffuse_5.jpg`,
+      imagePosZ: `${diffuseSrc}/diffuse_4.jpg`,
+      imageNegZ: `${diffuseSrc}/diffuse_5.jpg`,
     };
     app.assets.loadUrls('texture', difUrls, (err, cubeMap) => {
       setProperty('diffuseEnvTexture', cubeMap);
