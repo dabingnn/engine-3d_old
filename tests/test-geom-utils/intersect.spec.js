@@ -15,7 +15,7 @@ tap.test('intersect', t => {
      -0.5, -1, 0,
       0.5, -1, 0
     );
-    let out = vec3.create();
+    let out = vec3.zero();
     let intersects = intersect.ray_triangle(r1, t1, out);
 
     t.assert(intersects);
@@ -38,7 +38,7 @@ tap.test('intersect', t => {
      -0.5, -1, 0,
       0.5, -1, 0
     );
-    let out = vec3.create();
+    let out = vec3.zero();
     let intersects = intersect.line_triangle(l1, t1, out);
 
     t.assert(intersects);
@@ -52,7 +52,7 @@ tap.test('intersect', t => {
   });
 
   t.test('line_quad', t => {
-    let out = vec3.create();
+    let out = vec3.zero();
     let intersects = intersect.line_quad(
       vec3.new(0, 0.5, 1),
       vec3.new(0, 0.5, -1),
@@ -75,7 +75,7 @@ tap.test('intersect', t => {
       1, 1, 1
     );
     let s1 = sphere.new(2, 2, 2, 1);
-    let out = vec3.create();
+    let out = vec3.zero();
     let intersects = intersect.ray_sphere(r1, s1, out);
 
     t.assert(intersects);
@@ -89,22 +89,22 @@ tap.test('intersect', t => {
       0, 0, 0,
       1, 0, 0
     );
-    let axis_x = vec3.create();
-    let axis_y = vec3.create();
-    let axis_z = vec3.create();
+    let axis_x = vec3.zero();
+    let axis_y = vec3.zero();
+    let axis_z = vec3.zero();
     vec3.set(axis_x, 1, 0, 0);
     vec3.set(axis_y, 0, 1, 0);
     vec3.set(axis_z, 0, 0, 1);
 
-    let box_center = vec3.create();
+    let box_center = vec3.zero();
     vec3.set(box_center, 2, 1, 0);
 
-    let ori_x = vec3.create();
-    let ori_y = vec3.create();
-    let ori_z = vec3.create();
-    let ori_center = vec3.create();
+    let ori_x = vec3.zero();
+    let ori_y = vec3.zero();
+    let ori_z = vec3.zero();
+    let ori_center = vec3.zero();
     let angle = (-45) * Math.PI / 180;
-    let ori_rot = vec3.create();
+    let ori_rot = vec3.zero();
     vec3.rotateZ(ori_x, axis_x, ori_rot, angle);
     vec3.rotateZ(ori_y, axis_y, ori_rot, angle);
     vec3.rotateZ(ori_z, axis_z, ori_rot, angle);
@@ -117,7 +117,7 @@ tap.test('intersect', t => {
       ori_y.x, ori_y.y, ori_y.z,
       ori_z.x, ori_z.y, ori_z.z
     );
-    let out = vec3.create();
+    let out = vec3.zero();
     let intersects = intersect.ray_box(r1, b1, out);
 
     t.assert(intersects);
@@ -134,7 +134,7 @@ tap.test('intersect', t => {
 
   t.test('sphere_frustum', t => {
     let eye = vec3.new(4, 5, 6);
-    let at = vec3.create();
+    let at = vec3.zero();
     let up = vec3.new(0, 1, 0);
     let center = vec3.new(7, 2, 5);
     let s = sphere.new(center.x, center.y, center.z, 1);
@@ -166,7 +166,7 @@ tap.test('intersect', t => {
 
   t.test('box_frustum', t => {
     let eye = vec3.new(4, 5, 6);
-    let at = vec3.create();
+    let at = vec3.zero();
     let up = vec3.new(0, 1, 0);
     let center = vec3.new(1, 2, 3);
     let axis = vec3.new(3, 2, 1);
