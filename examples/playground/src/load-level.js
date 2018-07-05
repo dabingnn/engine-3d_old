@@ -3,7 +3,7 @@
   const { resl, path } = cc;
 
   let dobj = {
-    baseUrl: '/Users/johnny/gamedev-js/u3d-exporter/out',
+    baseUrl: '../assets/out',
     scene: 'scene',
     load: load,
   };
