@@ -48,6 +48,8 @@
       m.setProperty('albedo', color4.new(0.707, 0, 0, 1));
       m.setProperty('metallic', i/rows);
       m.setProperty('roughness', clamp(j/cols, 0.05, 1));
+      m.define("USE_RGBE_HDR_IBL_DIFFUSE", true);
+      m.define("USE_RGBE_HDR_IBL_SPECULAR", true);
 
       let ent = app.createEntity('sphere'+i);
       let modelComp = ent.addComp('Model');
@@ -130,12 +132,12 @@
     // front, back, top, bottom, right, left
     const envUrls = {
       json: `${envSrc}/environment.json`,
-      imagePosX: `${envSrc}/environment_0.jpg`,
-      imageNegX: `${envSrc}/environment_1.jpg`,
-      imagePosY: `${envSrc}/environment_2.jpg`,
-      imageNegY: `${envSrc}/environment_3.jpg`,
-      imagePosZ: `${envSrc}/environment_4.jpg`,
-      imageNegZ: `${envSrc}/environment_5.jpg`,
+      imagePosX: `${envSrc}/environment_0.hdr.png`,
+      imageNegX: `${envSrc}/environment_1.hdr.png`,
+      imagePosY: `${envSrc}/environment_2.hdr.png`,
+      imageNegY: `${envSrc}/environment_3.hdr.png`,
+      imagePosZ: `${envSrc}/environment_4.hdr.png`,
+      imageNegZ: `${envSrc}/environment_5.hdr.png`,
     };
     app.assets.loadUrls('texture', envUrls, (err, cubeMap) => {
       let skyboxComp = camEnt.getComp('Skybox');
@@ -143,6 +145,7 @@
         skyboxComp = camEnt.addComp('Skybox');
         let skyboxMaterial = new Material();
         skyboxMaterial.effect = app.assets.get('builtin-effect-skybox');
+        skyboxMaterial.define("USE_RGBE_HDR", true);
         skyboxComp.material = skyboxMaterial;
       }
       skyboxComp.material.setProperty('cubeMap', cubeMap);
@@ -153,12 +156,12 @@
     let diffuseSrc = `${dobj.envURL}/diffuse`;
     const difUrls = {
       json: `${diffuseSrc}/diffuse.json`,
-      imagePosX: `${diffuseSrc}/diffuse_0.jpg`,
-      imageNegX: `${diffuseSrc}/diffuse_1.jpg`,
-      imagePosY: `${diffuseSrc}/diffuse_2.jpg`,
-      imageNegY: `${diffuseSrc}/diffuse_3.jpg`,
-      imagePosZ: `${diffuseSrc}/diffuse_4.jpg`,
-      imageNegZ: `${diffuseSrc}/diffuse_5.jpg`,
+      imagePosX: `${diffuseSrc}/diffuse_0.hdr.png`,
+      imageNegX: `${diffuseSrc}/diffuse_1.hdr.png`,
+      imagePosY: `${diffuseSrc}/diffuse_2.hdr.png`,
+      imageNegY: `${diffuseSrc}/diffuse_3.hdr.png`,
+      imagePosZ: `${diffuseSrc}/diffuse_4.hdr.png`,
+      imageNegZ: `${diffuseSrc}/diffuse_5.hdr.png`,
     };
     app.assets.loadUrls('texture', difUrls, (err, cubeMap) => {
       setProperty('diffuseEnvTexture', cubeMap);
@@ -170,12 +173,12 @@
     };
     for(let i = 0; i < 8; ++i) {
       let suffix = i === 0 ? '' : `@${i}`;
-      specUrls[`imagePosX${suffix}`] = `${specularSrc}/specular_${i}_0.jpg`;
-      specUrls[`imageNegX${suffix}`] = `${specularSrc}/specular_${i}_1.jpg`;
-      specUrls[`imagePosY${suffix}`] = `${specularSrc}/specular_${i}_2.jpg`;
-      specUrls[`imageNegY${suffix}`] = `${specularSrc}/specular_${i}_3.jpg`;
-      specUrls[`imagePosZ${suffix}`] = `${specularSrc}/specular_${i}_4.jpg`;
-      specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_${i}_5.jpg`;
+      specUrls[`imagePosX${suffix}`] = `${specularSrc}/specular_${i}_0.hdr.png`;
+      specUrls[`imageNegX${suffix}`] = `${specularSrc}/specular_${i}_1.hdr.png`;
+      specUrls[`imagePosY${suffix}`] = `${specularSrc}/specular_${i}_2.hdr.png`;
+      specUrls[`imageNegY${suffix}`] = `${specularSrc}/specular_${i}_3.hdr.png`;
+      specUrls[`imagePosZ${suffix}`] = `${specularSrc}/specular_${i}_4.hdr.png`;
+      specUrls[`imageNegZ${suffix}`] = `${specularSrc}/specular_${i}_5.hdr.png`;
     }
     app.assets.loadUrls('texture', specUrls, (err, cubeMap) => {
       setProperty('specularEnvTexture', cubeMap);

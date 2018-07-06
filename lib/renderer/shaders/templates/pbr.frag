@@ -11,6 +11,7 @@
 #include <common.frag>
 #include <gamma-correction.frag>
 #include <pbr-lighting.frag>
+#include <unpack.frag>
 
 #if USE_SHADOW_MAP
   #include <packing.frag>
@@ -248,14 +249,26 @@ void main() {
     vec3 kS = F;
     vec3 kD = vec3(1.0) - kS;
     kD *= 1.0 - metallic;
-    vec3 diffuseEnv = textureCube(diffuseEnvTexture, N).rgb;
+    #if USE_RGBE_HDR_IBL_DIFFUSE
+      vec3 diffuseEnv = unpackRGBE(textureCube(diffuseEnvTexture, N));
+    #else
+      vec3 diffuseEnv = textureCube(diffuseEnvTexture, N).rgb;
+    #endif
     vec3 diffuse = diffuseEnv * albedo;
     // sample both the specularEnvTexture and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     vec3 R = reflect(-V, N);
     #if USE_TEX_LOD
-      vec3 specularEnv = gammaToLinearSpaceRGB(textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod).rgb);
+      #if USE_RGBE_HDR_IBL_SPECULAR
+        vec3 specularEnv = unpackRGBE(textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod));
+      #else
+        vec3 specularEnv = textureCubeLodEXT(specularEnvTexture, R, roughness * maxReflectionLod).rgb;
+      #endif
     #else
-      vec3 specularEnv = gammaToLinearSpaceRGB(textureCube(specularEnvTexture, R).rgb);
+      #if USE_RGBE_HDR_IBL_SPECULAR
+        vec3 specularEnv = unpackRGBE(textureCube(specularEnvTexture, R));
+      #else
+        vec3 specularEnv = textureCube(specularEnvTexture, R).rgb;
+      #endif
     #endif
     vec2 brdf  = texture2D(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = specularEnv * (F * brdf.x + brdf.y);
