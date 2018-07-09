@@ -3,7 +3,7 @@ const gfx = require('./dist/gfx.js');
 
 suite(tap, 'helper', { timeout: 20000 }, t => {
   function _initDevice(cb) {
-    while(document.body.firstElementChild) {
+    while (document.body.firstElementChild) {
       document.body.firstElementChild.remove();
     }
 
@@ -16,7 +16,7 @@ suite(tap, 'helper', { timeout: 20000 }, t => {
   }
 
   t.afterEach(done => {
-    while(document.body.firstElementChild) {
+    while (document.body.firstElementChild) {
       document.body.firstElementChild.remove();
     }
 
@@ -45,10 +45,14 @@ suite(tap, 'helper', { timeout: 20000 }, t => {
       program.link();
 
       t.equal(program._attributes.length, 2);
-      t.equal(program._attributes[0].name, 'a_position');
-      t.equal(program._attributes[0].type, device._gl.FLOAT_VEC3);
-      t.equal(program._attributes[1].name, 'a_uv0');
-      t.equal(program._attributes[1].type, device._gl.FLOAT_VEC2);
+      for (let i = 0; i < 2; ++i) {
+        t.assert((program._attributes[i].name === 'a_position') || (program._attributes[i].name === 'a_uv0'), `shader do not have a vertex attribute ${program._attributes[i].name}`);
+        if (program._attributes[i].name === 'a_position') {
+          t.equal(program._attributes[i].type, device._gl.FLOAT_VEC3);
+        } else {
+          t.equal(program._attributes[i].type, device._gl.FLOAT_VEC2);
+        }
+      }
 
       t.end();
     });
