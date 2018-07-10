@@ -45,7 +45,7 @@
       let m = new Material();
       m.effect = app.assets.get('builtin-effect-pbr');
       m.setProperty('ao', 1.0);
-      m.setProperty('albedo', color4.new(0.707, 0, 0, 1));
+      m.setProperty('albedo', color4.new(0.5, 0, 0, 1));
       m.setProperty('metallic', i/rows);
       m.setProperty('roughness', clamp(j/cols, 0.05, 1));
       m.define("USE_RGBE_HDR_IBL_DIFFUSE", true);
@@ -126,6 +126,7 @@
       activateSkyBox(null);
       return;
     }
+    // lightSwitch(false);
 
     // load environment box.
     let envSrc = `${dobj.envURL}/environment`;
@@ -188,7 +189,7 @@
   // immediate init
   const lutUrls = {
     json: '../assets/pbr/brdfLUT.json',
-    image: '../assets/pbr/brdfLUT.jpg',
+    image: '../assets/pbr/brdfLUT.png',
   };
   app.assets.loadUrls('texture', lutUrls, (err, lutMap) => {
     setProperty('brdfLUT', lutMap);

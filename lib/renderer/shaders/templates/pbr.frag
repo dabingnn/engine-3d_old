@@ -158,18 +158,16 @@ vec3 brdf(LightInfo lightInfo, vec3 N, vec3 V, vec3 F0, vec3 albedo, float metal
   return (kD * albedo / PI + specular) * lightInfo.radiance * NdotL;
 }
 
-
 void main() {
   float opacity = 1.0;
 
   #if USE_ALBEDO_TEXTURE
-    vec4 baseColor = gammaToLinearSpaceRGBA(albedo * texture2D(albedo_texture, uv0).rgba);
-    vec3 albedo    = baseColor.rgb;
+    vec4 baseColor = albedo * gammaToLinearSpaceRGBA(texture2D(albedo_texture, uv0));
+    vec3 albedo = baseColor.rgb;
     opacity = baseColor.a;
   #else
-    vec4 baseColor = gammaToLinearSpaceRGBA(albedo);
-    vec3 albedo    = baseColor.rgb;
-    opacity = baseColor.a;
+    opacity = albedo.a;
+    vec3 albedo = albedo.rgb;
   #endif
 
   #if USE_ALPHA_TEST
