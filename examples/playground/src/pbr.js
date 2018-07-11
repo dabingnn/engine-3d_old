@@ -4,6 +4,17 @@
   const { vec3, color3, color4, clamp } = cc.math;
   const { sphere } = cc.primitives;
 
+  /**
+   * note: 
+   * this is the baseline test scene for PBR materials, compared to
+   * the identical scene from [LearnOpenGL](https://learnopengl.com).
+   * There are a few minor but irreconcilable details:
+   * * lighting result, specifically the result of `NdotH` part is a bit different,
+   *   but it's an issue within the native version, our results are correct
+   * * slightly texture banding, unavoidable unless we use true HDR format texture
+   *   and generate everything on the fly, but already barely visible anyway
+   */
+
   // configs
   let dobj = {
     useIBL: true,
