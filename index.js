@@ -43,7 +43,7 @@ import Joints from './lib/assets/joints';
 import Material from './lib/assets/material';
 import Prefab from './lib/assets/prefab';
 import AnimationClip from './lib/assets/animation-clip';
-import { AudioClip } from './lib/assets/audio-clip';
+import AudioClip from './lib/assets/audio-clip';
 import Gltf from './lib/assets/gltf';
 import Texture from './lib/assets/texture';
 import Texture2D from './lib/assets/texture-2d';
