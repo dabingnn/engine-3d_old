@@ -59,7 +59,7 @@
           scene: {
             type: 'text',
             parser: JSON.parse,
-            src: `${baseUrl}/spec-zed.json`
+            src: `${baseUrl}/spec-skeleton.json`
           },
         },
 
@@ -86,7 +86,7 @@
               app.loadLevel(level);
 
               // play random anim
-              let ent = app.find('zed');
+              let ent = app.find('skeleton');
               let anim = ent.getComp('Animation');
               let animClips = [];
               for (let i = 0; i < anim.clips.length; i++) {
@@ -111,8 +111,8 @@
               let e = app.find('light');
               let l = e.getComp('Light');
               // fine-tune the shadow quality
-              l.shadowMaxDepth = 5;
-              l.shadowFrustumSize = 6;
+              l.shadowMaxDepth = 8;
+              l.shadowFrustumSize = 8;
               // vec4.set(e.lpos, 2, 2, 3); // already set in level
             }
           );
