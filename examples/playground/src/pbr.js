@@ -1,7 +1,7 @@
 (() => {
   const { cc, app, dgui } = window;
   const { resl, Texture2D, Material } = cc;
-  const { vec3, color3, color4, clamp } = cc.math;
+  const { vec3, color3, color4, quat, clamp } = cc.math;
   const { sphere } = cc.primitives;
 
   /**
@@ -74,9 +74,10 @@
   // camera
   let camEnt = app.createEntity('camera');
   vec3.set(camEnt.lpos, -15, 10, 12);
-  camEnt.lookAt(vec3.new(0, 0, 0));
+  quat.fromEuler(camEnt.lrot, -27, 38-90, 0);
   let camComp = camEnt.addComp('Camera');
   camComp.clearFlags |= cc.renderer.CLEAR_SKYBOX;
+  // app._device._gl.canvas.width = 1280; app._device._gl.canvas.height = 720;
 
   // util functions
   let setProperty = function(name, prop) {
