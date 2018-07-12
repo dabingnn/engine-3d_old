@@ -1,6 +1,6 @@
 var files = {
 	"animation": [
-		"spec-zed"
+		"spec-animation"
 	],
   "audio": [
     "spec-audio"
